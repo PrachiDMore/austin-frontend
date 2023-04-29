@@ -1,6 +1,4 @@
 import React from 'react'
-import { FaUserAlt } from 'react-icons/fa'
-import { RiLockPasswordFill } from 'react-icons/ri'
 import Input from '../components/Input'
 import { Link } from 'react-router-dom'
 
@@ -12,8 +10,16 @@ const Signin = () => {
                 <div className='w-[50%] h-full p-20 bg-lightGray flex flex-col justify-center '>
                     <h1 className='text-2xl font-semibold text-center'>Hello! Welcome Back</h1>
                     <div className='w-full pt-4 flex flex-col gap-y-3'>
-                        <Input id={'username'} label={'Username'} icon={<FaUserAlt className='text-purpleBlue' />} type={'text'} placeholder={'Enter your username.'} />
-                        <Input id={'password'} label={'Password'} icon={<RiLockPasswordFill className='text-purpleBlue' />} type={'password'} placeholder={'Enter your password.'} />
+                        <Input id={'username'} label={'Username'} type={'text'} placeholder={'Enter your username.'} />
+                        <Input id={'password'} label={'Password'} type={'password'} placeholder={'Enter your password.'} />
+                        <div className='flex flex-col Nunito'>
+                            <label className='text-sm cursor-pointer mb-1 font-semibold' htmlFor='role'>Role:</label>
+                            <select className='focus:shadow-purpleShadow duration-300 outline-none shadow-md px-3 py-3 rounded-md w-full text-sm ' name="" id="role">
+                                <option value="admin">Admin</option>
+                                <option value="teacher">Teacher</option>
+                                <option value="student">Student</option>
+                            </select>
+                        </div>
                     </div>
                     <div className='flex justify-between py-4'>
                         <div className='flex items-center gap-2'>

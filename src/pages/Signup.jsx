@@ -1,9 +1,6 @@
 import React from 'react'
 import Input from '../components/Input'
 import { Link } from 'react-router-dom'
-import { MdMail } from 'react-icons/md'
-import { FaUserAlt } from 'react-icons/fa'
-import { RiLockPasswordFill } from 'react-icons/ri'
 
 const Signup = () => {
   return (
@@ -17,9 +14,9 @@ const Signup = () => {
               <Input id={'fname'} label={'First Name'} type={'text'} placeholder={'Enter your first name.'} />
               <Input id={'lname'} label={'Last Name'} type={'text'} placeholder={'Enter your last name.'} />
             </div>
-            <Input id={'email'} label={'Email'} icon={<MdMail className='text-purpleBlue'/>} type={'email'} placeholder={'Enter your email address.'} />
-            <Input id={'username'} label={'Username'} icon={<FaUserAlt className='text-purpleBlue'/>} type={'text'} placeholder={'Enter your username.'} />
-            <Input id={'password'} label={'Password'} icon={<RiLockPasswordFill className='text-purpleBlue'/>} type={'password'} placeholder={'Enter your password.'} />
+            <Input id={'email'} label={'Email'} type={'email'} placeholder={'Enter your email address.'} />
+            <Input id={'username'} label={'Username'} type={'text'} placeholder={'Enter your username.'} />
+            <Input id={'password'} label={'Password'} type={'password'} placeholder={'Enter your password.'} />
           </div>
           <button className='bg-purpleBlue mt-7 rounded-md text-sm font-semibold text-white w-full py-2' type='button'>Create Account</button>
           <div className='flex gap-2 py-4 text-sm justify-center'>
