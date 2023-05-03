@@ -21,7 +21,7 @@ const Signup = () => {
             </div>
             <Input id={'email'} label={'Email'} type={'email'} placeholder={'Enter your email address.'} />
             <Input id={'username'} label={'Username'} type={'text'} placeholder={'Enter your username.'} />
-            <Input id={'password'} label={'Password'} type={'password'} placeholder={'Enter your password.'} />
+            <Input password={true} id={'password'} label={'Password'} type={'password'} placeholder={'Enter your password.'} />
           </div>
           <Button text='Create Account' loading={loading} />
           <div className='flex gap-2 py-4 text-sm font-semibold justify-center'>
