@@ -9,7 +9,7 @@ module.exports = {
         lightGray: '#F5F6FA',
         darkPurple: '#91218f',
         lightPurple: '#ab2ea9',
-        purpleShadow: 'rgba(145, 33, 143,0.55)'
+        purpleShadow: 'rgba(145, 33, 143,0.45)'
       }
     },
   },
