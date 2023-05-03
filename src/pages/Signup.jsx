@@ -11,7 +11,7 @@ const Signup = () => {
     <>
       <Alert message={message} setMessage={setMessage} />
       <section className='h-[100vh] w-[100vw] flex Nunito'>
-        <div className='w-[50%] bg-purpleBlue'></div>
+        <div className='w-[50%] bg-darkPurple'></div>
         <div className='w-[50%] p-20 bg-lightGray flex flex-col justify-center'>
           <h1 className='text-3xl font-bold text-center mb-6'>Hello! Welcome</h1>
           <div className='mb-7 w-full pt-4 flex flex-col gap-y-3'>
@@ -26,7 +26,7 @@ const Signup = () => {
           <Button text='Create Account' loading={loading} />
           <div className='flex gap-2 py-4 text-sm font-semibold justify-center'>
             <p>Already have an account?</p>
-            <Link to='/signin' className='text-purpleBlue'>Login</Link>
+            <Link to='/signin' className='text-darkPurple'>Login</Link>
           </div>
         </div>
       </section>

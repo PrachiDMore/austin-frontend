@@ -45,7 +45,7 @@ const Signin = () => {
         <>
             <Alert message={message} setMessage={setMessage} />
             <section className='h-[100vh] w-[100vw] flex Nunito'>
-                <div className='w-[50%] bg-purpleBlue'></div>
+                <div className='w-[50%] bg-darkPurple'></div>
                 <div className='w-[50%] h-full p-20 bg-lightGray flex flex-col justify-center '>
                     <h1 className='text-3xl font-bold text-center mb-6'>Hello! Welcome Back</h1>
                     <div className='w-full pt-4 flex flex-col gap-y-3'>
@@ -61,12 +61,12 @@ const Signin = () => {
                         <Input password={true} onChange={handleChange} value={formState.password} id={'password'} label={'Password'} type={'password'} placeholder={'Enter your password.'} />
                     </div>
                     <div className='flex justify-end py-4'>
-                        <Link className='text-sm font-semibold text-purpleBlue'>forget password?</Link>
+                        <Link className='text-sm font-semibold text-darkPurple'>forget password?</Link>
                     </div>
                     <Button onClick={handleSubmit} text='Login' loading={loading} />
                     <div className='flex gap-2 py-4 text-sm font-bold justify-center'>
                         <p>Don't have an account?</p>
-                        <Link to='/signup' className='text-purpleBlue'>Create Account</Link>
+                        <Link to='/signup' className='text-darkPurple'>Create Account</Link>
                     </div>
                 </div>
             </section>
