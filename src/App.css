@@ -13,3 +13,29 @@ body,
 ::-webkit-scrollbar {
   width: 0;
 }
+
+.navLink {
+  position: relative;
+}
+
+.navLink::after {
+  content: '';
+  left: 0;
+  position: absolute;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #ab2ea9;
+  transition: 0.3s ease-in;
+}
+
+.navLink::after:hover {
+  content: '';
+  left: 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 2px;
+  background-color: #ab2ea9;
+  transition: 0.3s ease-in;
+}
