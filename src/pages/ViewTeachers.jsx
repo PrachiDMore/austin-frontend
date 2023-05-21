@@ -4,27 +4,13 @@ import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import axios from 'axios'
 import TeacherModal from '../components/TeacherModal'
+import { UseTeacherContext } from '../context/Teachers'
 
 
 const ViewTeachers = () => {
-    const [teachers, setTeachers] = useState([]);
+    const {teachers, setTeachers } = UseTeacherContext()
     const [searchteachers, setSearchteachers] = useState([]);
-    const [isModal, setModal] = useState()
-
-    useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/teacher`)
-            .then((res) => {
-                if (res.data.error) {
-                    alert(res.data.message)
-                } else {
-                    setSearchteachers(res.data.teachers)
-                    setTeachers(res.data.teachers)
-                }
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
-    }, []);
+    const [showModal, setShowModal] = useState({show: false, update: false, data: undefined})
 
     useEffect(()=>{
         setSearchteachers(teachers)
@@ -43,7 +29,7 @@ const ViewTeachers = () => {
         <>
             <Navbar />
 
-            <TeacherModal setModal={setModal} modal={isModal} teachers={teachers} setTeachers={setTeachers}/>
+            <TeacherModal setShowModal={setShowModal} showModal={showModal}/>
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
@@ -53,7 +39,7 @@ const ViewTeachers = () => {
                     </div>
                     <div className='ml-[10px]'>
                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
-                            setModal(true)
+                            setShowModal({show: true, update: false, data: undefined})
                         }}>
                             Add Teacher
                         </button>
@@ -77,7 +63,9 @@ const ViewTeachers = () => {
                                 <tbody className='text-gray-700 mt-5'>
                                     {
                                         searchteachers?.map((data) => {
-                                            return <tr key={data?._id} class="border-b border-darkPurple">
+                                            return <tr onClick={() => {
+                                                setShowModal({show: true, update: true, data: data})
+                                            }} key={data?._id} class="border-b border-darkPurple">
                                                 <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</th>
                                                 <td class="px-6 py-4">{data?.email}</td>
                                                 <td class="px-6 py-4">{data?.phoneNumber}</td>
