@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Input from './Input';
+import Select from './Select';
 import axios from 'axios';
-import Button from '../components/Button'
+import Button from './Button'
 import TeacherformInitialState from '../InitialStates/Teacherform';
-const TeacherModal = ({ setModal }) => {
+import addElementInArray from '../Utils/AddUniqueElementsInArray';
+
+const TeacherModal = ({ setModal, modal , setTeachers, teachers}) => {
     const [formState, setFormState] = useState(TeacherformInitialState);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -14,11 +17,10 @@ const TeacherModal = ({ setModal }) => {
             [e.target.id]: e.target.value
         })
     }
+
     const addTeacher = (e) => {
         e.preventDefault();
         setLoading(true)
-        console.log(e)
-        alert(formState.firstname)
         if (formState.firstname && formState.lastname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
             axios(`${process.env.REACT_APP_BASE_URL}/teacher/create`, {
                 method: 'POST',
@@ -28,16 +30,17 @@ const TeacherModal = ({ setModal }) => {
                     if (res.data.error) {
                         setMessage(res.data.message)
                         alert(res.data.message)
+                        setModal(false)
                     } else {
                         setMessage(res.data.message)
                         setLoading(false)
-                        console.log(res.data);
+                        setModal(false)
+                        setTeachers(addElementInArray(teachers, res.data.teacher))
                         setFormState(TeacherformInitialState);
                     }
                 })
                 .catch((err) => {
                     setLoading(false)
-                    console.log(err)
                 })
         } else {
             alert('Form incompletely filled')
@@ -46,14 +49,14 @@ const TeacherModal = ({ setModal }) => {
     }
     return (
         <>
-            <div id="updateProductModal" tabindex="-1" aria-hidden="true" class="backdrop-blur-sm flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-                <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+            <div id="updateProductModal" tabindex="-1" aria-hidden="true" className={modal ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>
+                <div class="relative p-4 w-[70vw] h-full md:h-auto">
                     <div class="relative p-4 bg-white rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">
                         <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
                             <h3 class="text-lg font-semibold dark:text-lightPurple">
                                 Add Teachers
                             </h3>
-                            <button type="button" class="text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
+                            <button type="button" class="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
                                 onClick={() => {
                                     setModal(false)
                                 }}
@@ -92,10 +95,10 @@ const TeacherModal = ({ setModal }) => {
                                     <Input onChange={handleChange} required={true} value={formState.subject} type="text" id="subject" label={'Subject'} placeholder="Subject" />
                                 </div>
                                 <div>
-                                    <Input onChange={handleChange} required={true} value={formState.salaryType} type="text" id="salaryType" label={'Salary Type'} placeholder="Salarytype" />
+                                    <Select options={[{label: "Monthly", value: "monthly"}, {label: "Hourly", value: "hourly"}]} onChange={handleChange} required={true} value={formState.salaryType} id="salaryType" label={'Salary Type'} placeholder="Salarytype" />
                                 </div>
                             </div>
-                            <div class="flex items-center space-x-4">
+                            <div class="flex items-center space-x-4 justify-center">
                                 <Button type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />
                             </div>
                         </form>

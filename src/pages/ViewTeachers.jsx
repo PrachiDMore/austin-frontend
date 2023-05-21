@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
-import Teachermodal from "../components/Teachermodal";
 import axios from 'axios'
+import TeacherModal from '../components/TeacherModal'
+
+
 const ViewTeachers = () => {
-    const [teachers, setteachers] = useState([]);
+    const [teachers, setTeachers] = useState([]);
     const [searchteachers, setSearchteachers] = useState([]);
     const [isModal, setModal] = useState()
+
     useEffect(() => {
         axios(`${process.env.REACT_APP_BASE_URL}/teacher`)
             .then((res) => {
@@ -15,7 +18,7 @@ const ViewTeachers = () => {
                     alert(res.data.message)
                 } else {
                     setSearchteachers(res.data.teachers)
-                    setteachers(res.data.teachers)
+                    setTeachers(res.data.teachers)
                 }
             })
             .catch((err) => {
@@ -36,7 +39,7 @@ const ViewTeachers = () => {
         <>
             <Navbar />
 
-            {isModal && <Teachermodal setModal={setModal} />}
+            <TeacherModal setModal={setModal} modal={isModal} teachers={teachers} setTeachers={setTeachers}/>
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

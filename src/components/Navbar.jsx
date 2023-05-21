@@ -11,6 +11,7 @@ const Navbar = () => {
             <ul className='px-10 w-[60%] flex justify-start gap-x-20 items-center '>
                 <Link className='navLink hover:text-darkPurple font-semibold' to='/'>Home</Link>
                 <Link className='navLink hover:text-darkPurple font-semibold' to='/admission'>Admission</Link>
+                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/teachers'>Teacher</Link>
             </ul>
             <div className='w-[20%] flex justify-center items-center'>
                 <Link className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>
