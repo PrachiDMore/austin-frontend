@@ -26,6 +26,10 @@ const ViewTeachers = () => {
             })
     }, []);
 
+    useEffect(()=>{
+        setSearchteachers(teachers)
+    },[teachers])
+
     const handleSearch = (e) => {
         if (e.target.value.length == 0) {
             setSearchteachers(teachers)
