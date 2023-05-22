@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
+import Chapters from "./pages/ViewChapters";
 import Home from "./pages/Home";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
@@ -10,7 +11,6 @@ import Subjects from "./pages/Subjects";
 import { TeacherContextProvider } from "./context/Teachers";
 import { SubjectContextProvider } from "./context/Subjects";
 import {ChapterContextProvider} from "./context/Chapter";
-import Chapters from "./pages/Chapters";
 
 function App() {
   return (

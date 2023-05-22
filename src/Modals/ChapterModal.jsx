@@ -39,13 +39,26 @@ const ChatperModal = ({ setShowModal, showModal }) => {
     const handleSubjects = (e) => {
         setSubjectValue(e);
     }
+
+
+    useEffect(() => {
+        if (showModal.update) {
+            setFormState(showModal.data);
+            setSubjectValue({ label: `${showModal?.data?.subjectID?.name} (${showModal?.data?.subjectID?.grade})`, value: showModal?.data?.subjectID?._id })
+        } else {
+            setSubjectValue()
+            setFormState(ChapterForm)
+        }
+    }, [showModal]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            if (formState.fullname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
-                axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
+            console.log({ ...formState, subjectID: subjectValue?.value })
+            if (formState.name && formState.grade && formState.hours) {
+                axios(`${process.env.REACT_APP_BASE_URL}/chapter/${showModal?.data?._id}`, {
                     method: 'PATCH',
-                    data: { ...formState, subject: subjectValue?.value }
+                    data: { ...formState, subjectID: subjectValue?.value }
                 })
                     .then((res) => {
                         if (res.data.error) {
@@ -98,7 +111,7 @@ const ChatperModal = ({ setShowModal, showModal }) => {
 
     return (
         <>
-        <Navbar/>
+            <Navbar />
             <div id="updateProductModal" tabindex="-1" aria-hidden="true" className={showModal.show ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>
                 <div class="relative p-4 w-[70vw] h-full md:h-auto">
                     <div class="relative p-4 bg-white rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">

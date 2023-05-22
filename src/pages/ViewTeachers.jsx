@@ -28,7 +28,6 @@ const ViewTeachers = () => {
     return (
         <>
             <Navbar />
-
             <TeacherModal setShowModal={setShowModal} showModal={showModal}/>
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
