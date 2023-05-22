@@ -123,24 +123,24 @@ const TeacherModal = ({ setShowModal, showModal }) => {
     return (
         <>
             <div id="updateProductModal" tabindex="-1" aria-hidden="true" className={showModal.show ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>
-                <div class="relative p-4 w-[70vw] h-full md:h-auto">
-                    <div class="relative p-4 bg-white rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">
-                        <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
-                            <h3 class="text-lg font-semibold dark:text-lightPurple">
+                <div className="relative p-4 w-[70vw] h-full md:h-auto">
+                    <div className="relative p-4 bg-white rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">
+                        <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
+                            <h3 className="text-lg font-semibold dark:text-lightPurple">
                                 {showModal.update ? "Update Teacher" : "Add Teacher"}
                             </h3>
-                            <button type="button" class="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
+                            <button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
                                 onClick={() => {
                                     setShowModal({ show: false, update: false, data: undefined })
                                     setSelectedSubjects([])
                                 }}
                             >
-                                <svg aria-hidden="true" class="w-5 h-5" fill="currentcolor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-                                <span class="sr-only">Close modal</span>
+                                <svg aria-hidden="true" className="w-5 h-5" fill="currentcolor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                                <span className="sr-only">Close modal</span>
                             </button>
                         </div>
                         <form action="#" onSubmit={handleSubmit}>
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <Input onChange={handleChange} required={true} value={formState.fullname} id="fullname" type={"text"} label={'Full Name'} placeholder={'Enter your full name.'} />
                                 </div>
@@ -148,7 +148,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                                     <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
                                 </div>
                             </div>
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <Input onChange={handleChange} required={true} value={formState.email} type="email" id="email" label={'Email'} placeholder={'Enter your email'} />
                                 </div>
@@ -156,7 +156,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                                     <Input onChange={handleChange} required={true} value={formState.phoneNumber} type="text" id="phoneNumber" label={'Phone Number'} placeholder="Phone Number" />
                                 </div>
                             </div>
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <Input onChange={handleChange} required={true} value={formState.username} type="text" id="username" label={'Username'} placeholder="Username" />
                                 </div>
@@ -164,7 +164,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                                     <Input onChange={handleChange} required={false} value={formState.password} type="password" id="password" label={'Password'} placeholder="Password" />
                                 </div>
                             </div>
-                            <div class="grid gap-4 mb-4 sm:grid-cols-2">
+                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     <Select options={[{ label: "Disable", value: true }, { label: "Enable", value: false }]} onChange={handleChange} required={true} value={formState.isDisabled} id="isDisabled" label={'Disable Teacher'} placeholder="Disable Teacher" />
                                 </div>
@@ -172,7 +172,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                                     <Select options={[{ label: "Monthly", value: "monthly" }, { label: "Hourly", value: "hourly" }]} onChange={handleChange} required={true} value={formState.salaryType} id="salaryType" label={'Salary Type'} placeholder="Salarytype" />
                                 </div>
                             </div>
-                            <div class="flex items-center space-x-4 justify-center">
+                            <div className="flex items-center space-x-4 justify-center">
                                 <Button type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />
                             </div>
                         </form>

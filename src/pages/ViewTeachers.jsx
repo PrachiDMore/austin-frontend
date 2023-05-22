@@ -37,7 +37,7 @@ const ViewTeachers = () => {
 
                     </div>
                     <div className='ml-[10px]'>
-                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
+                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
                             setShowModal({show: true, update: false, data: undefined})
                         }}>
                             Add Teacher
@@ -46,17 +46,17 @@ const ViewTeachers = () => {
                 </div>
 
 
-                <div class="mx-auto">
-                    <div class="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-gray-500 dark:text-gray-400">
-                                <thead class="text-sm uppercase bg-darkPurple text-white">
+                <div className="mx-auto">
+                    <div className="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left text-gray-500 dark:text-gray-400">
+                                <thead className="text-sm uppercase bg-darkPurple text-white">
                                     <tr>
-                                        <th scope="col" class="px-6 py-5">Name</th>
-                                        <th scope="col" class="px-6 py-5">Email</th>
-                                        <th scope="col" class="px-6 py-5">Phone Number</th>
-                                        <th scope="col" class="px-6 py-5">Salary Type</th>
-                                        <th scope="col" class="px-6 py-5">Disabled</th>
+                                        <th scope="col" className="px-6 py-5">Name</th>
+                                        <th scope="col" className="px-6 py-5">Email</th>
+                                        <th scope="col" className="px-6 py-5">Phone Number</th>
+                                        <th scope="col" className="px-6 py-5">Salary Type</th>
+                                        <th scope="col" className="px-6 py-5">Disabled</th>
                                     </tr>
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
@@ -65,12 +65,12 @@ const ViewTeachers = () => {
                                             console.log(data)
                                             return <tr onClick={() => {
                                                 setShowModal({show: true, update: true, data: data})
-                                            }} key={data?._id} class="border-b border-darkPurple">
-                                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.fullname}</th>
-                                                <td class="px-6 py-4">{data?.email}</td>
-                                                <td class="px-6 py-4">{data?.phoneNumber}</td>
-                                                <td class="px-6 py-4 capitalize">{data?.salaryType}</td>
-                                                <td class="px-6 py-4 capitalize">{data?.isDisabled ? "Disabled" : "Enabled"}</td>
+                                            }} key={data?._id} className="border-b border-darkPurple">
+                                                <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.fullname}</th>
+                                                <td className="px-6 py-4">{data?.email}</td>
+                                                <td className="px-6 py-4">{data?.phoneNumber}</td>
+                                                <td className="px-6 py-4 capitalize">{data?.salaryType}</td>
+                                                <td className="px-6 py-4 capitalize">{data?.isDisabled ? "Disabled" : "Enabled"}</td>
                                             </tr>
                                         })
                                     }

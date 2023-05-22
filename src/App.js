@@ -7,7 +7,7 @@ import Signin from "./pages/Signin";
 import AdmissionPage from "./pages/AdmissionPage";
 import ViewAdmissions from "./pages/ViewAdmissions";
 import ViewTeachers from "./pages/ViewTeachers";
-import Subjects from "./pages/Subjects";
+import ViewSubjects from "./pages/ViewSubjects";
 import { TeacherContextProvider } from "./context/Teachers";
 import { SubjectContextProvider } from "./context/Subjects";
 import {ChapterContextProvider} from "./context/Chapter";
@@ -30,7 +30,7 @@ function App() {
                   element={<AdmissionPage />}
                 />
                 <Route path="/admin/teachers" element={<ViewTeachers />} />
-                <Route path="/admin/subjects" element={<Subjects />} />
+                <Route path="/admin/subjects" element={<ViewSubjects />} />
                 <Route path="/admin/chapters" element={<Chapters />} />
 
               </Routes>

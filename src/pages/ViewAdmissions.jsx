@@ -40,28 +40,28 @@ const ViewAdmissions = () => {
           <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
           <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
         </div>
-        <div class="mx-auto">
-          <div class="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-sm uppercase bg-darkPurple text-white">
+        <div className="mx-auto">
+          <div className="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-gray-500 dark:text-gray-400">
+                <thead className="text-sm uppercase bg-darkPurple text-white">
                   <tr>
-                    <th scope="col" class="px-6 py-5">Name</th>
-                    <th scope="col" class="px-6 py-5">Grade</th>
-                    <th scope="col" class="px-6 py-5">Email</th>
-                    <th scope="col" class="px-6 py-5">Phone Number</th>
-                    <th scope="col" class="px-6 py-5">Gender</th>
+                    <th scope="col" className="px-6 py-5">Name</th>
+                    <th scope="col" className="px-6 py-5">Grade</th>
+                    <th scope="col" className="px-6 py-5">Email</th>
+                    <th scope="col" className="px-6 py-5">Phone Number</th>
+                    <th scope="col" className="px-6 py-5">Gender</th>
                   </tr>
                 </thead>
                 <tbody className='text-gray-700 mt-5'>
                   {
                     searchAdmissions?.map((data) => {
-                      return <tr key={data?._id} class="border-b border-darkPurple">
-                        <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</th>
-                        <td class="px-6 py-4">{data?.grade}</td>
-                        <td class="px-6 py-4">{data?.email}</td>
-                        <td class="px-6 py-4">{data?.mobileNoPrimary}</td>
-                        <td class="px-6 py-4 capitalize">{data?.gender}</td>
+                      return <tr key={data?._id} className="border-b border-darkPurple">
+                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</th>
+                        <td className="px-6 py-4">{data?.grade}</td>
+                        <td className="px-6 py-4">{data?.email}</td>
+                        <td className="px-6 py-4">{data?.mobileNoPrimary}</td>
+                        <td className="px-6 py-4 capitalize">{data?.gender}</td>
                       </tr>
                     })
                   }

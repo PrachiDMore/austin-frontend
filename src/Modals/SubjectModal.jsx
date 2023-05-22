@@ -1,34 +1,27 @@
+import Navbar from "../components/Navbar";
 import React, { useEffect, useState } from 'react'
 import Input from '../components/Input';
 import Select from '../components/Select';
 import Button from '../components/Button';
-import ChapterForm from '../InitialStates/ChapterFrom';
-import { UseChapterContext } from '../context/Chapter';
-import { UseSubjectContext } from '../context/Subjects';
-import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
-import addElementInArray from '../Utils/AddUniqueElementsInArray';
-import axios from 'axios';
-import SelectSubject from 'react-select';
-import Navbar from '../components/Navbar';
+import SubjectForm from "../InitialStates/SubjectForm"
+import { UseSubjectContext } from "../context/Subjects";
+import updateElementsInArray from "../Utils/UpdateUniqueElemetnsInArray";
+import addElementInArray from "../Utils/AddUniqueElementsInArray";
+import axios from "axios";
 
 
-const ChatperModal = ({ setShowModal, showModal }) => {
-    const { chapters, setChapters } = UseChapterContext();
-    const { subjects } = UseSubjectContext()
-    const [formState, setFormState] = useState(ChapterForm);
-    const [subjectValue, setSubjectValue] = useState();
-    const [subjectOptions, setSubjectOptions] = useState([]);
+const SubjectModal = ({ setShowModal, showModal }) => {
+    const { subjects, setSubjects } = UseSubjectContext();
+    const [formState, setFormState] = useState(SubjectForm);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        setSubjectOptions(subjects.map((subject) => {
-            return {
-                label: `${subject.name} (${subject.grade})`,
-                value: subject._id
-            }
-        }))
-    }, [subjects])
-
+        if (showModal.update) {
+            setFormState(showModal.data);
+        } else {
+            setFormState(SubjectForm)
+        }
+    }, [showModal]);
 
     const handleChange = (e) => {
         setFormState({
@@ -36,40 +29,23 @@ const ChatperModal = ({ setShowModal, showModal }) => {
             [e.target.id]: e.target.value
         })
     }
-    const handleSubjects = (e) => {
-        setSubjectValue(e);
-    }
-
-
-    useEffect(() => {
-        if (showModal.update) {
-            setFormState(showModal.data);
-            setSubjectValue({ label: `${showModal?.data?.subjectID?.name} (${showModal?.data?.subjectID?.grade})`, value: showModal?.data?.subjectID?._id })
-        } else {
-            setSubjectValue()
-            setFormState(ChapterForm)
-        }
-    }, [showModal]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            console.log({ ...formState, subjectID: subjectValue?.value })
-            if (formState.name && formState.grade && formState.hours) {
-                axios(`${process.env.REACT_APP_BASE_URL}/chapter/${showModal?.data?._id}`, {
+            if (formState.name && formState.grade) {
+                axios(`${process.env.REACT_APP_BASE_URL}/subject/${showModal?.data?._id}`, {
                     method: 'PATCH',
-                    data: { ...formState, subjectID: subjectValue?.value }
+                    data: formState
                 })
                     .then((res) => {
                         if (res.data.error) {
                             setShowModal({ update: false, show: false, data: undefined })
-                            setSubjectValue()
                         } else {
                             setLoading(false)
-                            setChapters(updateElementsInArray(chapters, res.data.chapter, showModal.data))
+                            setSubjects(updateElementsInArray(subjects, res.data.subject, showModal.data))
                             setShowModal({ update: false, show: false, data: undefined })
-                            setSubjectValue()
-                            setFormState(ChapterForm);
+                            setFormState(SubjectForm);
                         }
                     })
                     .catch((err) => {
@@ -80,23 +56,21 @@ const ChatperModal = ({ setShowModal, showModal }) => {
             }
         } else {
             setLoading(true)
-            if (formState.name && formState.grade && formState.hours) {
-                axios(`${process.env.REACT_APP_BASE_URL}/chapter/create`, {
+            if (formState.name && formState.grade) {
+                axios(`${process.env.REACT_APP_BASE_URL}/subject/create`, {
                     method: 'POST',
-                    data: { ...formState, subjectID: subjectValue?.value }
+                    data: formState
                 })
                     .then((res) => {
                         if (res.data.error) {
                             alert(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
-                            setSubjectValue()
 
                         } else {
                             setLoading(false)
                             setShowModal({ update: false, show: false, id: undefined })
-                            setSubjectValue()
-                            setChapters(addElementInArray(chapters, res.data.chapter))
-                            setFormState(ChapterForm);
+                            setSubjects(addElementInArray(subjects, res.data.subject))
+                            setFormState(SubjectForm);
                         }
                     })
                     .catch((err) => {
@@ -117,12 +91,11 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                     <div className="relative p-4 bg-white rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">
                         <div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
                             <h3 className="text-lg font-semibold dark:text-lightPurple">
-                                {showModal.update ? "Update Chapter" : "Add Chapter"}
+                                {showModal.update ? "Update Subject" : "Add Subject"}
                             </h3>
                             <button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
                                 onClick={() => {
                                     setShowModal({ show: false, update: false, data: undefined })
-                                    setSubjectValue()
                                 }}
                             >
                                 <svg aria-hidden="true" className="w-5 h-5" fill="currentcolor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -135,15 +108,7 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                                     <Input onChange={handleChange} required={true} value={formState.name} id="name" type={"text"} label={'Name'} placeholder={'Enter Chapter Name.'} />
                                 </div>
                                 <div>
-                                    <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} />
-                                </div>
-                            </div>
-                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <div>
                                     <Input onChange={handleChange} required={true} value={formState.grade} type="text" id="grade" label={'Grade'} placeholder={'Enter Grade'} />
-                                </div>
-                                <div>
-                                    <Input onChange={handleChange} required={true} value={formState.hours} type="text" id="hours" label={'Hours'} placeholder="Enter hours required" />
                                 </div>
                             </div>
 
@@ -156,6 +121,5 @@ const ChatperModal = ({ setShowModal, showModal }) => {
             </div>
         </>
     )
-
 }
-export default ChatperModal
+export default SubjectModal;
