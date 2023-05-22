@@ -9,25 +9,26 @@ import { UseTeacherContext } from '../context/Teachers';
 import { UseSubjectContext } from '../context/Subjects';
 
 import SelectSubject from 'react-select';
+import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 
 const TeacherModal = ({ setShowModal, showModal }) => {
     const { teachers, setTeachers } = UseTeacherContext()
-    const {subjects} =UseSubjectContext()
+    const { subjects } = UseSubjectContext()
     const [formState, setFormState] = useState(TeacherformInitialState);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
-    const[selectedSubjects,setSelectedSubjects]=useState()
-    const [subjectOptions,setSubjectOptions] =useState([]);
+    const [selectedSubjects, setSelectedSubjects] = useState([])
+    const [subjectOptions, setSubjectOptions] = useState([]);
+    const [subjectValue, setSubjectValue] = useState([])
 
-    useEffect(()=>{
-        setSubjectOptions(subjects.map((subject)=>{
+    useEffect(() => {
+        setSubjectOptions(subjects.map((subject) => {
             return {
-                label:`${subject.name} (${subject.grade})`,
-                value:subject._id
+                label: `${subject.name} (${subject.grade})`,
+                value: subject._id
             }
         }))
-
-    },[subjects])
+    }, [subjects])
 
     const handleChange = (e) => {
         setFormState({
@@ -36,41 +37,48 @@ const TeacherModal = ({ setShowModal, showModal }) => {
         })
     }
 
-    const handleSubjects=(e)=>{
-        setSelectedSubjects(e.map((subject)=>{
-            console.log(subject.value);
+    const handleSubjects = (e) => {
+        setSubjectValue(e);
+        setSelectedSubjects(e.map((subject) => {
             return subject.value
-            
         }))
     }
 
     useEffect(() => {
         if (showModal.update) {
-            setFormState({ ...showModal.data, subject: ["64515a82a8e54ed6c3dec020"] })
+            setSubjectValue(showModal?.data?.subject?.map((subject) => {
+                return {
+                    label: `${subject.name} (${subject.grade})`,
+                    value: subject._id
+                }
+            }))
+            setFormState(showModal.data);
         } else {
+            setSubjectValue([])
             setFormState(TeacherformInitialState)
         }
     }, [showModal]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formState)
         if (showModal.update) {
             if (formState.firstname && formState.lastname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
                     method: 'PATCH',
-                    data: formState
+                    data: { ...formState, subject: selectedSubjects }
                 })
                     .then((res) => {
                         if (res.data.error) {
+                            console.log(res.data)
                             setMessage(res.data.message)
-                            alert(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
+                            setSelectedSubjects([])
                         } else {
                             setMessage(res.data.message)
                             setLoading(false)
+                            setTeachers(updateElementsInArray(teachers, res.data.teacher, showModal.data))
                             setShowModal({ update: false, show: false, data: undefined })
-                            setTeachers(addElementInArray(teachers, res.data.teacher))
+                            setSelectedSubjects([])
                             setFormState(TeacherformInitialState);
                         }
                     })
@@ -85,17 +93,20 @@ const TeacherModal = ({ setShowModal, showModal }) => {
             if (formState.firstname && formState.lastname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/create`, {
                     method: 'POST',
-                    data: {...formState,subject:selectedSubjects}
+                    data: { ...formState, subject: selectedSubjects }
                 })
                     .then((res) => {
                         if (res.data.error) {
                             setMessage(res.data.message)
                             alert(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
+                            setSelectedSubjects([])
+
                         } else {
                             setMessage(res.data.message)
                             setLoading(false)
                             setShowModal({ update: false, show: false, id: undefined })
+                            setSelectedSubjects([])
                             setTeachers(addElementInArray(teachers, res.data.teacher))
                             setFormState(TeacherformInitialState);
                         }
@@ -121,6 +132,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                             <button type="button" class="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
                                 onClick={() => {
                                     setShowModal({ show: false, update: false, data: undefined })
+                                    setSelectedSubjects([])
                                 }}
                             >
                                 <svg aria-hidden="true" class="w-5 h-5" fill="currentcolor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -155,7 +167,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
                                     {/* <Input onChange={handleChange} required={true} value={formState.subject} type="text" id="subject" label={'Subject'} placeholder="Subject" /> */}
-                                    <SelectSubject onChange={handleSubjects} required={true}  options={subjectOptions} isMulti={true} />
+                                    <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
                                 </div>
                                 <div>
                                     <Select options={[{ label: "Monthly", value: "monthly" }, { label: "Hourly", value: "hourly" }]} onChange={handleChange} required={true} value={formState.salaryType} id="salaryType" label={'Salary Type'} placeholder="Salarytype" />

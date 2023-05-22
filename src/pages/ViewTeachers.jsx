@@ -63,6 +63,7 @@ const ViewTeachers = () => {
                                 <tbody className='text-gray-700 mt-5'>
                                     {
                                         searchteachers?.map((data) => {
+                                            console.log(data)
                                             return <tr onClick={() => {
                                                 setShowModal({show: true, update: true, data: data})
                                             }} key={data?._id} class="border-b border-darkPurple">
@@ -70,7 +71,7 @@ const ViewTeachers = () => {
                                                 <td class="px-6 py-4">{data?.email}</td>
                                                 <td class="px-6 py-4">{data?.phoneNumber}</td>
                                                 <td class="px-6 py-4 capitalize">{data?.salaryType}</td>
-                                                <td class="px-6 py-4 capitalize">{data?.isDisabled.toString()}</td>
+                                                <td class="px-6 py-4 capitalize">{data?.isDisabled ? "Disabled" : "Enabled"}</td>
                                             </tr>
                                         })
                                     }
