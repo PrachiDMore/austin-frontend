@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import axios from 'axios'
-import TeacherModal from '../components/TeacherModal'
+import TeacherModal from '../Modals/TeacherModal'
 import { UseTeacherContext } from '../context/Teachers'
 
 
