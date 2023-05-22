@@ -67,7 +67,7 @@ const ViewTeachers = () => {
                                             return <tr onClick={() => {
                                                 setShowModal({show: true, update: true, data: data})
                                             }} key={data?._id} class="border-b border-darkPurple">
-                                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</th>
+                                                <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.fullname}</th>
                                                 <td class="px-6 py-4">{data?.email}</td>
                                                 <td class="px-6 py-4">{data?.phoneNumber}</td>
                                                 <td class="px-6 py-4 capitalize">{data?.salaryType}</td>

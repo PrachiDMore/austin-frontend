@@ -1,11 +1,10 @@
 const Teacherform={
-	firstname: "",
-	lastname: "",
+	fullname:"",
     email:"",
     username:"",
     password:"",
     phoneNumber:"",
-    isDisabled:"false",
-    salaryType:""
+    isDisabled:false,
+    salaryType:"hourly"
 }
 export default Teacherform;

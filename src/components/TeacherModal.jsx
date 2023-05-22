@@ -62,7 +62,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            if (formState.firstname && formState.lastname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
+            if (formState.fullname  && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
                     method: 'PATCH',
                     data: { ...formState, subject: selectedSubjects }
@@ -90,7 +90,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
             }
         } else {
             setLoading(true)
-            if (formState.firstname && formState.lastname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
+            if (formState.fullname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/create`, {
                     method: 'POST',
                     data: { ...formState, subject: selectedSubjects }
@@ -142,10 +142,10 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                         <form action="#" onSubmit={handleSubmit}>
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
-                                    <Input onChange={handleChange} required={true} value={formState.firstname} id="firstname" type={"text"} label={'First Name'} placeholder={'Enter your first name.'} />
+                                    <Input onChange={handleChange} required={true} value={formState.fullname} id="fullname" type={"text"} label={'Full Name'} placeholder={'Enter your full name.'} />
                                 </div>
                                 <div>
-                                    <Input onChange={handleChange} required={true} value={formState.lastname} type="text" id="lastname" label={'Last Name'} placeholder={'Enter your last name.'} />
+                                    <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
                                 </div>
                             </div>
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
@@ -166,8 +166,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                             </div>
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
-                                    {/* <Input onChange={handleChange} required={true} value={formState.subject} type="text" id="subject" label={'Subject'} placeholder="Subject" /> */}
-                                    <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
+                                    <Select options={[{ label: "Disable", value: true }, { label: "Enable", value: false }]} onChange={handleChange} required={true} value={formState.isDisabled} id="isDisabled" label={'Disable Teacher'} placeholder="Disable Teacher" />
                                 </div>
                                 <div>
                                     <Select options={[{ label: "Monthly", value: "monthly" }, { label: "Hourly", value: "hourly" }]} onChange={handleChange} required={true} value={formState.salaryType} id="salaryType" label={'Salary Type'} placeholder="Salarytype" />
