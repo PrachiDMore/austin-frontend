@@ -6,18 +6,42 @@ import Button from './Button'
 import TeacherformInitialState from '../InitialStates/Teacherform';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import { UseTeacherContext } from '../context/Teachers';
+import { UseSubjectContext } from '../context/Subjects';
+
+import SelectSubject from 'react-select';
 
 const TeacherModal = ({ setShowModal, showModal }) => {
     const { teachers, setTeachers } = UseTeacherContext()
+    const {subjects} =UseSubjectContext()
     const [formState, setFormState] = useState(TeacherformInitialState);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const[selectedSubjects,setSelectedSubjects]=useState()
+    const [subjectOptions,setSubjectOptions] =useState([]);
+
+    useEffect(()=>{
+        setSubjectOptions(subjects.map((subject)=>{
+            return {
+                label:`${subject.name} (${subject.grade})`,
+                value:subject._id
+            }
+        }))
+
+    },[subjects])
 
     const handleChange = (e) => {
         setFormState({
             ...formState,
             [e.target.id]: e.target.value
         })
+    }
+
+    const handleSubjects=(e)=>{
+        setSelectedSubjects(e.map((subject)=>{
+            console.log(subject.value);
+            return subject.value
+            
+        }))
     }
 
     useEffect(() => {
@@ -61,7 +85,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
             if (formState.firstname && formState.lastname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/create`, {
                     method: 'POST',
-                    data: formState
+                    data: {...formState,subject:selectedSubjects}
                 })
                     .then((res) => {
                         if (res.data.error) {
@@ -125,12 +149,13 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                                     <Input onChange={handleChange} required={true} value={formState.username} type="text" id="username" label={'Username'} placeholder="Username" />
                                 </div>
                                 <div>
-                                    <Input onChange={handleChange} required={true} value={formState.password} type="password" id="password" label={'Password'} placeholder="Password" />
+                                    <Input onChange={handleChange} required={false} value={formState.password} type="password" id="password" label={'Password'} placeholder="Password" />
                                 </div>
                             </div>
                             <div class="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
-                                    <Input onChange={handleChange} required={true} value={formState.subject} type="text" id="subject" label={'Subject'} placeholder="Subject" />
+                                    {/* <Input onChange={handleChange} required={true} value={formState.subject} type="text" id="subject" label={'Subject'} placeholder="Subject" /> */}
+                                    <SelectSubject onChange={handleSubjects} required={true}  options={subjectOptions} isMulti={true} />
                                 </div>
                                 <div>
                                     <Select options={[{ label: "Monthly", value: "monthly" }, { label: "Hourly", value: "hourly" }]} onChange={handleChange} required={true} value={formState.salaryType} id="salaryType" label={'Salary Type'} placeholder="Salarytype" />
