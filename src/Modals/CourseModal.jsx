@@ -22,6 +22,26 @@ const CourseModal = ({ setShowModal, showModal }) => {
     const { chapters } = UseChapterContext();
     const [displayChapters, setDisplayChapters] = useState([])
 
+    useEffect(() => {
+        if (showModal.update) {
+            setSubjectValue(showModal?.data?.subjects?.map((subject) => {
+                console.log({
+                    ...subject,
+                    label: `${subject.name} (${subject.grade})`,
+                    value: subject._id
+                })
+                return {
+                    ...subject,
+                    label: `${subject.name} (${subject.grade})`,
+                    value: subject._id
+                }
+            }))
+            setFormState(showModal.data);
+        } else {
+            setFormState(CoursesForm)
+        }
+    }, [showModal]);
+
     const handleChange = (e) => {
         setFormState({
             ...formState,
@@ -48,7 +68,28 @@ const CourseModal = ({ setShowModal, showModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault()
         if (showModal.update) {
-            console.log(selectedSubjects, formState)
+            if (formState.name && formState.grade) {
+                axios(`${process.env.REACT_APP_BASE_URL}/course/${showModal?.data?._id}`, {
+                    method: 'PATCH',
+                    data: { ...formState, subjects: selectedSubjects }
+                })
+                    .then((res) => {
+                        if (res.data.error) {
+                            setShowModal({ update: false, show: false, data: undefined })
+                        } else {
+                            setLoading(false)
+                            setCourses(updateElementsInArray(courses, res.data.course, showModal.data))
+                            setShowModal({ update: false, show: false, data: undefined })
+                            setFormState(CoursesForm);
+                        }
+                    })
+                    .catch((err) => {
+                        setLoading(false)
+                    })
+            } else {
+                alert('Form incompletely filled')
+            }
+            console.log(showModal?.data)
         } else {
             axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
                 method: "POST",
