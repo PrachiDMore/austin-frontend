@@ -3,11 +3,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 const SubjectContext = createContext();
 
-const SubjectContextProvider = ({children}) => {
-	const [subjects, setSubjects] = useState([]);
+const SubjectContextProvider = ({ children }) => {
+    const [subjects, setSubjects] = useState([]);
     const [subjectOptions, setSubjectOptions] = useState([]);
 
-	useEffect(() => {
+    useEffect(() => {
         axios(`${process.env.REACT_APP_BASE_URL}/subject/`)
             .then((res) => {
                 if (res.data.error) {
@@ -24,19 +24,20 @@ const SubjectContextProvider = ({children}) => {
     useEffect(() => {
         setSubjectOptions(subjects.map((subject) => {
             return {
+                ...subject,
                 label: `${subject.name} (${subject.grade})`,
                 value: subject._id
             }
         }))
     }, [subjects])
 
-	return <SubjectContext.Provider value={{subjects, setSubjects, subjectOptions}}>
-		{children}
-	</SubjectContext.Provider>
+    return <SubjectContext.Provider value={{ subjects, setSubjects, subjectOptions }}>
+        {children}
+    </SubjectContext.Provider>
 }
 
 const UseSubjectContext = () => {
-	return useContext(SubjectContext)
+    return useContext(SubjectContext)
 }
 
 export { SubjectContextProvider, UseSubjectContext };

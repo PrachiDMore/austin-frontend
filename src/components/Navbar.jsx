@@ -13,6 +13,7 @@ const Navbar = () => {
                 <Link className='navLink hover:text-darkPurple font-semibold' to='/admission'>Admission</Link>
                 <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/subjects'>Subject</Link>
                 <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/chapters'>Chapter</Link>
+                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/courses'>Courses</Link>
             </ul>
             <div className='w-[20%] flex justify-center items-center'>
                 <Link className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>

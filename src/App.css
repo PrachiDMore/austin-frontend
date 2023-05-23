@@ -10,6 +10,10 @@ body,
   font-family: 'Nunito';
 }
 
+body{
+  font-family: 'Nunito';
+}
+
 ::-webkit-scrollbar {
   width: 0;
 }
