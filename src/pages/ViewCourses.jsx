@@ -3,7 +3,7 @@ import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { useState } from "react";
 import Navbar from "../components/Navbar";
-import CourseUpdateModal from "../Modals/CourseUpdateModal";
+import CourseModal from "../Modals/CourseModal";
 
 const ViewCourses = () => {
     const { courses, setCourses } = UseCourseContext();
@@ -12,7 +12,7 @@ const ViewCourses = () => {
     return (
         <>
             <Navbar />
-            <CourseUpdateModal showModal={showModal} setShowModal={setShowModal} />
+            <CourseModal showModal={showModal} setShowModal={setShowModal} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

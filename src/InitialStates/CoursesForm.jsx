@@ -1,5 +1,5 @@
 const CoursesForm={
     name:"",
-    grade:""
+    grade:"",
 }
 export default CoursesForm

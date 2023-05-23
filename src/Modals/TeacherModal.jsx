@@ -13,22 +13,12 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 
 const TeacherModal = ({ setShowModal, showModal }) => {
     const { teachers, setTeachers } = UseTeacherContext()
-    const { subjects } = UseSubjectContext()
+    const { subjects, subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(TeacherformInitialState);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [selectedSubjects, setSelectedSubjects] = useState([])
-    const [subjectOptions, setSubjectOptions] = useState([]);
     const [subjectValue, setSubjectValue] = useState([])
-
-    useEffect(() => {
-        setSubjectOptions(subjects.map((subject) => {
-            return {
-                label: `${subject.name} (${subject.grade})`,
-                value: subject._id
-            }
-        }))
-    }, [subjects])
 
     const handleChange = (e) => {
         setFormState({

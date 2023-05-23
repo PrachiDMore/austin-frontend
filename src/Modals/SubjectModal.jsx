@@ -11,7 +11,7 @@ import axios from "axios";
 
 
 const SubjectModal = ({ setShowModal, showModal }) => {
-    const { subjects, setSubjects } = UseSubjectContext();
+    const { subjects, setSubjects, } = UseSubjectContext();
     const [formState, setFormState] = useState(SubjectForm);
     const [loading, setLoading] = useState(false);
 

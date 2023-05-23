@@ -14,21 +14,10 @@ import Navbar from '../components/Navbar';
 
 const ChatperModal = ({ setShowModal, showModal }) => {
     const { chapters, setChapters } = UseChapterContext();
-    const { subjects } = UseSubjectContext()
+    const { subjects, subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(ChapterForm);
     const [subjectValue, setSubjectValue] = useState();
-    const [subjectOptions, setSubjectOptions] = useState([]);
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setSubjectOptions(subjects.map((subject) => {
-            return {
-                label: `${subject.name} (${subject.grade})`,
-                value: subject._id
-            }
-        }))
-    }, [subjects])
-
 
     const handleChange = (e) => {
         setFormState({

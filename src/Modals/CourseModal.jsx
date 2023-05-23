@@ -10,24 +10,13 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import SelectSubject from 'react-select';
 
 
-const CourseUpdateModal = ({ setShowModal, showModal }) => {
+const CourseModal = ({ setShowModal, showModal }) => {
     const { courses, setCourses } = UseCourseContext();
-    const { subjects } = UseSubjectContext()
+    const { subjects, subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(CoursesForm);
-    const [subjectValue, setSubjectValue] = useState();
-    const [subjectOptions, setSubjectOptions] = useState([]);
+    const [subjectValue, setSubjectValue] = useState([]);
     const [selectedSubjects, setSelectedSubjects] = useState([])
     const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-        setSubjectOptions(subjects.map((subject) => {
-            return {
-                label: `${subject.name} (${subject.grade})`,
-                value: subject._id
-            }
-        }))
-    }, [subjects])
-
 
     const handleChange = (e) => {
         setFormState({
@@ -35,6 +24,7 @@ const CourseUpdateModal = ({ setShowModal, showModal }) => {
             [e.target.id]: e.target.value
         })
     }
+
     const handleSubjects = (e) => {
         setSubjectValue(e);
         setSelectedSubjects(e.map((subject) => {
@@ -42,76 +32,8 @@ const CourseUpdateModal = ({ setShowModal, showModal }) => {
         }))
     }
 
-    useEffect(() => {
-        if (showModal.update) {
-            setFormState(showModal.data);
-            setSubjectValue({ label: `${showModal?.data?.subjectID?.name} (${showModal?.data?.subjectID?.grade})`, value: showModal?.data?.subjectID?._id })
-        } else {
-            setSubjectValue()
-            setFormState(CoursesForm)
-        }
-    }, [showModal]);
-
     const handleSubmit = (e) => {
-        e.preventDefault();
-        if (showModal.update) {
-            if (formState.fullname  && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
-                axios(`${process.env.REACT_APP_BASE_URL}/course/${showModal?.data?._id}`, {
-                    method: 'PATCH',
-                    data: { ...formState, subject: selectedSubjects }
-                })
-                    .then((res) => {
-                        if (res.data.error) {
-                            console.log(res.data)
-                            setMessage(res.data.message)
-                            setShowModal({ update: false, show: false, data: undefined })
-                            setSelectedSubjects([])
-                        } else {
-                            setMessage(res.data.message)
-                            setLoading(false)
-                            setTeachers(updateElementsInArray(teachers, res.data.teacher, showModal.data))
-                            setShowModal({ update: false, show: false, data: undefined })
-                            setSelectedSubjects([])
-                            setFormState(TeacherformInitialState);
-                        }
-                    })
-                    .catch((err) => {
-                        setLoading(false)
-                    })
-            } else {
-                alert('Form incompletely filled')
-            }
-        } else {
-            setLoading(true)
-            if (formState.fullname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
-                axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
-                    method: 'POST',
-                    data: { ...formState, subject: selectedSubjects }
-                })
-                    .then((res) => {
-                        if (res.data.error) {
-                            setMessage(res.data.message)
-                            alert(res.data.message)
-                            setShowModal({ update: false, show: false, id: undefined })
-                            setSelectedSubjects([])
-
-                        } else {
-                            setMessage(res.data.message)
-                            setLoading(false)
-                            setShowModal({ update: false, show: false, id: undefined })
-                            setSelectedSubjects([])
-                            setTeachers(addElementInArray(teachers, res.data.teacher))
-                            setFormState(TeacherformInitialState);
-                        }
-                    })
-                    .catch((err) => {
-                        setLoading(false)
-                    })
-            } else {
-                alert('Form incompletely filled')
-            }
-
-        }
+        console.log(selectedSubjects, formState)
     }
 
     return (
@@ -159,4 +81,4 @@ const CourseUpdateModal = ({ setShowModal, showModal }) => {
         </div>
     )
 }
-export default CourseUpdateModal
+export default CourseModal
