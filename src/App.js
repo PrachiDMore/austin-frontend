@@ -8,6 +8,7 @@ import ViewAdmissions from "./pages/ViewAdmissions";
 import ViewTeachers from "./pages/ViewTeachers";
 import ViewSubjects from "./pages/ViewSubjects";
 import ViewCourses from "./pages/ViewCourses";
+import ViewBatch from "./pages/ViewBatch";
 import { TeacherContextProvider } from "./context/Teachers";
 import { SubjectContextProvider } from "./context/Subjects";
 import { ChapterContextProvider } from "./context/Chapter";
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/admin/subjects" element={<ViewSubjects />} />
                   <Route path="/admin/chapters" element={<ViewChapters />} />
                   <Route path="/admin/courses" element={<ViewCourses/>}/>
+                  <Route path="/admin/batches" element={<ViewBatch/>}/>
                 </Routes>
               </Router>
             </ChapterContextProvider>
