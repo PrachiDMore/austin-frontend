@@ -10,6 +10,7 @@ import { UseSubjectContext } from '../context/Subjects';
 
 import SelectSubject from 'react-select';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
+import SearchableSelect from '../components/SearchableSelect';
 
 const TeacherModal = ({ setShowModal, showModal }) => {
     const { teachers, setTeachers } = UseTeacherContext()
@@ -135,7 +136,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                                     <Input onChange={handleChange} required={true} value={formState.fullname} id="fullname" type={"text"} label={'Full Name'} placeholder={'Enter your full name.'} />
                                 </div>
                                 <div>
-                                    <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
+                                    <SearchableSelect label={"Subjects"} value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
                                 </div>
                             </div>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">

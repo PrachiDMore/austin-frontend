@@ -5,6 +5,8 @@ const CourseContext = createContext();
 
 const CourseContextProvider = ({children}) => {
 	const [courses, setCourses] = useState([]);
+    const [courseOptions, setCourseOptions] = useState([]);
+
 	useEffect(() => {
         axios(`${process.env.REACT_APP_BASE_URL}/course/`)
             .then((res) => {
@@ -19,7 +21,20 @@ const CourseContextProvider = ({children}) => {
             })
     }, []);
 
-	return <CourseContext.Provider value={{courses, setCourses}}>
+    useEffect(() => {
+        setCourseOptions(courses.map((e) => {
+            if (!e.isDisabled) {
+                return {
+                    ...e,
+                    value: e._id,
+                    label: `${e.name} (${e.grade})`
+                }
+            }
+        }))
+    }, [courses]);
+
+
+	return <CourseContext.Provider value={{courses, setCourses, courseOptions}}>
 		{children}
 	</CourseContext.Provider>
 }

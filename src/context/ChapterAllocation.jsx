@@ -1,14 +1,14 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const ChapterContext = createContext();
+const ChapterAllocationContext = createContext();
 
-const ChapterContextProvider = ({children}) => {
+const ChapterAllocationContextProvider = ({children}) => {
 	const [chapters, setChapters] = useState([]);
     const [chapterOptions, setChapterOptions] = useState([])
 
 	useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/chapter/`)
+        axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/`)
             .then((res) => {
                 if (res.data.error) {
                     alert(res.data.message)
@@ -31,13 +31,13 @@ const ChapterContextProvider = ({children}) => {
         }))
     }, [chapters])
 
-	return <ChapterContext.Provider value={{chapters, setChapters, chapterOptions}}>
+	return <ChapterAllocationContext.Provider value={{chapters, setChapters, chapterOptions}}>
 		{children}
-	</ChapterContext.Provider>
+	</ChapterAllocationContext.Provider>
 }
 
-const UseChapterContext = () => {
-	return useContext(ChapterContext)
+const UseChapterAllocationContext = () => {
+	return useContext(ChapterAllocationContext)
 }
 
-export { ChapterContextProvider, UseChapterContext };
+export { ChapterAllocationContextProvider, UseChapterAllocationContext };

@@ -9,6 +9,7 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import SelectSubject from 'react-select';
 import { UseChapterContext } from '../context/Chapter';
+import SearchableSelect from '../components/SearchableSelect';
 
 
 const CourseModal = ({ setShowModal, showModal }) => {
@@ -144,8 +145,8 @@ const CourseModal = ({ setShowModal, showModal }) => {
                             {/* <Input onChange={handleChange} required={true} value={formState.hours} type="text" id="hours" label={'Hours'} placeholder="Enter hours required" /> */}
                         </div>
                         <div className='grid grid-cols-2 gap-x-6 gap-y-3'>
-                            <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
-                            <SelectSubject onChange={(e) => { setSelectedSubject(e) }} value={selectedSubject} options={subjectValue} isMulti={false} />
+                            <SearchableSelect value={subjectValue} label={"Subjects"} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
+                            <SearchableSelect label={"Choose Subject"} onChange={(e) => { setSelectedSubject(e) }} value={selectedSubject} options={subjectValue} isMulti={false} />
 
                             <table className="rounded-lg w-full text-left text-gray-500 dark:text-gray-400 h-max">
                                 <thead className="rounded-lg overflow-hidden text-sm uppercase bg-darkPurple text-white">

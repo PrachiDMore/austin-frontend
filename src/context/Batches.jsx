@@ -1,9 +1,9 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
-const batchesContext = createContext();
+const BatchesContext = createContext();
 
-const batchesContextProvider = ({children}) => {
+const BatchesContextProvider = ({children}) => {
 	const [batches, setBatches] = useState([]);
 	useEffect(() => {
         axios(`${process.env.REACT_APP_BASE_URL}/batch/`)
@@ -19,13 +19,13 @@ const batchesContextProvider = ({children}) => {
             })
     }, []);
 
-	return <batchesContext.Provider value={{batches, setBatches}}>
+	return <BatchesContext.Provider value={{batches, setBatches}}>
 		{children}
-	</batchesContext.Provider>
+	</BatchesContext.Provider>
 }
 
-const UsebatchesContext = () => {
-	return useContext(batchesContext)
+const UseBatchesContext = () => {
+	return useContext(BatchesContext)
 }
 
-export { batchesContextProvider, UsebatchesContext };
+export { BatchesContextProvider, UseBatchesContext };

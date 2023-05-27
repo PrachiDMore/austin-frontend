@@ -10,6 +10,7 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import axios from 'axios';
 import SelectSubject from 'react-select';
 import Navbar from '../components/Navbar';
+import SearchableSelect from '../components/SearchableSelect';
 
 
 const ChatperModal = ({ setShowModal, showModal }) => {
@@ -120,12 +121,8 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                         </div>
                         <form action="#" onSubmit={handleSubmit}>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <div>
                                     <Input onChange={handleChange} required={true} value={formState.name} id="name" type={"text"} label={'Name'} placeholder={'Enter Chapter Name.'} />
-                                </div>
-                                <div>
-                                    <SelectSubject value={subjectValue} onChange={handleSubjects} options={subjectOptions} />
-                                </div>
+                                    <SearchableSelect label={"Subject"} value={subjectValue} onChange={handleSubjects} options={subjectOptions} />
                             </div>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <div>
