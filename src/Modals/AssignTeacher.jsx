@@ -26,7 +26,7 @@ const AssignTeacher = ({ setShowModal, showModal }) => {
 		e.preventDefault()
 		axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
 			method: "POST",
-			data: {}
+			data: {chapter}
 		})
 	}
 
