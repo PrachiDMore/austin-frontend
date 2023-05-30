@@ -43,8 +43,8 @@ const ViewBatch = () => {
                                     <tr>
                                         <th scope="col" className="px-6 py-5">Batch Name</th>
                                         <th scope="col" className="px-6 py-5">Academic Year</th>
-                                        <th scope="col" className="px-6 py-5">Hours</th>
-                                        <th scope="col" className="px-6 py-5">Subject Name</th>
+                                        <th scope="col" className="px-6 py-5">Type</th>
+                                        <th scope="col" className="px-6 py-5">Branch Name</th>
                                     </tr>
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
@@ -57,7 +57,7 @@ const ViewBatch = () => {
                                                     <td className="px-6 py-4">{batch?.name}</td>
                                                     <td className="px-6 py-4">{batch?.academicYear}</td>
                                                     <td className="px-6 py-4">{batch?.typeOfBatch}</td>
-                                                    <td className="px-6 py-4">{batch?.branch?.name}</td>
+                                                    <td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4">{batch?.branch?.name}</td>
                                                 </tr>
                                             )
                                         })
