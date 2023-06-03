@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Input from '../../components/Input'
 import { GrSearch } from 'react-icons/gr'
+import { UseCourseContext } from '../../context/Courses'
 
 const StudentEnrolledCourses = () => {
+	const { courses } = UseCourseContext()
+
 	return (
 		<>
 			<Navbar />
@@ -22,6 +25,7 @@ const StudentEnrolledCourses = () => {
 									<tr>
 										<th scope="col" className="px-6 py-5">Courses Name</th>
 										<th scope="col" className="px-6 py-5">Grade</th>
+										<th scope="col" className="px-6 py-5">Subjects</th>
 										<th scope="col" className="px-6 py-5">ID</th>
 									</tr>
 								</thead>
@@ -32,10 +36,8 @@ const StudentEnrolledCourses = () => {
 												<tr key={course?._id} className="border-b border-darkPurple">
 													<td className="px-6 py-4">{course?.name}</td>
 													<td className="px-6 py-4">{course?.grade}</td>
-													<td
-														onClick={() => {
-														}}
-														className="px-6 py-4">{course?._id}</td>
+													<td className="px-6 py-4">{course?.subjects?.length}</td>
+													<td className="px-6 py-4">{course?._id}</td>
 												</tr>
 											)
 										})

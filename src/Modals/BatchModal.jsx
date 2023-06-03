@@ -70,7 +70,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 	}
 
 	useEffect(() => {
-		if (showModal.update && showModal.data) {
+		if (showModal.update) {
 			setFormState(showModal.data);
 			setBranch(branchOptions?.filter((branch) => {
 				return branch?._id === showModal?.data?.branch?._id;
@@ -78,12 +78,8 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			setCourse(courseOptions?.filter((course) => {
 				return course?._id === showModal?.data?.course?._id;
 			})[0])
+			console.log(showModal)
 			setStudents(showModal?.data?.students?.map((student) => {
-				console.log({
-					...student,
-					label: `${student?.firstname} ${student?.lastname} (${student?.grade})`,
-					value: student?._id
-				})
 				return {
 					...student,
 					label: `${student?.firstname} ${student?.lastname} (${student?.grade})`,
@@ -92,6 +88,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			}))
 		} else {
 			setFormState(batchInitialState)
+			setStudents([])
 		}
 	}, [showModal]);
 
@@ -115,7 +112,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 							</button>
 						</div>
 						<form action="#" onSubmit={handleSubmit} className='grid grid-cols-2 gap-x-6 gap-y-3'>
-							<SearchableSelect value={students} onChange={(e) => { setStudents(e) }} isMulti={true} options={admissionOptions} className={"col-span-2"} />
+							<SearchableSelect label={"Students"} value={students} onChange={(e) => { setStudents(e) }} isMulti={true} options={admissionOptions} className={"col-span-2"} />
 							<Input onChange={handleChange} label={"Name"} id={"name"} value={formState.name} placeholder={"Batch name"} />
 							<Input onChange={handleChange} label={"Academic Year"} id={"academicYear"} value={formState.academicYear} placeholder={"Academic year (2022-2023)"} />
 							<Select options={[{ value: 'one-on-one', label: "One-On-One" }, { value: 'regular', label: "Regular" }]} onChange={handleChange} label={"Type Of Batch"} id={"typeOfBatch"} value={formState.typeOfBatch} />

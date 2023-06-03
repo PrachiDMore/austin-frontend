@@ -1,25 +1,34 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import extractToken from "../Utils/ExtractToken";
+import { UseBatchesContext } from "./Batches";
 
 const CourseContext = createContext();
 
-const CourseContextProvider = ({children}) => {
-	const [courses, setCourses] = useState([]);
+const CourseContextProvider = ({ children }) => {
+    const [courses, setCourses] = useState([]);
+    const { batches } = UseBatchesContext();
     const [courseOptions, setCourseOptions] = useState([]);
 
-	useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/course/`)
-            .then((res) => {
-                if (res.data.error) {
-                    alert(res.data.message)
-                } else {
-                    setCourses(res.data.courses)
-                }
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
-    }, []);
+    useEffect(() => {
+        if (extractToken()?.role !== "student") {
+            axios(`${process.env.REACT_APP_BASE_URL}/course/`)
+                .then((res) => {
+                    if (res.data.error) {
+                        alert(res.data.message)
+                    } else {
+                        setCourses(res.data.courses)
+                    }
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+        } else {
+            setCourses(batches?.map((batch) => {
+                return batch?.course
+            }))
+        }
+    }, [batches]);
 
     useEffect(() => {
         setCourseOptions(courses.map((e) => {
@@ -34,13 +43,13 @@ const CourseContextProvider = ({children}) => {
     }, [courses]);
 
 
-	return <CourseContext.Provider value={{courses, setCourses, courseOptions}}>
-		{children}
-	</CourseContext.Provider>
+    return <CourseContext.Provider value={{ courses, setCourses, courseOptions }}>
+        {children}
+    </CourseContext.Provider>
 }
 
 const UseCourseContext = () => {
-	return useContext(CourseContext)
+    return useContext(CourseContext)
 }
 
 export { CourseContextProvider, UseCourseContext };

@@ -32,8 +32,8 @@ const ChapterAllocation = () => {
 							<table className="w-full text-left text-gray-500 dark:text-gray-400">
 								<thead className="text-sm uppercase bg-darkPurple text-white">
 									<tr>
+										<th scope="col" className="px-6 py-5">Chapter Name</th>
 										<th scope="col" className="px-6 py-5">Teacher Name</th>
-										<th scope="col" className="px-6 py-5">Batch</th>
 										<th scope="col" className="px-6 py-5">Subject</th>
 										<th scope="col" className="px-6 py-5">Rate</th>
 										<th scope="col" className="px-6 py-5">Hours Completed / Hours</th>
@@ -46,8 +46,8 @@ const ChapterAllocation = () => {
 												<tr key={chapterAllocation?._id} onClick={() => {
 													setShowModal({ show: true, update: true, data: chapterAllocation })
 												}} className="border-b border-darkPurple">
+													<td className="px-6 py-4">{chapterAllocation?.chapter.name}</td>
 													<td className="px-6 py-4">{chapterAllocation?.teacher.fullname}</td>
-													<td className="px-6 py-4">{chapterAllocation?.batch.name}</td>
 													<td className="px-6 py-4">{chapterAllocation?.subject.name}</td>
 													<td className="px-6 py-4">Rs. {chapterAllocation?.rate}</td>
 													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{chapterAllocation?.hoursCompleted}</span> / {chapterAllocation?.hours}</td>

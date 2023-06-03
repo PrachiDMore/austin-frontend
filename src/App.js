@@ -33,10 +33,10 @@ function App() {
       <AuthContextProvider>
         <ThemeContextProvider>
           <TeacherContextProvider>
-            <CourseContextProvider>
-              <SubjectContextProvider>
-                <ChapterContextProvider>
-                  <BatchesContextProvider>
+            <BatchesContextProvider>
+              <CourseContextProvider>
+                <SubjectContextProvider>
+                  <ChapterContextProvider>
                     <BranchContextProvider>
                       <ChapterAllocationContextProvider>
                         <AdmissionContextProvider>
@@ -61,12 +61,12 @@ function App() {
                                   element={<AdmissionPage />}
                                 />
                                 <Route path="/admin/teachers" element={<ViewTeachers />} />
+                                <Route path="/admin/branch" element={<ViewBranch />} />
+                              </Route>
+                                <Route path="/admin/chapter-allocation" element={<ChapterAllocation />} />
                                 <Route path="/admin/subjects" element={<ViewSubjects />} />
                                 <Route path="/admin/chapters" element={<ViewChapters />} />
                                 <Route path="/admin/courses" element={<ViewCourses />} />
-                                <Route path="/admin/branch" element={<ViewBranch />} />
-                                <Route path="/admin/chapter-allocation" element={<ChapterAllocation />} />
-                              </Route>
                                 <Route path="/admin/batches" element={<ViewBatch />} />
                               <Route path="/signin" element={<Signin />} />
                             </Routes>
@@ -74,10 +74,10 @@ function App() {
                         </AdmissionContextProvider>
                       </ChapterAllocationContextProvider>
                     </BranchContextProvider>
-                  </BatchesContextProvider>
-                </ChapterContextProvider>
-              </SubjectContextProvider>
-            </CourseContextProvider>
+                  </ChapterContextProvider>
+                </SubjectContextProvider>
+              </CourseContextProvider>
+            </BatchesContextProvider>
           </TeacherContextProvider>
         </ThemeContextProvider>
       </AuthContextProvider>
