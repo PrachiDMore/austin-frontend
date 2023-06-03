@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import Input from '../components/Input'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Button from '../components/Button'
 import Alert from '../components/Alert'
+import { UseAuthContext } from '../context/Authentication'
+import extractToken from '../Utils/ExtractToken'
 
 const Signin = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
+    const [type, setType] = useState("student");
+    const {setAuthToken} = UseAuthContext()
+    const navigate = useNavigate()
     const initialState = {
         username: '',
         password: ''
@@ -24,18 +29,26 @@ const Signin = () => {
     const handleSubmit = () => {
         if (formState.username?.length > 6 && formState.password.length > 6) {
             setLoading(true)
-            axios('https://austin-backend.vercel.app/user/signin', {
-                method: "POST",
-                data: formState
-            })
-                .then((res) => {
-                    console.log(res)
-                    setLoading(false)
+            if (type === "student") {
+                axios(`${process.env.REACT_APP_BASE_URL}/user/signin/student`, {
+                    method: "POST",
+                    data: formState
                 })
-                .catch((err) => {
-                    setLoading(false)
-                    console.log(err)
-                })
+                    .then((res) => {
+                        setLoading(false)
+                        if (res.error) {
+                            console.log(res.error)
+                        }else{
+                            sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({token: res.data.token, role: "student"})))
+                            setAuthToken(extractToken()?.token)
+                            navigate("/student/profile")
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
+            }
         } else {
             setMessage('Please properly fill the form!')
         }
@@ -51,7 +64,7 @@ const Signin = () => {
                     <div className='w-full pt-4 flex flex-col gap-y-3'>
                         <div className='flex flex-col'>
                             <label className='text-sm cursor-pointer mb-1 font-bold' htmlFor='role'>Role:</label>
-                            <select className='focus:shadow-purpleShadow duration-300 outline-none shadow-md px-4 py-3 rounded-md w-full' name="" id="role">
+                            <select onChange={(e) => { setType(e.target.value) }} value={type} className='focus:shadow-purpleShadow duration-300 outline-none shadow-md px-4 py-3 rounded-md w-full' name="" id="role">
                                 <option value="admin">Admin</option>
                                 <option value="teacher">Teacher</option>
                                 <option value="student">Student</option>

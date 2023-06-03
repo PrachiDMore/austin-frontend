@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import extractToken from "../Utils/ExtractToken";
 
 const TeacherContext = createContext();
 
@@ -7,17 +8,19 @@ const TeacherContextProvider = ({ children }) => {
     const [teachers, setTeachers] = useState([]);
     const [teacherOptions, setTeacherOptions] = useState([])
     useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/teacher`)
-            .then((res) => {
-                if (res.data.error) {
-                    alert(res.data.message)
-                } else {
-                    setTeachers(res.data.teachers)
-                }
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
+        if (extractToken()?.role !== "student") {
+            axios(`${process.env.REACT_APP_BASE_URL}/teacher`)
+                .then((res) => {
+                    if (res.data.error) {
+                        alert(res.data.message)
+                    } else {
+                        setTeachers(res.data.teachers)
+                    }
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+        }
     }, []);
 
 

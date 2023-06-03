@@ -7,14 +7,13 @@ import CoursesForm from '../InitialStates/CoursesForm';
 import axios from "axios";
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
-import SelectSubject from 'react-select';
 import { UseChapterContext } from '../context/Chapter';
 import SearchableSelect from '../components/SearchableSelect';
 
 
 const CourseModal = ({ setShowModal, showModal }) => {
     const { courses, setCourses } = UseCourseContext();
-    const { subjects, subjectOptions } = UseSubjectContext()
+    const { subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(CoursesForm);
     const [subjectValue, setSubjectValue] = useState([]);
     const [selectedSubjects, setSelectedSubjects] = useState([])
@@ -26,11 +25,6 @@ const CourseModal = ({ setShowModal, showModal }) => {
     useEffect(() => {
         if (showModal.update) {
             setSubjectValue(showModal?.data?.subjects?.map((subject) => {
-                console.log({
-                    ...subject,
-                    label: `${subject.name} (${subject.grade})`,
-                    value: subject._id
-                })
                 return {
                     ...subject,
                     label: `${subject.name} (${subject.grade})`,
@@ -90,14 +84,12 @@ const CourseModal = ({ setShowModal, showModal }) => {
             } else {
                 alert('Form incompletely filled')
             }
-            console.log(showModal?.data)
         } else {
             axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
                 method: "POST",
                 data: { ...formState, subjects: selectedSubjects }
             })
                 .then((res) => {
-                    console.log(res.data)
                     setShowModal({ show: false, update: false, data: undefined })
                     setSelectedSubject();
                     setSelectedSubjects([]);
@@ -106,7 +98,6 @@ const CourseModal = ({ setShowModal, showModal }) => {
                     setFormState(CoursesForm)
                 })
                 .catch((err) => {
-                    console.log(err)
                     setShowModal({ show: false, update: false, data: undefined })
                     setSelectedSubject();
                     setSelectedSubjects([]);

@@ -33,9 +33,9 @@ const ViewBranch = () => {
 								<thead className="text-sm uppercase bg-darkPurple text-white">
 									<tr>
 										<th scope="col" className="px-6 py-5">Branch Name</th>
-										<th scope="col" className="px-6 py-5">Grade</th>
-										<th scope="col" className="px-6 py-5">Hours</th>
-										<th scope="col" className="px-6 py-5">Subject Name</th>
+										<th scope="col" className="px-6 py-5">City</th>
+										<th scope="col" className="px-6 py-5">Pincode</th>
+										<th scope="col" className="px-6 py-5">State</th>
 									</tr>
 								</thead>
 								<tbody className='text-gray-700 mt-5'>

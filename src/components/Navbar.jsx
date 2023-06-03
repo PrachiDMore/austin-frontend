@@ -1,7 +1,64 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+    const ADMIN_ROUTES = [
+        {
+            label: "Home",
+            path: "/",
+        },
+        {
+            label: "Admission",
+            path: "/admin/admissions"
+        },
+        {
+            label: "Teachers",
+            path: "/admin/teachers"
+        },
+        {
+            label: "Subjects",
+            path: "/admin/subjects"
+        },
+        {
+            label: "Chapters",
+            path: "/admin/chapters"
+        },
+        {
+            label: "Courses",
+            path: "/admin/courses"
+        },
+        {
+            label: "Batches",
+            path: "/admin/batches"
+        },
+        {
+            label: "Branch",
+            path: "/admin/branch"
+        },
+        {
+            label: "Allocation",
+            path: "/admin/chapter-allocation"
+        },
+    ]
+    const STUDENT_ROUTES = [
+        {
+            label: "Profile",
+            path: "/student/profile",
+        },
+        {
+            label: "Batch",
+            path: "/student/batches",
+        },
+        {
+            label: "Course",
+            path: "/student/courses",
+        },
+        {
+            label: "Chapters",
+            path: "/student/chapters",
+        },
+    ];
+    const [routes, setRoutes] = useState(STUDENT_ROUTES)
   return (
     <>
         <nav className='flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito'>
@@ -9,17 +66,14 @@ const Navbar = () => {
                 <img className='w-56 h-auto' src="/assets/logo.jpg" alt="" />
             </div>
             <ul className='px-10 w-[60%] flex justify-start gap-x-10 items-center '>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/'>Home</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admission'>Admission</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/teachers'>Teachers</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/subjects'>Subject</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/chapters'>Chapter</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/courses'>Courses</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/batches'>Batches</Link>
-                <Link className='navLink hover:text-darkPurple font-semibold' to='/admin/branch'>Branch</Link>
+                {
+                    routes?.map((route) => {
+                        return <Link className='navLink hover:text-darkPurple font-semibold' to={route.path}>{route.label}</Link>
+                    })
+                }
             </ul>
             <div className='w-[20%] flex justify-center items-center'>
-                <Link className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>
+                <Link to='/signup' className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>
             </div>
         </nav>
     </>

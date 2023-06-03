@@ -1,30 +1,19 @@
+import React from 'react'
+import Navbar from '../../components/Navbar'
+import Input from '../../components/Input'
 import { GrSearch } from 'react-icons/gr'
-import Input from '../components/Input'
-import Navbar from '../components/Navbar'
-import { useState } from 'react'
-import { UseBatchesContext } from '../context/Batches'
-import BatchModal from '../Modals/BatchModal'
+import { UseBatchesContext } from '../../context/Batches'
 
-const ViewBatch = () => {
-    const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
-    const { batches } = UseBatchesContext()
-
-    return (
-        <>
-            <Navbar />
-            <BatchModal setShowModal={setShowModal} showModal={showModal} />
-            <section className='w-screen min-h-screen p-10 px-20 Nunito'>
+const ViewEnrolledBatches = () => {
+	const {batches} = UseBatchesContext()
+	return (
+		<>
+			<Navbar />
+			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
-                    <div className='w-[90%]'>
+                    <div className='w-full'>
                         <Input onChange type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
-                    </div>
-                    <div className='ml-[10px] flex justify-between w-[10%]'>
-                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="h-max block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
-                            setShowModal({ show: true, update: false, data: undefined })
-                        }}>
-                            Add Batch
-                        </button>
                     </div>
                 </div>
                 <div className="mx-auto">
@@ -44,7 +33,6 @@ const ViewBatch = () => {
                                         batches?.map((batch) => {
                                             return (
                                                 <tr key={batch?._id} onClick={() => {
-                                                    setShowModal({ show: true, update: true, data: batch })
                                                 }} className="border-b border-darkPurple">
                                                     <td className="px-6 py-4">{batch?.name}</td>
                                                     <td className="px-6 py-4">{batch?.academicYear}</td>
@@ -60,7 +48,8 @@ const ViewBatch = () => {
                     </div>
                 </div>
             </section>
-        </>
-    )
+		</>
+	)
 }
-export default ViewBatch
+
+export default ViewEnrolledBatches

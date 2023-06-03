@@ -7,14 +7,12 @@ import TeacherformInitialState from '../InitialStates/Teacherform';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import { UseTeacherContext } from '../context/Teachers';
 import { UseSubjectContext } from '../context/Subjects';
-
-import SelectSubject from 'react-select';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import SearchableSelect from '../components/SearchableSelect';
 
 const TeacherModal = ({ setShowModal, showModal }) => {
     const { teachers, setTeachers } = UseTeacherContext()
-    const { subjects, subjectOptions } = UseSubjectContext()
+    const { subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(TeacherformInitialState);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
@@ -60,7 +58,6 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data)
                             setMessage(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
                             setSelectedSubjects([])

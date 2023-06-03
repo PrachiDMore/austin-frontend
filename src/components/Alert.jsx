@@ -6,7 +6,6 @@ const Alert = ({ message, setMessage }) => {
 		if (message?.length > 0) {
 			setTimeout(() => {
 				setMessage("")
-				console.log("done")
 			}, 3000)
 		}
 	}, [message]);

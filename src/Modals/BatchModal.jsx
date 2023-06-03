@@ -6,34 +6,60 @@ import batchInitialState from '../InitialStates/BatchForm';
 import Select from '../components/Select';
 import SearchableSelect from '../components/SearchableSelect';
 import addElementInArray from '../Utils/AddUniqueElementsInArray.jsx'
+import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import { UseCourseContext } from '../context/Courses';
 import { UseBatchesContext } from '../context/Batches';
 import axios from 'axios';
 import Button from '../components/Button';
+import { UseAdmissionContext } from '../context/Admission';
 
 const BatchModal = ({ setShowModal, showModal }) => {
-	const { teacherOptions } = UseTeacherContext();
+	const { admissionOptions } = UseAdmissionContext()
 	const { branchOptions } = UseBranchContext();
-	const {batches, setBatches} = UseBatchesContext()
+	const { batches, setBatches } = UseBatchesContext()
 	const { courseOptions } = UseCourseContext();
 	const [formState, setFormState] = useState(batchInitialState);
 	const [course, setCourse] = useState();
-	const [branch, setBranch] = useState()
+	const [branch, setBranch] = useState();
+	const [students, setStudents] = useState();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		axios(`${process.env.REACT_APP_BASE_URL}/batch/create`, {
-			method: "POST",
-			data: { ...formState, course: course?.value, branch: branch?.value }
-		})
-			.then((res) => {
-				if (res.data.error) {
-					alert(res.data.message)
-				} else {
-					setBatches(addElementInArray(batches, res.data.batch))
-					setShowModal({ show: false, update: false, data: undefined })
+		if (showModal.update) {
+			axios(`${process.env.REACT_APP_BASE_URL}/batch/${showModal?.data?._id}`, {
+				method: "PATCH",
+				data: {
+					...formState, course: course?.value, branch: branch?.value, students: students.map((student) => {
+						return student.value
+					})
 				}
 			})
+				.then((res) => {
+					if (res.data.error) {
+						alert(res.data.message)
+					} else {
+						setBatches(updateElementsInArray(batches, res.data.batch, showModal.data))
+						setShowModal({ show: false, update: false, data: undefined })
+					}
+				})
+		} else {
+			axios(`${process.env.REACT_APP_BASE_URL}/batch/create`, {
+				method: "POST",
+				data: {
+					...formState, course: course?.value, branch: branch?.value, students: students.map((student) => {
+						return student.value
+					})
+				}
+			})
+				.then((res) => {
+					if (res.data.error) {
+						alert(res.data.message)
+					} else {
+						setBatches(addElementInArray(batches, res.data.batch))
+						setShowModal({ show: false, update: false, data: undefined })
+					}
+				})
+		}
 	}
 
 	const handleChange = (e) => {
@@ -44,9 +70,27 @@ const BatchModal = ({ setShowModal, showModal }) => {
 	}
 
 	useEffect(() => {
-		if (showModal.update) {
-			setFormState(showModal.data)
-		}else{
+		if (showModal.update && showModal.data) {
+			setFormState(showModal.data);
+			setBranch(branchOptions?.filter((branch) => {
+				return branch?._id === showModal?.data?.branch?._id;
+			})[0])
+			setCourse(courseOptions?.filter((course) => {
+				return course?._id === showModal?.data?.course?._id;
+			})[0])
+			setStudents(showModal?.data?.students?.map((student) => {
+				console.log({
+					...student,
+					label: `${student?.firstname} ${student?.lastname} (${student?.grade})`,
+					value: student?._id
+				})
+				return {
+					...student,
+					label: `${student?.firstname} ${student?.lastname} (${student?.grade})`,
+					value: student?._id
+				}
+			}))
+		} else {
 			setFormState(batchInitialState)
 		}
 	}, [showModal]);
@@ -55,7 +99,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 	return (
 		<>
 			<div id="updateProductModal" tabIndex="-1" aria-hidden="true" className={showModal.show ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>
-				<div className="relative p-4 w-[60vw] h-[60vh] ">
+				<div className="relative p-4 w-[60vw] h-auto">
 					<div className="relative h-full bg-white p-4 rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">
 						<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
 							<h3 className="text-lg font-semibold dark:text-lightPurple">
@@ -71,13 +115,14 @@ const BatchModal = ({ setShowModal, showModal }) => {
 							</button>
 						</div>
 						<form action="#" onSubmit={handleSubmit} className='grid grid-cols-2 gap-x-6 gap-y-3'>
+							<SearchableSelect value={students} onChange={(e) => { setStudents(e) }} isMulti={true} options={admissionOptions} className={"col-span-2"} />
 							<Input onChange={handleChange} label={"Name"} id={"name"} value={formState.name} placeholder={"Batch name"} />
 							<Input onChange={handleChange} label={"Academic Year"} id={"academicYear"} value={formState.academicYear} placeholder={"Academic year (2022-2023)"} />
 							<Select options={[{ value: 'one-on-one', label: "One-On-One" }, { value: 'regular', label: "Regular" }]} onChange={handleChange} label={"Type Of Batch"} id={"typeOfBatch"} value={formState.typeOfBatch} />
-							<SearchableSelect onChange={(e) => { setBranch(e) }} label={"Branch"} options={branchOptions} />
-							<SearchableSelect label={"Course"} onChange={(e) => { setCourse(e) }} options={courseOptions} />
+							<SearchableSelect onChange={(e) => { setBranch(e) }} label={"Branch"} value={branch} options={branchOptions} />
+							<SearchableSelect label={"Course"} onChange={(e) => { setCourse(e) }} value={course} options={courseOptions} />
 							<div className='col-span-2 flex justify-center'>
-								<Button text='Submit' type='submit' className={"w-max px-12"}/>
+								<Button text='Submit' type='submit' className={"w-max px-12"} />
 							</div>
 						</form>
 					</div>

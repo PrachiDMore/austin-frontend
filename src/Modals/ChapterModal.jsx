@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Input from '../components/Input';
-import Select from '../components/Select';
 import Button from '../components/Button';
 import ChapterForm from '../InitialStates/ChapterFrom';
 import { UseChapterContext } from '../context/Chapter';
@@ -8,14 +7,13 @@ import { UseSubjectContext } from '../context/Subjects';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import axios from 'axios';
-import SelectSubject from 'react-select';
 import Navbar from '../components/Navbar';
 import SearchableSelect from '../components/SearchableSelect';
 
 
 const ChatperModal = ({ setShowModal, showModal }) => {
     const { chapters, setChapters } = UseChapterContext();
-    const { subjects, subjectOptions } = UseSubjectContext()
+    const { subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(ChapterForm);
     const [subjectValue, setSubjectValue] = useState();
     const [loading, setLoading] = useState(false);
@@ -44,7 +42,6 @@ const ChatperModal = ({ setShowModal, showModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            console.log({ ...formState, subjectID: subjectValue?.value })
             if (formState.name && formState.grade && formState.hours) {
                 axios(`${process.env.REACT_APP_BASE_URL}/chapter/${showModal?.data?._id}`, {
                     method: 'PATCH',

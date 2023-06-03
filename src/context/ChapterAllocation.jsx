@@ -1,43 +1,51 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import extractToken from "../Utils/ExtractToken";
 
 const ChapterAllocationContext = createContext();
 
-const ChapterAllocationContextProvider = ({children}) => {
-	const [chapters, setChapters] = useState([]);
-    const [chapterOptions, setChapterOptions] = useState([])
-
-	useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/`)
-            .then((res) => {
-                if (res.data.error) {
-                    alert(res.data.message)
-                } else {
-                    setChapters(res.data.chapters)
-                }
-            })
-            .catch((err) => {
-                alert(err.message)
-            })
-    }, []);
+const ChapterAllocationContextProvider = ({ children }) => {
+    const [chapterAllocations, setChapterAllocations] = useState([]);
 
     useEffect(() => {
-        setChapterOptions(chapters.map((chapter) => {
-            return {
-                ...chapter,
-                label: `${chapter.name} (${chapter.grade})`,
-                value: chapter._id
-            }
-        }))
-    }, [chapters])
+        if (extractToken()?.role !== "student") {
+            axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/`, {
+                method: "GET"
+            })
+                .then((res) => {
+                    if (res.data.error) {
+                        alert(res.data.message)
+                    } else {
+                        setChapterAllocations(res?.data?.chapterAllocations);
+                    }
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+        }else{
+            axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/student`, {
+                method: "GET"
+            })
+                .then((res) => {
+                    if (res.data.error) {
+                        alert(res.data.message)
+                    } else {
+                        setChapterAllocations(res?.data?.chapterAllocations);
+                    }
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+        }
+    }, []);
 
-	return <ChapterAllocationContext.Provider value={{chapters, setChapters, chapterOptions}}>
-		{children}
-	</ChapterAllocationContext.Provider>
+    return <ChapterAllocationContext.Provider value={{ chapterAllocations, setChapterAllocations }}>
+        {children}
+    </ChapterAllocationContext.Provider>
 }
 
 const UseChapterAllocationContext = () => {
-	return useContext(ChapterAllocationContext)
+    return useContext(ChapterAllocationContext)
 }
 
 export { ChapterAllocationContextProvider, UseChapterAllocationContext };

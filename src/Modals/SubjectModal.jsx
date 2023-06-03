@@ -1,7 +1,6 @@
 import Navbar from "../components/Navbar";
 import React, { useEffect, useState } from 'react'
 import Input from '../components/Input';
-import Select from '../components/Select';
 import Button from '../components/Button';
 import SubjectForm from "../InitialStates/SubjectForm"
 import { UseSubjectContext } from "../context/Subjects";

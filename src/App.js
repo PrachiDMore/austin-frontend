@@ -18,46 +18,69 @@ import { BatchesContextProvider } from './context/Batches'
 import { ThemeContextProvider } from "./context/Theme";
 import { BranchContextProvider } from "./context/Branch";
 import ViewBranch from "./pages/ViewBranch";
+import { ChapterAllocationContextProvider } from "./context/ChapterAllocation";
+import ChapterAllocation from "./pages/ChapterAllocation";
+import { AdmissionContextProvider } from "./context/Admission";
+import { AuthContextProvider } from "./context/Authentication";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import ViewEnrolledBatches from "./pages/student/ViewEnrolledBatches";
+import StudentCourseChapters from "./pages/student/StudentCourseChapters";
+import StudentEnrolledCourse from "./pages/student/StudentEnrolledCourse";
 
 function App() {
   return (
     <>
-      <ThemeContextProvider>
-        <TeacherContextProvider>
-          <CourseContextProvider>
-            <SubjectContextProvider>
-              <ChapterContextProvider>
-                <BatchesContextProvider>
-                  <BranchContextProvider>
-                    <Router>
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/signin" element={<Signin />} />
-                        <Route path="/admission" element={<AdmissionPage />} />
-                        <Route
-                          path="/admin/admissions"
-                          element={<ViewAdmissions />}
-                        />
-                        <Route
-                          path="/admin/admissions/:_id"
-                          element={<AdmissionPage />}
-                        />
-                        <Route path="/admin/teachers" element={<ViewTeachers />} />
-                        <Route path="/admin/subjects" element={<ViewSubjects />} />
-                        <Route path="/admin/chapters" element={<ViewChapters />} />
-                        <Route path="/admin/courses" element={<ViewCourses />} />
-                        <Route path="/admin/batches" element={<ViewBatch />} />
-                        <Route path="/admin/branch" element={<ViewBranch />} />
-                      </Routes>
-                    </Router>
-                  </BranchContextProvider>
-                </BatchesContextProvider>
-              </ChapterContextProvider>
-            </SubjectContextProvider>
-          </CourseContextProvider>
-        </TeacherContextProvider>
-      </ThemeContextProvider>
+      <AuthContextProvider>
+        <ThemeContextProvider>
+          <TeacherContextProvider>
+            <CourseContextProvider>
+              <SubjectContextProvider>
+                <ChapterContextProvider>
+                  <BatchesContextProvider>
+                    <BranchContextProvider>
+                      <ChapterAllocationContextProvider>
+                        <AdmissionContextProvider>
+                          <Router>
+                            <Routes>
+                              <Route element={<ProtectedRoutes role="student" />}>
+                                <Route path="/student/profile" element={<AdmissionPage />} />
+                                <Route path="/" element={<Home />} />
+                                <Route path="/student/batches" element={<ViewEnrolledBatches />} />
+                                <Route path="/student/courses" element={<StudentEnrolledCourse />} />
+                                <Route path="/student/chapters" element={<StudentCourseChapters />} />
+                              </Route>
+                              <Route path="/signup" element={<Signup />} />
+                              <Route path="/admission" element={<AdmissionPage />} />
+                              <Route element={<ProtectedRoutes role={'admin'} />}>
+                                <Route
+                                  path="/admin/admissions"
+                                  element={<ViewAdmissions />}
+                                />
+                                <Route
+                                  path="/admin/admissions/:_id"
+                                  element={<AdmissionPage />}
+                                />
+                                <Route path="/admin/teachers" element={<ViewTeachers />} />
+                                <Route path="/admin/subjects" element={<ViewSubjects />} />
+                                <Route path="/admin/chapters" element={<ViewChapters />} />
+                                <Route path="/admin/courses" element={<ViewCourses />} />
+                                <Route path="/admin/branch" element={<ViewBranch />} />
+                                <Route path="/admin/chapter-allocation" element={<ChapterAllocation />} />
+                              </Route>
+                                <Route path="/admin/batches" element={<ViewBatch />} />
+                              <Route path="/signin" element={<Signin />} />
+                            </Routes>
+                          </Router>
+                        </AdmissionContextProvider>
+                      </ChapterAllocationContextProvider>
+                    </BranchContextProvider>
+                  </BatchesContextProvider>
+                </ChapterContextProvider>
+              </SubjectContextProvider>
+            </CourseContextProvider>
+          </TeacherContextProvider>
+        </ThemeContextProvider>
+      </AuthContextProvider>
     </>
   );
 }

@@ -31,7 +31,6 @@ const BranchModal = ({ setShowModal, showModal }) => {
 				data: formState
 			})
 				.then((res) => {
-					console.log(res.data)
 					if (res.data.error) {
 						alert(res.data.message)
 					} else {
@@ -46,7 +45,6 @@ const BranchModal = ({ setShowModal, showModal }) => {
 				data: formState
 			})
 				.then((res) => {
-					console.log(res.data)
 					if (res.data.error) {
 						alert(res.data.message)
 					} else {

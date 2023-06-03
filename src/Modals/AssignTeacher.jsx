@@ -1,37 +1,112 @@
 import React, { useEffect, useState } from 'react'
-import ReactSelect from 'react-select'
 import { UseTeacherContext } from '../context/Teachers'
 import { UseSubjectContext } from '../context/Subjects'
 import { UseChapterContext } from '../context/Chapter'
 import { UseCourseContext } from '../context/Courses'
+import { UseChapterAllocationContext } from '../context/ChapterAllocation'
 import Input from '../components/Input'
-import { UseThemeContext } from '../context/Theme'
 import axios from 'axios'
 import SearchableSelect from '../components/SearchableSelect'
+import { UseBatchesContext } from '../context/Batches'
+import Button from '../components/Button'
+import AssignTeacherInitialState from '../InitialStates/AssignTeacher'
+import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
+import addElementInArray from '../Utils/AddUniqueElementsInArray'
 
 const AssignTeacher = ({ setShowModal, showModal }) => {
-	const { selectTheme } = UseThemeContext()
 	const { teacherOptions } = UseTeacherContext()
 	const { subjectOptions } = UseSubjectContext()
 	const { chapterOptions } = UseChapterContext()
 	const { courseOptions } = UseCourseContext();
+	const { batchOptions } = UseBatchesContext();
+	const {chapterAllocations, setChapterAllocations} = UseChapterAllocationContext()
 	const [displayChapters, setDisplayChapters] = useState([]);
 	const [displaySubjects, setDisplaySubjects] = useState([])
 	const [chapter, setChapter] = useState()
+	const [teacher, setTeacher] = useState();
 	const [subject, setSubject] = useState();
 	const [course, setCourse] = useState()
 	const [batch, setBatch] = useState()
+	const [formState, setFormState] = useState(AssignTeacherInitialState);
+
+	useEffect(() => {
+		if (showModal.update) {
+			setFormState(showModal.data)
+			setCourse(courseOptions?.filter((course) => {
+				return course?._id === showModal?.data?.batch?.course
+			})[0])
+			setSubject(subjectOptions?.filter((subject) => {
+				return subject?._id === showModal?.data?.subject?._id
+			})[0])
+			setBatch(batchOptions?.filter((batch) => {
+				return batch?._id === showModal?.data?.batch?._id
+			})[0])
+			setChapter(chapterOptions?.filter((chapter) => {
+				return chapter?._id === showModal?.data?.chapter?._id
+			})[0])
+			setTeacher(teacherOptions?.filter((teacher) => {
+				return teacher?._id === showModal?.data?.teacher?._id
+			})[0])
+		}else{
+			setFormState(AssignTeacherInitialState)
+		}
+	}, [showModal]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
-			method: "POST",
-			data: {chapter}
+		if (showModal.update) {
+			axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/${showModal?.data?._id}`, {
+				method: "PATCH",
+				data: {
+					...formState,
+					subject: subject.value,
+					batch: batch.value,
+					chapter: chapter.value,
+					teacher: teacher.value
+				}
+			})
+				.then((res) => {
+					if (res.data.error) {
+						setShowModal({ show: false, update: false, data: undefined })
+					}else{
+						setChapterAllocations(updateElementsInArray(chapterAllocations, res.data.chapterAllocation, showModal.data));
+						setShowModal({ show: false, update: false, data: undefined })
+					}
+				})
+		}else{
+			axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/create`, {
+				method: "POST",
+				data: {
+					...formState,
+					subject: subject.value,
+					batch: batch.value,
+					chapter: chapter.value,
+					teacher: teacher.value
+				}
+			})
+				.then((res) => {
+					if (res.data.error) {
+						setShowModal({ show: false, update: false, data: undefined })
+					}else{
+						setChapterAllocations(addElementInArray(chapterAllocations, res.data.chapterAllocation));
+						setShowModal({ show: false, update: false, data: undefined })
+					}
+				})
+		}
+	}
+
+	const handleChange = (e) => {
+		setFormState({
+			...formState,
+			[e.target.id]: e.target.value
 		})
 	}
 
 	const handleSubject = (subject) => {
 		setSubject(subject);
+	}
+	const handleTeacher = (teacher) => {
+		setTeacher(teacher);
 	}
 	const handleChapter = (chapter) => {
 		setChapter(chapter);
@@ -69,11 +144,11 @@ const AssignTeacher = ({ setShowModal, showModal }) => {
 	return (
 		<>
 			<div id="updateProductModal" tabIndex="-1" aria-hidden="true" className={showModal.show ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>
-				<div className="relative p-4 w-[98vw] h-[98vh] ">
+				<div className="relative p-4 w-[75vw] h-[73vh] ">
 					<div className="relative h-full bg-white p-4 rounded-lg shadow-md shadow-purpleShadow dark:bg-white-800 sm:p-5">
 						<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
 							<h3 className="text-lg font-semibold dark:text-lightPurple">
-								{showModal.update ? "Assign Teacher" : "Assign Teacher"}
+								{showModal.update ? "Update Teacher" : "Assign Teacher"}
 							</h3>
 							<button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
 								onClick={() => {
@@ -84,13 +159,18 @@ const AssignTeacher = ({ setShowModal, showModal }) => {
 								<span className="sr-only">Close modal</span>
 							</button>
 						</div>
-						<form onSubmit={handleSubmit} className='grid grid-cols-4 gap-x-6 gap-y-5'>
-							<SearchableSelect options={teacherOptions} isMulti={false} label={"Teachers"}/>
-							<SearchableSelect options={courseOptions} isMulti={false} onChange={handleCourse} label={"Courses"}/>
-							<SearchableSelect options={displaySubjects} isMulti={false} onChange={handleSubject} label={"Subjects"}/>
-							<SearchableSelect options={displayChapters} isMulti={false} onChange={handleChapter} label={"Chapters"}/>
-							<SearchableSelect options={displayChapters} isMulti={false} onChange={handleBatch} label={"Batch"}/>
-							<Input label={"Hours"} id={"hours"} type={"number"} />
+						<form onSubmit={handleSubmit} className='grid grid-cols-2 gap-x-6 gap-y-5 '>
+							<SearchableSelect value={course} options={courseOptions} isMulti={false} onChange={handleCourse} label={"Courses"} />
+							<SearchableSelect value={subject} options={displaySubjects} isMulti={false} onChange={handleSubject} label={"Subjects"} />
+							<SearchableSelect value={chapter} options={displayChapters} isMulti={false} onChange={handleChapter} label={"Chapters"} />
+							<SearchableSelect value={batch} options={batchOptions} isMulti={false} onChange={handleBatch} label={"Batch"} />
+							<SearchableSelect value={teacher} options={teacherOptions} isMulti={false} onChange={handleTeacher} label={"Teacher"} />
+							<Input onChange={handleChange} value={formState.hours} label={"Hours"} id={"hours"} type={"number"} />
+							<Input onChange={handleChange} value={formState.rate} label={"Rate per hour"} id={"rate"} type={"number"} />
+							<Input onChange={handleChange} value={formState.hoursCompleted} label={"Hours completed"} id={"hoursCompleted"} type={"number"} />
+							<div className={"col-span-2 flex justify-center"}>
+								<Button text='Submit' type='submit' className={"w-52"} />
+							</div>
 						</form>
 					</div>
 				</div>

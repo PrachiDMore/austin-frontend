@@ -3,35 +3,41 @@ import Navbar from '../components/Navbar'
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 
 const ViewAdmissions = () => {
   const [admissions, setAdmissions] = useState([]);
   const [searchAdmissions, setSearchAdmissions] = useState([]);
 
   useEffect(() => {
-    axios(`${process.env.REACT_APP_BASE_URL}/admission/getAllAdmissions`)
+    axios(`${process.env.REACT_APP_BASE_URL}/admission/`, {
+      method: "GET"
+    })
       .then((res) => {
         if (res.data.error) {
           alert(res.data.message)
         } else {
-          setSearchAdmissions(res.data.admissions)
-          setAdmissions(res.data.admissions)
+          setAdmissions(res.data.admissions);
         }
       })
-      .catch((err) => {
-        alert(err.message)
-      })
   }, []);
+
 
   const handleSearch = (e) => {
     if (e.target.value.length == 0) {
       setSearchAdmissions(admissions)
-    }else{
+    } else {
       setSearchAdmissions(admissions.filter((data) => {
-        return `${data.firstname} ${data.lastname}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || data?.gender?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.email?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.mobileNoPrimary?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.grade?.toLowerCase()?.includes(e.target.value.toLowerCase()) 
+        return `${data.firstname} ${data.lastname}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || data?.gender?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.email?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.mobileNoPrimary?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.grade?.toLowerCase()?.includes(e.target.value.toLowerCase())
       }))
     }
   }
+  useEffect(() => {
+    if (admissions) {
+      setSearchAdmissions(admissions)
+    }
+  }, [admissions]);
+
   return (
     <div>
       <Navbar />
@@ -47,6 +53,7 @@ const ViewAdmissions = () => {
                 <thead className="text-sm uppercase bg-darkPurple text-white">
                   <tr>
                     <th scope="col" className="px-6 py-5">Name</th>
+                    <th scope="col" className="px-6 py-5">Username</th>
                     <th scope="col" className="px-6 py-5">Grade</th>
                     <th scope="col" className="px-6 py-5">Email</th>
                     <th scope="col" className="px-6 py-5">Phone Number</th>
@@ -56,8 +63,9 @@ const ViewAdmissions = () => {
                 <tbody className='text-gray-700 mt-5'>
                   {
                     searchAdmissions?.map((data) => {
-                      return <tr key={data?._id} className="border-b border-darkPurple">
-                        <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</th>
+                      return <tr key={data?._id} className={data?.confirmed ? "border-b border-darkPurple bg-green-200" : "border-b border-darkPurple"}>
+                        <th><Link to={`/admin/admissions/${data?._id}`} scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</Link></th>
+                        <td className="px-6 py-4">{data?.username || "N/A"}</td>
                         <td className="px-6 py-4">{data?.grade}</td>
                         <td className="px-6 py-4">{data?.email}</td>
                         <td className="px-6 py-4">{data?.mobileNoPrimary}</td>
