@@ -6,6 +6,7 @@ import Button from '../components/Button';
 import { UseBranchContext } from '../context/Branch';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
+import SearchableSelect from "../components/SearchableSelect";
 
 const BranchModal = ({ setShowModal, showModal }) => {
 	const { branches, setBranches } = UseBranchContext()
@@ -74,6 +75,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 							</button>
 						</div>
 						<form onSubmit={handleSubmit} className='grid grid-cols-3 gap-x-6 gap-y-4'>
+							<SearchableSelect label={"Branch Manager"} />
 							<Input label={"Name"} value={formState.name} onChange={handleChange} id={"name"} />
 							<Input label={"Address Line"} value={formState.addressline} onChange={handleChange} id={"addressline"} />
 							<Input label={"Street"} value={formState.street} onChange={handleChange} id={"street"} />

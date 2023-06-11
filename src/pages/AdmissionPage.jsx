@@ -11,6 +11,7 @@ import StudentModal from '../Modals/StudentModal'
 import { UseAdmissionContext } from '../context/Admission'
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import { UseAuthContext } from '../context/Authentication'
+import extractToken from '../Utils/ExtractToken'
 
 const AdmissionPage = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
@@ -22,7 +23,6 @@ const AdmissionPage = () => {
     const [data, setData] = useState()
     const { authToken, user } = UseAuthContext();
     useEffect(() => {
-        console.log(user)
         if (_id) {
             axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`)
                 .then((res) => {
@@ -50,9 +50,10 @@ const AdmissionPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true)
-        if (_id) {
+        if (_id && !formState?.confirmed) {
+            console.log(formState.password, formState.username)
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
-                axios(`${process.env.REACT_APP_BASE_URL}/user/confirm/${_id}`, {
+                axios(`${process.env.REACT_APP_BASE_URL}/admission/confirm/${_id}`, {
                     method: 'PATCH',
                     data: formState
                 })
@@ -64,6 +65,34 @@ const AdmissionPage = () => {
                             setMessage(res.data.message)
                             setLoading(false)
                             navigate("/admin/admissions")
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
+            } else {
+                setLoading(false)
+                alert('Form incompletely filled')
+            }
+        } else if (formState?.confirmed || extractToken()?.role === "student") {
+            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
+                axios(`${process.env.REACT_APP_BASE_URL}/admission/${formState?._id}`, {
+                    method: 'PATCH',
+                    data: formState
+                })
+                    .then((res) => {
+                        if (res.data.error) {
+                            setMessage(res.data.message)
+                            setLoading(false)
+                        } else {
+                            setMessage(res.data.message)
+                            setLoading(false)
+                            if (extractToken()?.role === "student") {
+                                alert("updated")
+                            } else if (extractToken()?.role === "admin") {
+                                navigate("/admin/admissions")
+                            }
                         }
                     })
                     .catch((err) => {
@@ -111,8 +140,9 @@ const AdmissionPage = () => {
                     <div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
                         <h1 className='font-semibold text-darkPurple text-2xl pb-2 mb-2'>Personal Information:</h1>
                         <div className='grid grid-cols-3 gap-6 w-full '>
-                            {_id && <Input value={formState?.username} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
-                            {authToken && !_id && <Input value={formState?.username} readOnly={true} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
+                            {extractToken()?.role === "admin" && _id && <Input value={formState?.username} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
+                            {extractToken()?.role === "admin" && !formState?.confirmed && _id && <Input required={true} onChange={handleChange} id={'password'} type={"text"} label={'Password'} placeholder={'Enter password.'} />}
+                            {extractToken()?.role === "student" && !_id && <Input value={formState?.username} readOnly={true} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
                             <Input value={formState?.firstname} required={true} onChange={handleChange} id={'firstname'} type={"text"} label={'First Name'} placeholder={'Enter your first name.'} />
                             <Input value={formState?.middlename} required={true} onChange={handleChange} id={'middlename'} type={"text"} label={'Middle Name'} placeholder={'Enter your middle name.'} />
                             <Input value={formState?.lastname} required={true} onChange={handleChange} id={'lastname'} type={"text"} label={'Last Name'} placeholder={'Enter your last name.'} />
@@ -160,7 +190,8 @@ const AdmissionPage = () => {
                         </div>
                     </div>
                     {!_id && <Button type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
-                    {_id && <Button disabled={!formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
+                    {_id && !formState?.confirmed && <Button disabled={formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
+                    {_id && formState?.confirmed && <Button type='submit' text={"Submit"} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
                 </form>
             </section>
         </>

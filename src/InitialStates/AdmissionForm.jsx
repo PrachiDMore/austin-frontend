@@ -28,6 +28,9 @@ const admissionFormInitialState = {
 	guardian_phone_number: "",
 	guardian_email: "",
 	guardian_occupation: "",
+	password: "",
+	username: "",
+	confirmed: false
 }
 
 export default admissionFormInitialState

@@ -14,6 +14,7 @@ const TeacherContextProvider = ({ children }) => {
                     if (res.data.error) {
                         alert(res.data.message)
                     } else {
+                        console.log(res.data.teachers)
                         setTeachers(res.data.teachers)
                     }
                 })

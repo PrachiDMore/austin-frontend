@@ -11,7 +11,7 @@ const Signin = () => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [type, setType] = useState("student");
-    const {setAuthToken} = UseAuthContext()
+    const { setAuthToken } = UseAuthContext()
     const navigate = useNavigate()
     const initialState = {
         username: '',
@@ -26,8 +26,9 @@ const Signin = () => {
         })
     }
 
-    const handleSubmit = () => {
-        if (formState.username?.length > 6 && formState.password.length > 6) {
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (formState.username && formState.password.length > 6) {
             setLoading(true)
             if (type === "student") {
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/student`, {
@@ -38,10 +39,34 @@ const Signin = () => {
                         setLoading(false)
                         if (res.error) {
                             console.log(res.error)
-                        }else{
-                            sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({token: res.data.token, role: "student"})))
-                            setAuthToken(extractToken()?.token)
-                            navigate("/student/profile")
+                        } else {
+                            if (res?.data?.token) {
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: "student" })))
+                                setAuthToken(extractToken()?.token)
+                                navigate("/student/profile")
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
+            }else if(type === "admin"){
+                console.log(formState)
+                axios(`${process.env.REACT_APP_BASE_URL}/user/signin/`, {
+                    method: "POST",
+                    data: formState
+                })
+                    .then((res) => {
+                        setLoading(false)
+                        if (res.error) {
+                            console.log(res.error)
+                        } else {
+                            if (res?.data?.token) {
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: "admin" })))
+                                setAuthToken(extractToken()?.token)
+                                navigate("/")
+                            }
                         }
                     })
                     .catch((err) => {
@@ -59,7 +84,7 @@ const Signin = () => {
             <Alert message={message} setMessage={setMessage} />
             <section className='h-[100vh] w-[100vw] flex Nunito'>
                 <div className='w-[50%] bg-darkPurple'></div>
-                <div className='w-[50%] h-full p-20 bg-lightGray flex flex-col justify-center '>
+                <form onSubmit={handleSubmit} className='w-[50%] h-full p-20 bg-lightGray flex flex-col justify-center '>
                     <h1 className='text-3xl font-bold text-center mb-6'>Hello! Welcome Back</h1>
                     <div className='w-full pt-4 flex flex-col gap-y-3'>
                         <div className='flex flex-col'>
@@ -76,12 +101,12 @@ const Signin = () => {
                     <div className='flex justify-end py-4'>
                         <Link className='text-sm font-semibold text-darkPurple'>forget password?</Link>
                     </div>
-                    <Button onClick={handleSubmit} text='Login' loading={loading} />
+                    <Button type='submit' text='Login' loading={loading} />
                     <div className='flex gap-2 py-4 text-sm font-bold justify-center'>
                         <p>Don't have an account?</p>
                         <Link to='/signup' className='text-darkPurple'>Create Account</Link>
                     </div>
-                </div>
+                </form>
             </section>
         </>
     )
