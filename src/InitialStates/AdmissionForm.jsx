@@ -30,7 +30,8 @@ const admissionFormInitialState = {
 	guardian_occupation: "",
 	password: "",
 	username: "",
-	confirmed: false
+	confirmed: false,
+	isDisabled: false
 }
 
 export default admissionFormInitialState

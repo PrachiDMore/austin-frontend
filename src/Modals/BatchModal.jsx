@@ -29,7 +29,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			axios(`${process.env.REACT_APP_BASE_URL}/batch/${showModal?.data?._id}`, {
 				method: "PATCH",
 				data: {
-					...formState, course: course?.value, branch: branch?.value, students: students.map((student) => {
+					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
 						return student.value
 					})
 				}
@@ -46,7 +46,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			axios(`${process.env.REACT_APP_BASE_URL}/batch/create`, {
 				method: "POST",
 				data: {
-					...formState, course: course?.value, branch: branch?.value, students: students.map((student) => {
+					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
 						return student.value
 					})
 				}

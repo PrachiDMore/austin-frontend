@@ -65,7 +65,25 @@ const Navbar = () => {
             path: "/student/chapters",
         },
     ];
-    const [routes, setRoutes] = useState(extractToken()?.role === "student" ? STUDENT_ROUTES : ADMIN_ROUTES)
+    const TEACHER_ROUTES = [
+        {
+            label: "Profile",
+            path: "/teacher/profile",
+        },
+        {
+            label: "Batch",
+            path: "/teacher/batches",
+        },
+        {
+            label: "Course",
+            path: "/teacher/courses",
+        },
+        {
+            label: "Chapters",
+            path: "/teacher/chapters",
+        },
+    ]
+    const [routes, setRoutes] = useState(extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}` ? STUDENT_ROUTES : extractToken().role === `${process.env.REACT_APP_ADMIN_ROLE}` ? ADMIN_ROUTES : TEACHER_ROUTES)
   return (
     <>
         <nav className='px-6 flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito'>

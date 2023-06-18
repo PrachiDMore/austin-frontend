@@ -22,7 +22,7 @@ const SubjectContextProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        setSubjectOptions(subjects.map((subject) => {
+        setSubjectOptions(subjects?.map((subject) => {
             return {
                 ...subject,
                 label: `${subject.name} (${subject.grade})`,

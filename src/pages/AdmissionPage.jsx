@@ -7,7 +7,6 @@ import Button from '../components/Button'
 import axios from 'axios'
 import Alert from '../components/Alert'
 import { useNavigate, useParams } from 'react-router-dom'
-import StudentModal from '../Modals/StudentModal'
 import { UseAdmissionContext } from '../context/Admission'
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import { UseAuthContext } from '../context/Authentication'
@@ -17,11 +16,11 @@ const AdmissionPage = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const [formState, setFormState] = useState(admissionFormInitialState);
     const [loading, setLoading] = useState(false);
+    const [disableLoading, setDisableLoading] = useState(false);
     const [message, setMessage] = useState("");
     const { _id } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState()
-    const { authToken, user } = UseAuthContext();
     useEffect(() => {
         if (_id) {
             axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`)
@@ -36,10 +35,9 @@ const AdmissionPage = () => {
                 .catch((err) => {
                     setMessage(err.message)
                 })
-        } else {
-            setFormState(user)
-        }
-    }, [_id, user]);
+        } 
+    }, [_id]);
+
     const handleChange = (e) => {
         setFormState({
             ...formState,
@@ -51,7 +49,6 @@ const AdmissionPage = () => {
         e.preventDefault();
         setLoading(true)
         if (_id && !formState?.confirmed) {
-            console.log(formState.password, formState.username)
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/confirm/${_id}`, {
                     method: 'PATCH',
@@ -75,7 +72,7 @@ const AdmissionPage = () => {
                 setLoading(false)
                 alert('Form incompletely filled')
             }
-        } else if (formState?.confirmed || extractToken()?.role === "student") {
+        } else if (formState?.confirmed && extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/${formState?._id}`, {
                     method: 'PATCH',
@@ -88,9 +85,9 @@ const AdmissionPage = () => {
                         } else {
                             setMessage(res.data.message)
                             setLoading(false)
-                            if (extractToken()?.role === "student") {
+                            if (extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}`) {
                                 alert("updated")
-                            } else if (extractToken()?.role === "admin") {
+                            } else if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
                                 navigate("/admin/admissions")
                             }
                         }
@@ -127,27 +124,43 @@ const AdmissionPage = () => {
             }
         }
     }
+    const handleIsDisabled = (e) => {
+        setDisableLoading(true)
+        axios(`${process.env.REACT_APP_BASE_URL}/admission/disabled/${_id}`, {
+            method: "PATCH",
+            data: { isDisabled: e }
+        })
+        .then((res) => {
+                setDisableLoading(false)
+                navigate("/admin/admissions")
+            })
+            .catch((err) => {
+                setDisableLoading(false)
+            })
+    }
     return (
         <>
-            <StudentModal setShowModal={setShowModal} showModal={showModal} />
             <Alert message={message} setMessage={setMessage} />
             <section className='w-screen min-h-screen Nunito'>
                 <Navbar />
                 <form onSubmit={handleSubmit} className='w-full p-10 px-20 flex flex-col items-center'>
-                    <div className={"w-full flex justify-center"}>
+                    <div className={extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && formState?.confirmed && _id ? "w-full flex justify-between items-center" : "w-full flex justify-between items-center"}>
+                        {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && formState?.confirmed && _id && <Button type='button' text='Enable' className={"w-52 pointer-events-none opacity-0"} />}
                         <div className='text-3xl font-bold p-4 '>Admission Form</div>
+                        {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && formState?.confirmed && _id && <Button onClick={() => {
+                            handleIsDisabled(!formState?.isDisabled)
+                        }} text={formState?.isDisabled ? 'Enable' : 'Disable'} loading={disableLoading} type='button' className={"w-52"} />}
                     </div>
                     <div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
                         <h1 className='font-semibold text-darkPurple text-2xl pb-2 mb-2'>Personal Information:</h1>
                         <div className='grid grid-cols-3 gap-6 w-full '>
-                            {extractToken()?.role === "admin" && _id && <Input value={formState?.username} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
-                            {extractToken()?.role === "admin" && !formState?.confirmed && _id && <Input required={true} onChange={handleChange} id={'password'} type={"text"} label={'Password'} placeholder={'Enter password.'} />}
-                            {extractToken()?.role === "student" && !_id && <Input value={formState?.username} readOnly={true} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
+                            {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && _id && <Input value={formState?.username} required={true} onChange={handleChange} id={'username'} type={"text"} label={'Username'} placeholder={'Enter username.'} />}
+                            {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && !formState?.confirmed && _id && <Input required={true} onChange={handleChange} id={'password'} type={"text"} label={'Password'} placeholder={'Enter password.'} />}
                             <Input value={formState?.firstname} required={true} onChange={handleChange} id={'firstname'} type={"text"} label={'First Name'} placeholder={'Enter your first name.'} />
                             <Input value={formState?.middlename} required={true} onChange={handleChange} id={'middlename'} type={"text"} label={'Middle Name'} placeholder={'Enter your middle name.'} />
                             <Input value={formState?.lastname} required={true} onChange={handleChange} id={'lastname'} type={"text"} label={'Last Name'} placeholder={'Enter your last name.'} />
-                            <Input value={formState?.photoURL} onChange={handleChange} id={'photoURL'} type={"file"} label={'Profile Image'} />
-                            <Select value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }, { label: 'Transgender', value: 'transgender' }]} />
+                            <Input onChange={handleChange} id={'photoURL'} type={"file"} label={'Profile Image'} />
+                            <Select value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
                             <Input value={formState?.DOB} required={true} onChange={handleChange} id={'DOB'} type={"date"} label={'Date of Birth'} placeholder={'Enter your last name.'} />
                             <Input value={formState?.address} required={true} onChange={handleChange} id={'address'} type={"text"} label={'Address'} placeholder={'Enter your address.'} />
                             <Input value={formState?.landmark} onChange={handleChange} id={'landmark'} type={"text"} label={'Landmark'} placeholder={'Enter your landmark (optional).'} />

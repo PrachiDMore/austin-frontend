@@ -11,7 +11,7 @@ const CourseContextProvider = ({ children }) => {
     const [courseOptions, setCourseOptions] = useState([]);
 
     useEffect(() => {
-        if (extractToken()?.role !== "student") {
+        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/course/`)
                 .then((res) => {
                     if (res.data.error) {
@@ -31,7 +31,7 @@ const CourseContextProvider = ({ children }) => {
     }, [batches]);
 
     useEffect(() => {
-        setCourseOptions(courses.map((e) => {
+        setCourseOptions(courses?.map((e) => {
             if (!e.isDisabled) {
                 return {
                     ...e,

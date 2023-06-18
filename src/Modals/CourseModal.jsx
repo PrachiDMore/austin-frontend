@@ -55,7 +55,7 @@ const CourseModal = ({ setShowModal, showModal }) => {
 
     const handleSubjects = (e) => {
         setSubjectValue(e);
-        setSelectedSubjects(e.map((subject) => {
+        setSelectedSubjects(e?.map((subject) => {
             return subject.value
         }))
     }

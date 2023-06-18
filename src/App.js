@@ -28,32 +28,35 @@ import StudentCourseChapters from "./pages/student/StudentCourseChapters";
 import StudentEnrolledCourse from "./pages/student/StudentEnrolledCourse";
 import { UserContextProvider } from "./context/Users";
 import Roles from "./pages/Roles";
+import TeacherProfile from "./pages/teacher/TeacherProfile";
+import StudentAdmissionPage from "./pages/student/StudentAdmissionPage";
 
 function App() {
   return (
     <>
-      <AuthContextProvider>
-        <UserContextProvider>
-          <ThemeContextProvider>
-            <TeacherContextProvider>
-              <BatchesContextProvider>
-                <CourseContextProvider>
-                  <SubjectContextProvider>
-                    <ChapterContextProvider>
-                      <BranchContextProvider>
-                        <ChapterAllocationContextProvider>
-                          <AdmissionContextProvider>
-                            <Router>
+      <Router>
+        <AuthContextProvider>
+          <UserContextProvider>
+            <ThemeContextProvider>
+              <TeacherContextProvider>
+                <BatchesContextProvider>
+                  <CourseContextProvider>
+                    <SubjectContextProvider>
+                      <ChapterContextProvider>
+                        <BranchContextProvider>
+                          <ChapterAllocationContextProvider>
+                            <AdmissionContextProvider>
                               <Routes>
-                                <Route element={<ProtectedRoutes role="student" />}>
-                                  <Route path="/student/profile" element={<AdmissionPage />} />
+                                <Route path="/signup" element={<Signup />} />
+                                <Route path="/signin" element={<Signin />} />
+                                <Route path="/admission" element={<AdmissionPage />} />
+                                <Route element={<ProtectedRoutes role={`${process.env.REACT_APP_STUDENT_ROLE}`} />}>
+                                  <Route path="/student/profile" element={<StudentAdmissionPage />} />
                                   <Route path="/student/batches" element={<ViewEnrolledBatches />} />
                                   <Route path="/student/courses" element={<StudentEnrolledCourse />} />
                                   <Route path="/student/chapters" element={<StudentCourseChapters />} />
                                 </Route>
-                                <Route path="/signup" element={<Signup />} />
-                                <Route path="/admission" element={<AdmissionPage />} />
-                                <Route element={<ProtectedRoutes role={'admin'} />}>
+                                <Route element={<ProtectedRoutes role={'qazVNBE2XD'} />}>
                                   <Route path="/" element={<Home />} />
                                   <Route path="/admin/roles" element={<Roles />} />
                                   <Route
@@ -66,26 +69,29 @@ function App() {
                                   />
                                   <Route path="/admin/teachers" element={<ViewTeachers />} />
                                   <Route path="/admin/branch" element={<ViewBranch />} />
+                                  <Route path="/admin/chapter-allocation" element={<ChapterAllocation />} />
+                                  <Route path="/admin/subjects" element={<ViewSubjects />} />
+                                  <Route path="/admin/chapters" element={<ViewChapters />} />
+                                  <Route path="/admin/courses" element={<ViewCourses />} />
+                                  <Route path="/admin/batches" element={<ViewBatch />} />
                                 </Route>
-                                <Route path="/admin/chapter-allocation" element={<ChapterAllocation />} />
-                                <Route path="/admin/subjects" element={<ViewSubjects />} />
-                                <Route path="/admin/chapters" element={<ViewChapters />} />
-                                <Route path="/admin/courses" element={<ViewCourses />} />
-                                <Route path="/admin/batches" element={<ViewBatch />} />
-                                <Route path="/signin" element={<Signin />} />
+                                <Route element={<ProtectedRoutes role={'teacher'} />}>
+                                  <Route path="/teacher" element={<Home />} />
+                                  <Route path="/teacher/profile" element={<TeacherProfile />} />
+                                </Route>
                               </Routes>
-                            </Router>
-                          </AdmissionContextProvider>
-                        </ChapterAllocationContextProvider>
-                      </BranchContextProvider>
-                    </ChapterContextProvider>
-                  </SubjectContextProvider>
-                </CourseContextProvider>
-              </BatchesContextProvider>
-            </TeacherContextProvider>
-          </ThemeContextProvider>
-        </UserContextProvider>
-      </AuthContextProvider>
+                            </AdmissionContextProvider>
+                          </ChapterAllocationContextProvider>
+                        </BranchContextProvider>
+                      </ChapterContextProvider>
+                    </SubjectContextProvider>
+                  </CourseContextProvider>
+                </BatchesContextProvider>
+              </TeacherContextProvider>
+            </ThemeContextProvider>
+          </UserContextProvider>
+        </AuthContextProvider>
+      </Router>
     </>
   );
 }

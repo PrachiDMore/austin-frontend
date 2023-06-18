@@ -63,8 +63,8 @@ const ViewAdmissions = () => {
                 <tbody className='text-gray-700 mt-5'>
                   {
                     searchAdmissions?.map((data) => {
-                      return <tr key={data?._id} className={data?.confirmed ? "border-b border-darkPurple bg-green-200" : "border-b border-darkPurple"}>
-                        <th><Link to={`/admin/admissions/${data?._id}`} scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.firstname} {data?.lastname}</Link></th>
+                      return <tr key={data?._id} className={data?.confirmed ? " border-b border-darkPurple bg-green-200" : "border-b border-darkPurple"}>
+                        <th><Link to={`/admin/admissions/${data?._id}`} scope="row" className={data?.isDisabled ? "px-4 py-3 font-medium text-red-600 whitespace-nowrap hover:underline underline-offset-2" : "px-4 py-3 font-medium text-gray-900 whitespace-nowrap hover:underline underline-offset-2"}>{data?.firstname} {data?.lastname}</Link></th>
                         <td className="px-6 py-4">{data?.username || "N/A"}</td>
                         <td className="px-6 py-4">{data?.grade}</td>
                         <td className="px-6 py-4">{data?.email}</td>
@@ -78,8 +78,6 @@ const ViewAdmissions = () => {
             </div>
           </div>
         </div>
-
-
       </section>
     </div>
   )

@@ -22,7 +22,7 @@ const ChapterContextProvider = ({children}) => {
     }, []);
 
     useEffect(() => {
-        setChapterOptions(chapters.map((chapter) => {
+        setChapterOptions(chapters?.map((chapter) => {
             return {
                 ...chapter,
                 label: `${chapter.name} (${chapter.grade})`,

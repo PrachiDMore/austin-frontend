@@ -55,7 +55,7 @@ const Subjects = () => {
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
                                     {
-                                        searchsubject.map((Subject) => {
+                                        searchsubject?.map((Subject) => {
                                             return (
                                                 <tr key={Subject._id}
 

@@ -10,7 +10,7 @@ const AdmissionContextProvider = ({ children }) => {
 	const [admissionOptions, setAdmissionOptions] = useState([]);
 
 	useEffect(() => {
-		if (extractToken()?.role !== "student") {
+		if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
 			axios(`${process.env.REACT_APP_BASE_URL}/admission/`, {
 				method: "GET"
 			})

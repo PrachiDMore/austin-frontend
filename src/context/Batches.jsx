@@ -9,7 +9,7 @@ const BatchesContextProvider = ({ children }) => {
     const [batchOptions, setBatchOptions] = useState([])
 
     useEffect(() => {
-        if (extractToken()?.role !== "student") {
+        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/batch/`)
                 .then((res) => {
                     if (res.data.error) {

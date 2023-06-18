@@ -28,7 +28,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
 
     const handleSubjects = (e) => {
         setSubjectValue(e);
-        setSelectedSubjects(e.map((subject) => {
+        setSelectedSubjects(e?.map((subject) => {
             return subject.value
         }))
     }
@@ -51,7 +51,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            if (formState.fullname  && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
+            if (formState.fullname  && formState.email && formState.username && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
                     method: 'PATCH',
                     data: { ...formState, subject: selectedSubjects }

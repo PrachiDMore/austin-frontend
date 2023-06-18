@@ -8,13 +8,12 @@ const TeacherContextProvider = ({ children }) => {
     const [teachers, setTeachers] = useState([]);
     const [teacherOptions, setTeacherOptions] = useState([])
     useEffect(() => {
-        if (extractToken()?.role !== "student") {
+        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/teacher`)
                 .then((res) => {
                     if (res.data.error) {
                         alert(res.data.message)
                     } else {
-                        console.log(res.data.teachers)
                         setTeachers(res.data.teachers)
                     }
                 })
@@ -26,7 +25,7 @@ const TeacherContextProvider = ({ children }) => {
 
 
     useEffect(() => {
-        setTeacherOptions(teachers.map((e) => {
+        setTeacherOptions(teachers?.map((e) => {
             if (!e.isDisabled) {
                 return {
                     ...e,

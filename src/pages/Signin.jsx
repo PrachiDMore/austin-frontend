@@ -28,10 +28,10 @@ const Signin = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        if (formState.username && formState.password.length > 6) {
+        if (formState.username && formState.password) {
             setLoading(true)
-            if (type === "student") {
-                axios(`${process.env.REACT_APP_BASE_URL}/user/signin/student`, {
+            if (type === "teacher") {
+                axios(`${process.env.REACT_APP_BASE_URL}/user/signin/teacher`, {
                     method: "POST",
                     data: formState
                 })
@@ -41,9 +41,9 @@ const Signin = () => {
                             console.log(res.error)
                         } else {
                             if (res?.data?.token) {
-                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: "student" })))
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: "teacher" })))
                                 setAuthToken(extractToken()?.token)
-                                navigate("/student/profile")
+                                navigate("/teacher")
                             }
                         }
                     })
@@ -51,8 +51,7 @@ const Signin = () => {
                         console.log(err)
                         setLoading(false)
                     })
-            }else if(type === "admin"){
-                console.log(formState)
+            } else if (type === "admin") {
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/`, {
                     method: "POST",
                     data: formState
@@ -63,7 +62,7 @@ const Signin = () => {
                             console.log(res.error)
                         } else {
                             if (res?.data?.token) {
-                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: "admin" })))
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_ADMIN_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
                                 navigate("/")
                             }
@@ -73,8 +72,30 @@ const Signin = () => {
                         console.log(err)
                         setLoading(false)
                     })
+            } else if (type === "student") {
+                axios(`${process.env.REACT_APP_BASE_URL}/user/signin/student`, {
+                    method: "POST",
+                    data: formState
+                })
+                    .then((res) => {
+                        setLoading(false)
+                        if (res.data.error) {
+                            alert(res.data.message)
+                        } else {
+                            if (res?.data?.token) {
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_STUDENT_ROLE}` })))
+                                setAuthToken(extractToken()?.token)
+                                navigate("/student/profile")
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
             }
         } else {
+            setLoading(false)
             setMessage('Please properly fill the form!')
         }
     }
