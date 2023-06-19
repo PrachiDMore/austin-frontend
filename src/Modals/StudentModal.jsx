@@ -33,7 +33,6 @@ const StudentModal = ({ setShowModal, showModal }) => {
 							console.log(res.data.error)
 							setShowModal({ show: false, update: false, data: undefined })
 						} else {
-							console.log(res.data)
 							setAdmissions(updateElementsInArray(admissions, res.data.student, showModal.data))
 							setShowModal({ show: false, update: false, data: undefined })
 						}

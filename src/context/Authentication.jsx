@@ -20,7 +20,7 @@ export const AuthContextProvider = ({ children }) => {
 		if (extractToken()?.token) {
 			setAuthToken(extractToken()?.token)
 		} else {
-			navigate("/signin")
+			// navigate("/signin")
 		}
 	}, []);
 
@@ -39,7 +39,6 @@ export const AuthContextProvider = ({ children }) => {
 						} else {
 							if (!res.data?.admission?.isDisabled) {
 								setUser(res.data.admission)
-								console.log(res.data.admission)
 							} else {
 								logout()
 								console.log(res.data.message)
@@ -49,7 +48,7 @@ export const AuthContextProvider = ({ children }) => {
 					.catch((err) => {
 						console.log(err.message)
 					})
-			} else if (extractToken()?.role === "teacher") {
+			} else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/teacher/token`, {
 					method: "GET",
 					headers: {
@@ -62,10 +61,8 @@ export const AuthContextProvider = ({ children }) => {
 						} else {
 							if (!res.data?.teacher?.isDisabled) {
 								setUser(res.data.teacher)
-								console.log(res.data.teacher)
 							} else {
 								logout()
-								console.log(res.data.message)
 							}
 						}
 					})

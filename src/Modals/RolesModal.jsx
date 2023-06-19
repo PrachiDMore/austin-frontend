@@ -25,7 +25,6 @@ const RolesModal = ({ showModal, setShowModal }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log(formState)
 	}
 
 	return (

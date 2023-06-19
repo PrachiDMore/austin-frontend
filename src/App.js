@@ -30,6 +30,9 @@ import { UserContextProvider } from "./context/Users";
 import Roles from "./pages/Roles";
 import TeacherProfile from "./pages/teacher/TeacherProfile";
 import StudentAdmissionPage from "./pages/student/StudentAdmissionPage";
+import TeacherChapters from "./pages/teacher/TeacherChapters";
+import TeacherBatches from "./pages/teacher/TeacherBatches";
+import TeacherCourses from "./pages/teacher/TeacherCourses";
 
 function App() {
   return (
@@ -56,7 +59,7 @@ function App() {
                                   <Route path="/student/courses" element={<StudentEnrolledCourse />} />
                                   <Route path="/student/chapters" element={<StudentCourseChapters />} />
                                 </Route>
-                                <Route element={<ProtectedRoutes role={'qazVNBE2XD'} />}>
+                                <Route element={<ProtectedRoutes role={`${process.env.REACT_APP_ADMIN_ROLE}`} />}>
                                   <Route path="/" element={<Home />} />
                                   <Route path="/admin/roles" element={<Roles />} />
                                   <Route
@@ -75,9 +78,12 @@ function App() {
                                   <Route path="/admin/courses" element={<ViewCourses />} />
                                   <Route path="/admin/batches" element={<ViewBatch />} />
                                 </Route>
-                                <Route element={<ProtectedRoutes role={'teacher'} />}>
+                                <Route element={<ProtectedRoutes role={`${process.env.REACT_APP_TEACHER_ROLE}`} />}>
                                   <Route path="/teacher" element={<Home />} />
                                   <Route path="/teacher/profile" element={<TeacherProfile />} />
+                                  <Route path="/teacher/batches" element={<TeacherBatches />} />
+                                  <Route path="/teacher/chapters" element={<TeacherChapters />} />
+                                  <Route path="/teacher/courses" element={<TeacherCourses />} />
                                 </Route>
                               </Routes>
                             </AdmissionContextProvider>

@@ -41,7 +41,7 @@ const Signin = () => {
                             console.log(res.error)
                         } else {
                             if (res?.data?.token) {
-                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: "teacher" })))
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_TEACHER_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
                                 navigate("/teacher")
                             }

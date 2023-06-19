@@ -9,13 +9,30 @@ const BatchesContextProvider = ({ children }) => {
     const [batchOptions, setBatchOptions] = useState([])
 
     useEffect(() => {
-        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
+        if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/batch/`)
                 .then((res) => {
                     if (res.data.error) {
                         alert(res.data.message)
                     } else {
                         setBatches(res.data.batches)
+                    }
+                })
+                .catch((err) => {
+                    alert(err.message)
+                })
+        }else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
+            axios(`${process.env.REACT_APP_BASE_URL}/batch/token/teacher`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${extractToken()?.token}`
+                }
+            })
+                .then((res) => {
+                    if (res.data.error) {
+                        alert(res.data.message)
+                    } else {
+                        setBatches(res?.data?.batches)
                     }
                 })
                 .catch((err) => {

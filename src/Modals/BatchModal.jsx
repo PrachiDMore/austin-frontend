@@ -78,7 +78,6 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			setCourse(courseOptions?.filter((course) => {
 				return course?._id === showModal?.data?.course?._id;
 			})[0])
-			console.log(showModal)
 			setStudents(showModal?.data?.students?.map((student) => {
 				return {
 					...student,
