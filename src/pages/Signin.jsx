@@ -37,8 +37,8 @@ const Signin = () => {
                 })
                     .then((res) => {
                         setLoading(false)
-                        if (res.error) {
-                            console.log(res.error)
+                        if (res?.data?.error) {
+                            console.error(res?.data?.message)
                         } else {
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_TEACHER_ROLE}` })))
@@ -62,6 +62,7 @@ const Signin = () => {
                             console.log(res.error)
                         } else {
                             if (res?.data?.token) {
+                                console.log(window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_ADMIN_ROLE}` })))
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_ADMIN_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
                                 navigate("/")
@@ -80,12 +81,35 @@ const Signin = () => {
                     .then((res) => {
                         setLoading(false)
                         if (res.data.error) {
-                            alert(res.data.message)
+                            console.log(res.data.message)
                         } else {
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_STUDENT_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
                                 navigate("/student/profile")
+                            }
+                        }
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
+            } else if (type === "branch-manager") {
+                axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/login`, {
+                    method: "POST",
+                    data: formState
+                })
+                    .then((res) => {
+                        setLoading(false)
+                        if (res.data.error) {
+                            console.log(res.data.message)
+                        } else {
+                            console.log(res)
+                            if (res?.data?.token) {
+                                console.log(window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` })))
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` })))
+                                setAuthToken(extractToken()?.token)
+                                navigate("/branch-manager/profile")
                             }
                         }
                     })
@@ -114,13 +138,14 @@ const Signin = () => {
                                 <option value="admin">Admin</option>
                                 <option value="teacher">Teacher</option>
                                 <option value="student">Student</option>
+                                <option value="branch-manager">Branch Manager</option>
                             </select>
                         </div>
                         <Input onChange={handleChange} value={formState.username} id={'username'} label={'Username'} type={'text'} placeholder={'Enter your username.'} />
                         <Input password={true} onChange={handleChange} value={formState.password} id={'password'} label={'Password'} type={'password'} placeholder={'Enter your password.'} />
                     </div>
                     <div className='flex justify-end py-4'>
-                        <Link className='text-sm font-semibold text-darkPurple'>forget password?</Link>
+                        <Link className='text-sm font-semibold text-darkPurple' to={"/reset-password"}>forget password?</Link>
                     </div>
                     <Button type='submit' text='Login' loading={loading} />
                     <div className='flex gap-2 py-4 text-sm font-bold justify-center'>

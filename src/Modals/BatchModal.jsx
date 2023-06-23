@@ -21,7 +21,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 	const [formState, setFormState] = useState(batchInitialState);
 	const [course, setCourse] = useState();
 	const [branch, setBranch] = useState();
-	const [students, setStudents] = useState();
+	const [students, setStudents] = useState([]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -36,10 +36,13 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						alert(res.data.message)
+						console.log(res.data.message)
 					} else {
 						setBatches(updateElementsInArray(batches, res.data.batch, showModal.data))
 						setShowModal({ show: false, update: false, data: undefined })
+						setStudents([])
+						setBranch()
+						setCourse()
 					}
 				})
 		} else {
@@ -53,10 +56,13 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						alert(res.data.message)
+						console.log(res.data.message)
 					} else {
 						setBatches(addElementInArray(batches, res.data.batch))
 						setShowModal({ show: false, update: false, data: undefined })
+						setStudents([])
+						setBranch()
+						setCourse()
 					}
 				})
 		}
@@ -88,6 +94,8 @@ const BatchModal = ({ setShowModal, showModal }) => {
 		} else {
 			setFormState(batchInitialState)
 			setStudents([])
+			setBranch()
+			setCourse()
 		}
 	}, [showModal]);
 
@@ -104,6 +112,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 							<button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
 								onClick={() => {
 									setShowModal({ show: false, update: false, data: undefined })
+									setBranch()
 								}}
 							>
 								<svg aria-hidden="true" className="w-5 h-5" fill="currentcolor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>

@@ -74,7 +74,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         } else {
             setLoading(true)
@@ -86,7 +86,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                     .then((res) => {
                         if (res.data.error) {
                             setMessage(res.data.message)
-                            alert(res.data.message)
+                            console.log(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSelectedSubjects([])
 
@@ -103,7 +103,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
 
         }

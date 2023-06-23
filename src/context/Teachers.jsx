@@ -12,13 +12,13 @@ const TeacherContextProvider = ({ children }) => {
             axios(`${process.env.REACT_APP_BASE_URL}/teacher`)
                 .then((res) => {
                     if (res.data.error) {
-                        alert(res.data.message)
+                        console.log(res.data.message)
                     } else {
                         setTeachers(res.data.teachers)
                     }
                 })
                 .catch((err) => {
-                    alert(err.message)
+                    console.log(err.message)
                 })
         }
     }, []);

@@ -26,6 +26,7 @@ export const AuthContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authToken) {
+			console.log(extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`)
 			if (extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/admission/token`, {
 					method: "GET",
@@ -63,6 +64,29 @@ export const AuthContextProvider = ({ children }) => {
 								setUser(res.data.teacher)
 							} else {
 								logout()
+							}
+						}
+					})
+					.catch((err) => {
+						console.log(err.message)
+					})
+			} else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
+				axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/token`, {
+					method: "GET",
+					headers: {
+						"Authorization": `Bearer ${authToken}`
+					}
+				})
+					.then((res) => {
+						console.log(res.data.user)
+						if (res.data.error) {
+							console.error(res.data.message)
+						} else {
+							if (!res.data?.user?.isDisabled) {
+								setUser(res.data.user)
+							} else {
+								logout()
+								console.log(res.data.message)
 							}
 						}
 					})

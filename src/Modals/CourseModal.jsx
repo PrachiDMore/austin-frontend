@@ -34,6 +34,10 @@ const CourseModal = ({ setShowModal, showModal }) => {
             setFormState(showModal.data);
         } else {
             setFormState(CoursesForm)
+            setSelectedSubjects([]);
+            setSelectedSubject()
+            setDisplayChapters([]);
+            setSubjectValue([])
         }
     }, [showModal]);
 
@@ -76,13 +80,15 @@ const CourseModal = ({ setShowModal, showModal }) => {
                             setCourses(updateElementsInArray(courses, res.data.course, showModal.data))
                             setShowModal({ update: false, show: false, data: undefined })
                             setFormState(CoursesForm);
+                            setSelectedSubjects([]);
+                            setDisplayChapters([])
                         }
                     })
                     .catch((err) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         } else {
             axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {

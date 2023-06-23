@@ -1,7 +1,7 @@
 const batchInitialState = {
 	name: "",
 	academicYear: "",
-	typeOfBatch: ""
+	typeOfBatch: "one-on-one"
 }
 
 export default batchInitialState;

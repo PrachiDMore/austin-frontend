@@ -51,7 +51,7 @@ const SubjectModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         } else {
             setLoading(true)
@@ -62,7 +62,7 @@ const SubjectModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            alert(res.data.message)
+                            console.log(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
 
                         } else {
@@ -76,7 +76,7 @@ const SubjectModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
 
         }

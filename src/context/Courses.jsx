@@ -15,13 +15,13 @@ const CourseContextProvider = ({ children }) => {
             axios(`${process.env.REACT_APP_BASE_URL}/course/`)
                 .then((res) => {
                     if (res.data.error) {
-                        alert(res.data.message)
+                        console.log(res.data.message)
                     } else {
                         setCourses(res.data.courses)
                     }
                 })
                 .catch((err) => {
-                    alert(err.message)
+                    console.log(err.message)
                 })
         } else {
             setCourses(batches?.map((batch) => {

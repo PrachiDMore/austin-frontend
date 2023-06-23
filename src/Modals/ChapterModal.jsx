@@ -63,7 +63,7 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         } else {
             setLoading(true)
@@ -74,7 +74,7 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            alert(res.data.message)
+                            console.log(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSubjectValue()
 
@@ -90,7 +90,7 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
 
         }

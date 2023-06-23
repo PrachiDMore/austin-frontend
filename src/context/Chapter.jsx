@@ -11,13 +11,13 @@ const ChapterContextProvider = ({children}) => {
         axios(`${process.env.REACT_APP_BASE_URL}/chapter/`)
             .then((res) => {
                 if (res.data.error) {
-                    alert(res.data.message)
+                    console.log(res.data.message)
                 } else {
                     setChapters(res.data.chapters)
                 }
             })
             .catch((err) => {
-                alert(err.message)
+                console.log(err.message)
             })
     }, []);
 

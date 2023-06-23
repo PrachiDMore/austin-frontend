@@ -70,7 +70,7 @@ const AdmissionPage = () => {
                     })
             } else {
                 setLoading(false)
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         } else if (formState?.confirmed && extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
@@ -86,7 +86,7 @@ const AdmissionPage = () => {
                             setMessage(res.data.message)
                             setLoading(false)
                             if (extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}`) {
-                                alert("updated")
+                                console.log("updated")
                             } else if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
                                 navigate("/admin/admissions")
                             }
@@ -97,7 +97,7 @@ const AdmissionPage = () => {
                     })
             } else {
                 setLoading(false)
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         } else {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
@@ -120,7 +120,7 @@ const AdmissionPage = () => {
                     })
             } else {
                 setLoading(false)
-                alert('Form incompletely filled')
+                console.log('Form incompletely filled')
             }
         }
     }

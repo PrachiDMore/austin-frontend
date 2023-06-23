@@ -11,13 +11,13 @@ const SubjectContextProvider = ({ children }) => {
         axios(`${process.env.REACT_APP_BASE_URL}/subject/`)
             .then((res) => {
                 if (res.data.error) {
-                    alert(res.data.message)
+                    console.log(res.data.message)
                 } else {
                     setSubjects(res.data.subjects)
                 }
             })
             .catch((err) => {
-                alert(err.message)
+                console.log(err.message)
             })
     }, []);
 

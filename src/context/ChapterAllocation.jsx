@@ -18,13 +18,13 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        alert(res.data.message)
+                        console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations);
                     }
                 })
                 .catch((err) => {
-                    alert(err.message)
+                    console.log(err.message)
                 })
         } else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/teacher`, {
@@ -35,13 +35,13 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        alert(res.data.message)
+                        console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations);
                     }
                 })
                 .catch((err) => {
-                    alert(err.message)
+                    console.log(err.message)
                 })
         } else {
             const batchId = batches?.map((batch) => {
@@ -52,7 +52,7 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        alert(res.data.message)
+                        console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations?.filter((chapterAllocation) => {
                             return batchId?.includes(chapterAllocation?.batch?._id)
@@ -60,7 +60,7 @@ const ChapterAllocationContextProvider = ({ children }) => {
                     }
                 })
                 .catch((err) => {
-                    alert(err.message)
+                    console.log(err.message)
                 })
         }
     }, [batches]);

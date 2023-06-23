@@ -43,8 +43,8 @@ const Navbar = () => {
             path: "/admin/chapter-allocation"
         },
         {
-            label: "Roles",
-            path: "/admin/roles"
+            label: "Manager",
+            path: "/admin/branch-manager"
         },
     ]
     const STUDENT_ROUTES = [
@@ -83,7 +83,7 @@ const Navbar = () => {
             path: "/teacher/chapters",
         },
     ]
-    const [routes, setRoutes] = useState(extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}` ? STUDENT_ROUTES : extractToken().role === `${process.env.REACT_APP_ADMIN_ROLE}` ? ADMIN_ROUTES : TEACHER_ROUTES)
+    const [routes, setRoutes] = useState(extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}` ? STUDENT_ROUTES : extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` ? ADMIN_ROUTES : TEACHER_ROUTES)
   return (
     <>
         <nav className='px-6 flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito'>

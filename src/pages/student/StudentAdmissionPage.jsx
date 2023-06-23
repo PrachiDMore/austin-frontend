@@ -46,7 +46,7 @@ const StudentAdmissionPage = () => {
 						} else {
 							setMessage(res.data.message)
 							setLoading(false)
-							alert("updated")
+							console.log("updated")
 						}
 					})
 					.catch((err) => {

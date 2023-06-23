@@ -14,7 +14,7 @@ const BranchContextProvider = ({ children }) => {
 		})
 			.then((res) => {
 				if (res.data.error) {
-					alert(res.data.message)
+					console.log(res.data.message)
 				} else {
 					setBranches(res.data.branches);
 				}

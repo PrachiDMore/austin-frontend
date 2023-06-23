@@ -7,10 +7,15 @@ import { UseBranchContext } from '../context/Branch';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import SearchableSelect from "../components/SearchableSelect";
+import { UseBranchManagerContext } from '../context/BranchManager';
 
 const BranchModal = ({ setShowModal, showModal }) => {
-	const { branches, setBranches } = UseBranchContext()
+	const { branches, setBranches } = UseBranchContext();
+	const { branchManagerOptions } = UseBranchManagerContext()
 	const [formState, setFormState] = useState(branchInitialState);
+	const [loading, setLoading] = useState(false)
+	const [branchManager, setBranchManager] = useState()
+
 	const handleChange = (e) => {
 		setFormState({
 			...formState,
@@ -21,36 +26,47 @@ const BranchModal = ({ setShowModal, showModal }) => {
 	useEffect(() => {
 		if (showModal.update) {
 			setFormState(showModal.data)
+			setBranchManager(branchManagerOptions?.filter((branchManager) => {
+				return branchManager?._id === showModal?.data?.manager?._id;
+			})[0])
 		}
 	}, [showModal]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (showModal.update) {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/${showModal.data._id}`, {
 				method: "PATCH",
-				data: formState
+				data: { ...formState, manager: branchManager?.value }
 			})
 				.then((res) => {
 					if (res.data.error) {
-						alert(res.data.message)
+						setLoading(false)
+						console.log(res.data.message)
 					} else {
+						setLoading(false)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(branchInitialState);
+						setBranchManager()
 						setBranches(updateElementsInArray(branches, res?.data?.branch, showModal.data))
 					}
 				})
 		} else {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/create`, {
 				method: "POST",
-				data: formState
+				data: { ...formState, manager: branchManager?.value }
 			})
 				.then((res) => {
 					if (res.data.error) {
-						alert(res.data.message)
+						console.log(res.data.message)
+						setLoading(false)
 					} else {
+						setLoading(false)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(branchInitialState);
+						setBranchManager()
 						setBranches(addElementInArray(branches, res?.data?.branch))
 					}
 				})
@@ -68,6 +84,8 @@ const BranchModal = ({ setShowModal, showModal }) => {
 							<button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
 								onClick={() => {
 									setShowModal({ show: false, update: false, data: undefined })
+									setFormState(branchInitialState);
+									setBranchManager()
 								}}
 							>
 								<svg aria-hidden="true" className="w-5 h-5" fill="currentcolor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
@@ -75,7 +93,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 							</button>
 						</div>
 						<form onSubmit={handleSubmit} className='grid grid-cols-3 gap-x-6 gap-y-4'>
-							<SearchableSelect label={"Branch Manager"} />
+							<SearchableSelect value={branchManager} onChange={(e) => { setBranchManager(e) }} label={"Branch Manager"} options={branchManagerOptions} />
 							<Input label={"Name"} value={formState.name} onChange={handleChange} id={"name"} />
 							<Input label={"Address Line"} value={formState.addressline} onChange={handleChange} id={"addressline"} />
 							<Input label={"Street"} value={formState.street} onChange={handleChange} id={"street"} />
@@ -88,7 +106,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 							<Input label={"Email"} value={formState.email} onChange={handleChange} id={"email"} />
 							<Input label={"Phone"} value={formState.phone} onChange={handleChange} id={"phone"} />
 							<div className='col-span-3 flex justify-center'>
-								<Button type='submit' text='Submit' className={"w-max px-12"} />
+								<Button loading={loading} type='submit' text='Submit' className={"w-max px-12"} />
 							</div>
 						</form>
 					</div>
