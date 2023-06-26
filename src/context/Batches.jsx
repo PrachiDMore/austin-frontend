@@ -12,7 +12,7 @@ const BatchesContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (authToken) {
-            if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
+            if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
                 axios(`${process.env.REACT_APP_BASE_URL}/batch/`)
                     .then((res) => {
                         if (res.data.error) {

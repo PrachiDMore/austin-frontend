@@ -3,7 +3,7 @@ import extractToken from "../Utils/ExtractToken";
 
 const ProtectedRoutes = ({role}) => {
 	return (
-		extractToken()?.role === role ? <Outlet /> : <Navigate to="/signin" />
+		role?.includes(extractToken()?.role) ? <Outlet /> : <Navigate to="/signin" />
 	);
 };
 export default ProtectedRoutes;

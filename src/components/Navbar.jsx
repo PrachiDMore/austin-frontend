@@ -83,27 +83,61 @@ const Navbar = () => {
             path: "/teacher/chapters",
         },
     ]
-    const [routes, setRoutes] = useState(extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}` ? STUDENT_ROUTES : extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` ? ADMIN_ROUTES : TEACHER_ROUTES)
-  return (
-    <>
-        <nav className='px-6 flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito'>
-            <div className='w-[10%] flex justify-center items-center'>
-                <img className='w-48 h-auto' src="/assets/logo.jpg" alt="" />
-            </div>
-            <ul className='px-10 w-[70%] flex justify-start gap-x-10 items-center '>
-                {
-                    routes?.map((route) => {
-                        return <Link className='navLink hover:text-darkPurple font-semibold' to={route.path}>{route.label}</Link>
-                    })
-                }
-            </ul>
-            <div className='w-[20%] flex justify-end items-center'>
-                {!extractToken()?.role && <Link to='/signup' className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>}
-                {extractToken()?.role && <Logout className={"w-max px-10"}/>}
-            </div>
-        </nav>
-    </>
-  )
+    const BRANCH_MANAGER_ROUTES = [
+        {
+            label: "Profile",
+            path: "/branch-manager/profile"
+        },
+        {
+            label: "Admission",
+            path: "/admin/admissions"
+        },
+        {
+            label: "Teachers",
+            path: "/admin/teachers"
+        },
+        {
+            label: "Subjects",
+            path: "/admin/subjects"
+        },
+        {
+            label: "Chapters",
+            path: "/admin/chapters"
+        },
+        {
+            label: "Courses",
+            path: "/admin/courses"
+        },
+        {
+            label: "Batches",
+            path: "/admin/batches"
+        },
+        {
+            label: "Allocation",
+            path: "/admin/chapter-allocation"
+        },
+    ]
+    const [routes, setRoutes] = useState(extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}` ? STUDENT_ROUTES : extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` ? ADMIN_ROUTES : extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` ? BRANCH_MANAGER_ROUTES : TEACHER_ROUTES)
+    return (
+        <>
+            <nav className='px-6 flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito'>
+                <div className='w-[10%] flex justify-center items-center'>
+                    <img className='w-48 h-auto' src="/assets/logo.jpg" alt="" />
+                </div>
+                <ul className='px-10 w-[70%] flex justify-start gap-x-10 items-center '>
+                    {
+                        routes?.map((route) => {
+                            return <Link className='navLink hover:text-darkPurple font-semibold' to={route.path}>{route.label}</Link>
+                        })
+                    }
+                </ul>
+                <div className='w-[20%] flex justify-end items-center'>
+                    {!extractToken()?.role && <Link to='/signup' className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>}
+                    {extractToken()?.role && <Logout className={"w-max px-10"} />}
+                </div>
+            </nav>
+        </>
+    )
 }
 
 export default Navbar

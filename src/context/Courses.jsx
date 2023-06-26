@@ -11,7 +11,7 @@ const CourseContextProvider = ({ children }) => {
     const [courseOptions, setCourseOptions] = useState([]);
 
     useEffect(() => {
-        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
+        if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/course/`)
                 .then((res) => {
                     if (res.data.error) {
