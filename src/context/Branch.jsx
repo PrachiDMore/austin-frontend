@@ -1,25 +1,44 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useContext, createContext, useState } from 'react';
+import extractToken from '../Utils/ExtractToken';
+import { UseAuthContext } from './Authentication';
 
 const BranchContext = createContext();
 
 const BranchContextProvider = ({ children }) => {
 	const [branches, setBranches] = useState([]);
 	const [branchOptions, setBranchOptions] = useState([]);
+	const { authToken } = UseAuthContext();
 
 	useEffect(() => {
-		axios(`${process.env.REACT_APP_BASE_URL}/branch/`, {
-			method: "GET"
-		})
-			.then((res) => {
-				if (res.data.error) {
-					console.log(res.data.message)
-				} else {
-					setBranches(res.data.branches);
+		if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
+			axios(`${process.env.REACT_APP_BASE_URL}/branch/`, {
+				method: "GET"
+			})
+				.then((res) => {
+					if (res.data.error) {
+						console.log(res.data.message)
+					} else {
+						setBranches(res.data.branches);
+					}
+				})
+		} else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
+			axios(`${process.env.REACT_APP_BASE_URL}/branch/`, {
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${extractToken()?.token}`
 				}
 			})
-	}, []);
+				.then((res) => {
+					if (res.data.error) {
+						console.log(res.data.message)
+					} else {
+						setBranches(res.data.branches);
+					}
+				})
+		}
+	}, [authToken]);
 
 	useEffect(() => {
 		setBranchOptions(branches?.map((branch) => {

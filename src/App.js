@@ -38,6 +38,7 @@ import { BranchManagerContextProvider } from "./context/BranchManager";
 import ResetPassword from "./pages/ResetPassword";
 import ForgetPassword from "./pages/ForgetPassword";
 import BranchManagerProfile from "./pages/branch-manager/BranchManagerProfile";
+import BranchChapterAllocation from "./pages/branch-manager/BranchChapterAllocation";
 
 function App() {
   return (
@@ -70,6 +71,7 @@ function App() {
                                   <Route element={<ProtectedRoutes role={`${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`} />}>
                                     <Route path="/branch-manager/profile" element={<BranchManagerProfile />} />
                                     <Route path="/branch-manager/batches" element={<BranchManagerProfile />} />
+                                    <Route path="/branch-manager/chapter-allocation" element={<BranchChapterAllocation />} />
                                   </Route>
                                   <Route element={<ProtectedRoutes role={`${process.env.REACT_APP_ADMIN_ROLE}`} />}>
                                     <Route path="/" element={<Home />} />
