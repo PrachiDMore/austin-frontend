@@ -42,7 +42,7 @@ const ForgetPassword = () => {
 					<h1 className='text-3xl font-bold mb-1'>Forget password?</h1>
 					<p className='font-semibold text-gray-600'>No worries, we'll send you reset instructions.</p>
 					<div className='w-10/12 flex flex-col mt-3 gap-3'>
-						<Select onChange={(e) => { setType(e.target.value) }} value={type} placeholder={"Enter your role"} label={"Role"} options={[{ label: "Admin", value: "admin" }, { label: "Student", value: "student" }, { label: "Teacher", value: "teacher" },]} />
+						<Select onChange={(e) => { setType(e.target.value) }} value={type} placeholder={"Enter your role"} label={"Role"} options={[{ label: "Admin", value: "admin" }, { label: "Student", value: "student" }, { label: "Teacher", value: "teacher" }, { label: "Branch Manager", value: "branch-manager" },]} />
 						<Input type={"email"} onChange={(e) => { setEmail(e.target.value) }} value={email} placeholder={"Enter your email address"} label={"Email address"} />
 						<Button loading={loading} className={"w-full mt-3"} text='Reset Password' type='submit' />
 						<Link className='flex items-center justify-center gap-2 mt-5 font-semibold text-darkPurple' to={"/signin"}><HiOutlineArrowNarrowLeft className='text-xl' /> <p>Back to login</p></Link>

@@ -90,31 +90,31 @@ const Navbar = () => {
         },
         {
             label: "Admission",
-            path: "/admin/admissions"
+            path: "/branch-manager/admissions"
         },
         {
             label: "Teachers",
-            path: "/admin/teachers"
+            path: "/branch-manager/teachers"
         },
         {
             label: "Subjects",
-            path: "/admin/subjects"
+            path: "/branch-manager/subjects"
         },
         {
             label: "Chapters",
-            path: "/admin/chapters"
+            path: "/branch-manager/chapters"
         },
         {
             label: "Courses",
-            path: "/admin/courses"
+            path: "/branch-manager/courses"
         },
         {
             label: "Batches",
-            path: "/admin/batches"
+            path: "/branch-manager/batches"
         },
         {
             label: "Allocation",
-            path: "/admin/chapter-allocation"
+            path: "/branch-manager/chapter-allocation"
         },
     ]
     const [routes, setRoutes] = useState(extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}` ? STUDENT_ROUTES : extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` ? ADMIN_ROUTES : extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` ? BRANCH_MANAGER_ROUTES : TEACHER_ROUTES)

@@ -70,14 +70,8 @@ function App() {
                                     <Route path="/student/courses" element={<StudentEnrolledCourse />} />
                                     <Route path="/student/chapters" element={<StudentCourseChapters />} />
                                   </Route>
-                                  <Route element={<ProtectedRoutes role={`${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`} />}>
-                                    <Route path="/branch-manager/profile" element={<BranchManagerProfile />} />
-                                    <Route path="/branch-manager/batches" element={<BranchManagerProfile />} />
-                                    <Route path="/branch-manager/courses" element={<BranchManagerCourses />} />
-                                    <Route path="/branch-manager/chapter-allocation" element={<BranchChapterAllocation />} />
-                                  </Route>
                                     <Route path="/admin/branch-manager" element={<BranchManager />} />
-                                  <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_ADMIN_ROLE}`,`${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`]} />}>
+                                  <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_ADMIN_ROLE}`]} />}>
                                     <Route path="/" element={<Home />} />
                                     {/* <Route path="/admin/roles" element={<Roles />} /> */}
                                     <Route
@@ -95,6 +89,25 @@ function App() {
                                     <Route path="/admin/chapters" element={<ViewChapters />} />
                                     <Route path="/admin/courses" element={<ViewCourses />} />
                                     <Route path="/admin/batches" element={<ViewBatch />} />
+                                  </Route>
+                                  <Route element={<ProtectedRoutes role={[,`${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`]} />}>
+                                    <Route path="/" element={<Home />} />
+                                    <Route path="/branch-manager/profile" element={<BranchManagerProfile />} />
+                                    {/* <Route path="/admin/roles" element={<Roles />} /> */}
+                                    <Route
+                                      path="/branch-manager/admissions"
+                                      element={<ViewAdmissions />}
+                                    />
+                                    <Route
+                                      path="/branch-manager/admissions/:_id"
+                                      element={<AdmissionPage />}
+                                    />
+                                    <Route path="/branch-manager/teachers" element={<ViewTeachers />} />
+                                    <Route path="/branch-manager/chapter-allocation" element={<ChapterAllocation />} />
+                                    <Route path="/branch-manager/subjects" element={<ViewSubjects />} />
+                                    <Route path="/branch-manager/chapters" element={<ViewChapters />} />
+                                    <Route path="/branch-manager/courses" element={<ViewCourses />} />
+                                    <Route path="/branch-manager/batches" element={<ViewBatch />} />
                                   </Route>
                                   <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_TEACHER_ROLE}`]} />}>
                                     <Route path="/teacher" element={<Home />} />
