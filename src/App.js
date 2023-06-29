@@ -41,6 +41,8 @@ import BranchManagerProfile from "./pages/branch-manager/BranchManagerProfile";
 import BranchChapterAllocation from "./pages/branch-manager/BranchChapterAllocation";
 import BranchManagerCourses from "./pages/branch-manager/BranchManagerCourses";
 import extractToken from "./Utils/ExtractToken";
+import Timetable from "./pages/Timetable";
+import TeacherAttendance from "./pages/teacher/TeacherAttendance";
 
 function App() {
   return (
@@ -89,6 +91,7 @@ function App() {
                                     <Route path="/admin/chapters" element={<ViewChapters />} />
                                     <Route path="/admin/courses" element={<ViewCourses />} />
                                     <Route path="/admin/batches" element={<ViewBatch />} />
+                                    <Route path="/admin/timetable" element={<Timetable />} />
                                   </Route>
                                   <Route element={<ProtectedRoutes role={[,`${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`]} />}>
                                     <Route path="/" element={<Home />} />
@@ -115,6 +118,7 @@ function App() {
                                     <Route path="/teacher/batches" element={<TeacherBatches />} />
                                     <Route path="/teacher/chapters" element={<TeacherChapters />} />
                                     <Route path="/teacher/courses" element={<TeacherCourses />} />
+                                    <Route path="/teacher/attendance" element={<TeacherAttendance />} />
                                   </Route>
                                 </Routes>
                               </AdmissionContextProvider>
