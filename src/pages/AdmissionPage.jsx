@@ -35,7 +35,7 @@ const AdmissionPage = () => {
                 .catch((err) => {
                     setMessage(err.message)
                 })
-        } 
+        }
     }, [_id]);
 
     const handleChange = (e) => {
@@ -100,7 +100,7 @@ const AdmissionPage = () => {
                 console.log('Form incompletely filled')
             }
         } else {
-            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
+            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/create`, {
                     method: 'POST',
                     data: formState
@@ -120,7 +120,7 @@ const AdmissionPage = () => {
                     })
             } else {
                 setLoading(false)
-                console.log('Form incompletely filled')
+                console.log('Form incompletely filled', formState)
             }
         }
     }
@@ -130,7 +130,7 @@ const AdmissionPage = () => {
             method: "PATCH",
             data: { isDisabled: e }
         })
-        .then((res) => {
+            .then((res) => {
                 setDisableLoading(false)
                 navigate("/admin/admissions")
             })
@@ -159,7 +159,6 @@ const AdmissionPage = () => {
                             <Input value={formState?.firstname} required={true} onChange={handleChange} id={'firstname'} type={"text"} label={'First Name'} placeholder={'Enter your first name.'} />
                             <Input value={formState?.middlename} required={true} onChange={handleChange} id={'middlename'} type={"text"} label={'Middle Name'} placeholder={'Enter your middle name.'} />
                             <Input value={formState?.lastname} required={true} onChange={handleChange} id={'lastname'} type={"text"} label={'Last Name'} placeholder={'Enter your last name.'} />
-                            <Input onChange={handleChange} id={'photoURL'} type={"file"} label={'Profile Image'} />
                             <Select value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
                             <Input value={formState?.DOB} required={true} onChange={handleChange} id={'DOB'} type={"date"} label={'Date of Birth'} placeholder={'Enter your last name.'} />
                             <Input value={formState?.address} required={true} onChange={handleChange} id={'address'} type={"text"} label={'Address'} placeholder={'Enter your address.'} />

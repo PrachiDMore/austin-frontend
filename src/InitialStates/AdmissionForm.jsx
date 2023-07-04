@@ -3,7 +3,7 @@ const admissionFormInitialState = {
 	lastname: "",
 	middlename: "",
 	photoURL: "",
-	gender: "",
+	gender: "male",
 	DOB: "",
 	address: "",
 	landmark: "",

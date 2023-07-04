@@ -21,14 +21,15 @@ const ViewTeachers = () => {
             setSearchteachers(teachers)
         } else {
             setSearchteachers(teachers.filter((data) => {
-                return `${data.firstname} ${data.lastname}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || data?.gender?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.email?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.mobileNoPrimary?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.grade?.toLowerCase()?.includes(e.target.value.toLowerCase())
+                const disabled = data?.isDisabled ? "Disabled" : "Enabled";
+                return data?.fullname?.toLowerCase().includes(e?.target?.value?.toLowerCase()) || data?.email?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.phoneNumber?.toLowerCase()?.includes(e.target.value.toLowerCase()) || data?.username?.toLowerCase()?.includes(e.target.value.toLowerCase()) || disabled?.toLowerCase()?.includes(e.target.value?.toLowerCase())
             }))
         }
     }
     return (
         <>
             <Navbar />
-            <TeacherModal setShowModal={setShowModal} showModal={showModal} />
+            <TeacherModal key={Date.now()} setShowModal={setShowModal} showModal={showModal} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
@@ -45,7 +46,6 @@ const ViewTeachers = () => {
                     </div>
                 </div>
 
-
                 <div className="mx-auto">
                     <div className="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
                         <div className="overflow-x-auto">
@@ -55,7 +55,7 @@ const ViewTeachers = () => {
                                         <th scope="col" className="px-6 py-5">Name</th>
                                         <th scope="col" className="px-6 py-5">Email</th>
                                         <th scope="col" className="px-6 py-5">Phone Number</th>
-                                        <th scope="col" className="px-6 py-5">Salary Type</th>
+                                        <th scope="col" className="px-6 py-5">Enabled</th>
                                         <th scope="col" className="px-6 py-5">Actions</th>
                                     </tr>
                                 </thead>
@@ -66,12 +66,11 @@ const ViewTeachers = () => {
                                                 <th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.fullname}</th>
                                                 <td className="px-6 py-4">{data?.email}</td>
                                                 <td className="px-6 py-4">{data?.phoneNumber}</td>
-                                                <td className="px-6 py-4 capitalize">{data?.salaryType}</td>
+                                                <td className="px-6 py-4 capitalize">{data?.isDisabled ? "Disabled" : "Enabled"}</td>
                                                 <td className="px-6 py-4 capitalize flex gap-3">
                                                     <span onClick={() => {
                                                         setShowModal({ show: true, update: true, data: data })
                                                     }} className='text-white bg-darkPurple h-8 w-8 flex items-center justify-center cursor-pointer rounded-lg'><FiEdit3 /></span>
-                                                    {/* <span><FiTrash/></span> */}
                                                 </td>
                                             </tr>
                                         })

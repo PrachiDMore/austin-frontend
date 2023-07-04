@@ -1,34 +1,24 @@
 import React, { useState } from 'react'
-import Navbar from '../../components/Navbar'
-import Input from '../../components/Input'
+import Navbar from '../components/Navbar'
+import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { FiEdit3 } from 'react-icons/fi'
-import AttendanceModal from '../../Modals/AttendanceModal'
-import { UseAttendanceContext } from '../../context/Attendance'
+import { UseAttendanceContext } from '../context/Attendance'
 import moment from 'moment'
 
-const TeacherAttendance = () => {
-	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
-	const { attendance } = UseAttendanceContext();
-	const handleSearch = () => {
+const Attendance = () => {
+	const { attendance } = UseAttendanceContext()
+	const handleSearch = (e) => {
 
 	}
 	return (
 		<>
 			<Navbar />
-			<AttendanceModal key={Date.now()} showModal={showModal} setShowModal={setShowModal} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
-					<div className='w-[85%]'>
+					<div className='w-[100%]'>
 						<Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
 						<GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
-					</div>
-					<div className='ml-[10px] w-[15%]'>
-						<button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple w-full" type="button" onClick={() => {
-							setShowModal({ show: true, update: false, data: undefined })
-						}}>
-							Mark Attendance
-						</button>
 					</div>
 				</div>
 
@@ -43,6 +33,7 @@ const TeacherAttendance = () => {
 										<th scope="col" className="px-6 py-5">Chapter (Subject)</th>
 										<th scope="col" className="px-6 py-5">Date</th>
 										<th scope="col" className="px-6 py-5">Start Time - End Time</th>
+										<th scope="col" className="px-6 py-5">Teacher</th>
 									</tr>
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
@@ -55,6 +46,9 @@ const TeacherAttendance = () => {
 												<td className="px-6 py-4">{data?.chapter?.name} ({data?.subject?.name})</td>
 												<td className="px-6 py-4">{moment(data?.date).format("do MMM, YYYY")}</td>
 												<td className="px-6 py-4">{moment(data?.startTime).format("hh:mm a") + " - " + moment(data?.endTime).format("hh:mm a")}</td>
+												<td className="px-6 py-4 capitalize flex gap-3">
+													{data?.teacher?.fullname} ({data?.teacher?.username})
+												</td>
 											</tr>
 										})
 									}
@@ -68,4 +62,4 @@ const TeacherAttendance = () => {
 	)
 }
 
-export default TeacherAttendance
+export default Attendance

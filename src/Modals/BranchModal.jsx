@@ -26,6 +26,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 	useEffect(() => {
 		if (showModal.update) {
 			setFormState(showModal.data)
+			console.log(branchManagerOptions?.filter((branchManager) => {
+				return branchManager._id === showModal.data.manager._id
+			}))
 			setBranchManager(branchManagerOptions?.filter((branchManager) => {
 				return branchManager?._id === showModal?.data?.manager?._id;
 			})[0])

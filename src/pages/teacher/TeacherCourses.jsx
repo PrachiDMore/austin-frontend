@@ -3,9 +3,10 @@ import Navbar from '../../components/Navbar'
 import Input from '../../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { UseBatchesContext } from '../../context/Batches'
+import { UseCourseContext } from '../../context/Courses'
 
 const TeacherCourses = () => {
-	const { batches } = UseBatchesContext()
+	const { courses } = UseCourseContext();
 	return (
 		<>
 			<Navbar />
@@ -30,13 +31,13 @@ const TeacherCourses = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										batches?.map((batch) => {
+										courses?.map((course) => {
 											return (
-												<tr key={batch?._id} className="border-b border-darkPurple">
-													<td className="px-6 py-4">{batch?.course?.name}</td>
-													<td className="px-6 py-4">{batch?.course?.grade}</td>
-													<td className="px-6 py-4">{batch?.course?.subjects?.length}</td>
-													<td className="px-6 py-4">{batch?.course?._id}</td>
+												<tr key={course?._id} className="border-b border-darkPurple">
+													<td className="px-6 py-4">{course?.name}</td>
+													<td className="px-6 py-4">{course?.grade}</td>
+													<td className="px-6 py-4">{course?.subjects?.length}</td>
+													<td className="px-6 py-4">{course?._id}</td>
 												</tr>
 											)
 										})

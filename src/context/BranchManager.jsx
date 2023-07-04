@@ -18,7 +18,6 @@ const BranchManagerContextProvider = ({ children }) => {
                 if (res?.error) {
                     console.error(res.message)
                 } else {
-                    console.log(res.data.users)
                     setBranchManagers(res?.data?.users)
                 }
             })

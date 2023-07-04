@@ -47,8 +47,8 @@ const Navbar = () => {
             path: "/admin/branch-manager"
         },
         {
-            label: "Timetable",
-            path: "/admin/timetable"
+            label: "Attendance",
+            path: "/admin/attendance"
         },
     ]
     const STUDENT_ROUTES = [

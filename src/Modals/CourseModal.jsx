@@ -124,7 +124,6 @@ const CourseModal = ({ setShowModal, showModal }) => {
                         <button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
                             onClick={() => {
                                 setShowModal({ show: false, update: false, data: undefined })
-                                setShowModal({ show: false, update: false, data: undefined })
                                 setSelectedSubject();
                                 setSelectedSubjects([]);
                                 setDisplayChapters([])
@@ -166,28 +165,28 @@ const CourseModal = ({ setShowModal, showModal }) => {
                                     }
                                 </tbody>
                             </table>
-                            <table className="w-full text-left text-gray-500 dark:text-gray-400 h-max">
-                                <thead className="text-sm uppercase bg-darkPurple text-white">
-                                    <tr>
-                                        <th scope="col" className="px-6 py-5">Chapter Name</th>
-                                        <th scope="col" className="px-6 py-5">Hours</th>
-                                        <th scope="col" className="px-6 py-5">Chapter ID</th>
-                                    </tr>
-                                </thead>
-                                <tbody className='text-gray-700 mt-5'>
+                            <div className="w-full text-left text-gray-500 h-max">
+                                <div className="text-sm uppercase bg-darkPurple text-white">
+                                    <div className='py-5 font-bold grid grid-cols-12'>
+                                        <span className="pl-5 col-span-5">Chapter Name</span>
+                                        <span className="pl-5 col-span-2">Hours</span>
+                                        <span className="pl-5 col-span-5">Chapter ID</span>
+                                    </div>
+                                </div>
+                                <div className='grid grid-cols-1 text-gray-700 max-h-[260px] overflow-scroll'>
                                     {
                                         displayChapters?.map((chapter) => {
                                             return (
-                                                <tr key={chapter?._id} className="border-b border-darkPurple h-max">
-                                                    <td className="px-6 py-4">{chapter?.name}</td>
-                                                    <td className="px-6 py-4">{chapter?.hours}</td>
-                                                    <td className="px-6 py-4">{chapter?._id}</td>
+                                                <tr key={chapter?._id} className="grid grid-cols-12 py-4 border-b border-darkPurple h-max">
+                                                    <td className="pl-5 col-span-5">{chapter?.name}</td>
+                                                    <td className="pl-5 col-span-2">{chapter?.hours}</td>
+                                                    <td className="pl-5 col-span-5">{chapter?._id}</td>
                                                 </tr>
                                             )
                                         })
                                     }
-                                </tbody>
-                            </table>
+                                </div>
+                            </div>
                         </div>
 
                         <div className="flex items-center space-x-4 justify-center">

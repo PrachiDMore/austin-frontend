@@ -12,7 +12,7 @@ const ViewCourses = () => {
     return (
         <>
             <Navbar />
-            <CourseModal showModal={showModal} setShowModal={setShowModal} />
+            <CourseModal key={Date.now().toString()} showModal={showModal} setShowModal={setShowModal} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

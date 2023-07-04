@@ -30,7 +30,7 @@ const TeacherContextProvider = ({ children }) => {
                 return {
                     ...e,
                     value: e._id,
-                    label: `${e.fullname} (${e.salaryType})`
+                    label: `${e.fullname} (${e.username})`
                 }
             }
         }))

@@ -81,9 +81,9 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                         } else {
                             setLoading(false)
                             setShowModal({ update: false, show: false, id: undefined })
-                            setSubjectValue()
                             setChapters(addElementInArray(chapters, res.data.chapter))
                             setFormState(ChapterForm);
+                            setSubjectValue()
                         }
                     })
                     .catch((err) => {

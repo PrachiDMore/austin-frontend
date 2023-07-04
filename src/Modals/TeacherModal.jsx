@@ -51,7 +51,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            if (formState.fullname  && formState.email && formState.username && formState.phoneNumber && formState.salaryType) {
+            if (formState.fullname && formState.email && formState.username && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
                     method: 'PATCH',
                     data: { ...formState, subject: selectedSubjects }
@@ -86,7 +86,6 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                     .then((res) => {
                         if (res.data.error) {
                             setMessage(res.data.message)
-                            console.log(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSelectedSubjects([])
 
@@ -129,36 +128,13 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                         </div>
                         <form action="#" onSubmit={handleSubmit}>
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <div>
-                                    <Input onChange={handleChange} required={true} value={formState.fullname} id="fullname" type={"text"} label={'Full Name'} placeholder={'Enter your full name.'} />
-                                </div>
-                                <div>
-                                    <SearchableSelect label={"Subjects"} value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
-                                </div>
-                            </div>
-                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <div>
-                                    <Input onChange={handleChange} required={true} value={formState.email} type="email" id="email" label={'Email'} placeholder={'Enter your email'} />
-                                </div>
-                                <div>
-                                    <Input onChange={handleChange} required={true} value={formState.phoneNumber} type="text" id="phoneNumber" label={'Phone Number'} placeholder="Phone Number" />
-                                </div>
-                            </div>
-                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <div>
-                                    <Input onChange={handleChange} required={true} value={formState.username} type="text" id="username" label={'Username'} placeholder="Username" />
-                                </div>
-                                <div>
-                                    <Input onChange={handleChange} required={false} value={formState.password} type="password" id="password" label={'Password'} placeholder="Password" />
-                                </div>
-                            </div>
-                            <div className="grid gap-4 mb-4 sm:grid-cols-2">
-                                <div>
-                                    <Select options={[{ label: "Disable", value: true }, { label: "Enable", value: false }]} onChange={handleChange} required={true} value={formState.isDisabled} id="isDisabled" label={'Disable Teacher'} placeholder="Disable Teacher" />
-                                </div>
-                                <div>
-                                    <Select options={[{ label: "Monthly", value: "monthly" }, { label: "Hourly", value: "hourly" }]} onChange={handleChange} required={true} value={formState.salaryType} id="salaryType" label={'Salary Type'} placeholder="Salarytype" />
-                                </div>
+                                <Input onChange={handleChange} required={true} value={formState.fullname} id="fullname" type={"text"} label={'Full Name'} placeholder={'Enter your full name.'} />
+                                <SearchableSelect label={"Subjects"} value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />
+                                <Input onChange={handleChange} required={true} value={formState.email} type="email" id="email" label={'Email'} placeholder={'Enter your email'} />
+                                <Input onChange={handleChange} required={true} value={formState.phoneNumber} type="text" id="phoneNumber" label={'Phone Number'} placeholder="Phone Number" />
+                                <Input onChange={handleChange} required={true} value={formState.username} type="text" id="username" label={'Username'} placeholder="Username" />
+                                {!showModal?.update && <Input onChange={handleChange} required={false} value={formState.password} type="password" id="password" label={'Password'} placeholder="Password" />}
+                                <Select options={[{ label: "Disable", value: true }, { label: "Enable", value: false }]} onChange={handleChange} required={true} value={formState.isDisabled} id="isDisabled" label={'Disable Teacher'} placeholder="Disable Teacher" />
                             </div>
                             <div className="flex items-center space-x-4 justify-center">
                                 <Button type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />

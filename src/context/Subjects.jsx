@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import extractToken from "../Utils/ExtractToken";
 
 const SubjectContext = createContext();
 
@@ -8,17 +9,19 @@ const SubjectContextProvider = ({ children }) => {
     const [subjectOptions, setSubjectOptions] = useState([]);
 
     useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/subject/`)
-            .then((res) => {
-                if (res.data.error) {
-                    console.log(res.data.message)
-                } else {
-                    setSubjects(res.data.subjects)
-                }
-            })
-            .catch((err) => {
-                console.log(err.message)
-            })
+        if (extractToken()?.token) {
+            axios(`${process.env.REACT_APP_BASE_URL}/subject/`)
+                .then((res) => {
+                    if (res.data.error) {
+                        console.log(res.data.message)
+                    } else {
+                        setSubjects(res.data.subjects)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
+        }
     }, []);
 
     useEffect(() => {
