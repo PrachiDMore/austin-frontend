@@ -8,11 +8,12 @@ const ChapterAllocationContext = createContext();
 
 const ChapterAllocationContextProvider = ({ children }) => {
     const [chapterAllocations, setChapterAllocations] = useState([]);
-    const { batches } = UseBatchesContext()
-    const {user} = UseAuthContext()
+    const [individualChapterAllocation, setIndividualChapterAllocation] = useState([]);
+    const { batches, individualBatches } = UseBatchesContext()
+    const { user } = UseAuthContext()
 
     useEffect(() => {
-        if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
+        if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/`, {
                 method: "GET"
             })
@@ -26,10 +27,23 @@ const ChapterAllocationContextProvider = ({ children }) => {
                 .catch((err) => {
                     console.log(err.message)
                 })
+            axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/`, {
+                method: "GET"
+            })
+                .then((res) => {
+                    if (res.data.error) {
+                        console.log(res.data.message)
+                    } else {
+                        setIndividualChapterAllocation(res.data.chapterAllocations)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
         } else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/teacher`, {
                 method: "GET",
-                headers:{
+                headers: {
                     Authorization: `Bearer ${extractToken()?.token}`
                 }
             })
@@ -38,6 +52,22 @@ const ChapterAllocationContextProvider = ({ children }) => {
                         console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
+            axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/teacher`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
+            })
+                .then((res) => {
+                    if (res.data.error) {
+                        console.log(res.data.message)
+                    } else {
+                        setIndividualChapterAllocation(res.data.chapterAllocations)
                     }
                 })
                 .catch((err) => {
@@ -62,10 +92,29 @@ const ChapterAllocationContextProvider = ({ children }) => {
                 .catch((err) => {
                     console.log(err.message)
                 })
+            const individualBatchId = individualBatches?.map((batch) => {
+                return batch._id
+            })
+            console.log(individualBatchId)
+            axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/`, {
+                method: "GET"
+            })
+                .then((res) => {
+                    if (res.data.error) {
+                        console.log(res.data.message)
+                    } else {
+                        setIndividualChapterAllocation(res?.data?.chapterAllocations?.filter((chapterAllocation) => {
+                            return individualBatchId?.includes(chapterAllocation?.individualBatch?._id)
+                        }));
+                    }
+                })
+                .catch((err) => {
+                    console.log(err.message)
+                })
         }
-    }, [batches]);
+    }, [batches, individualBatches]);
 
-    return <ChapterAllocationContext.Provider value={{ chapterAllocations, setChapterAllocations }}>
+    return <ChapterAllocationContext.Provider value={{ chapterAllocations, setChapterAllocations, individualChapterAllocation, setIndividualChapterAllocation }}>
         {children}
     </ChapterAllocationContext.Provider>
 }

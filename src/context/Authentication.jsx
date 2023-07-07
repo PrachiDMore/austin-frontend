@@ -26,7 +26,6 @@ export const AuthContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authToken) {
-			console.log(extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`)
 			if (extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/admission/token`, {
 					method: "GET",
@@ -78,7 +77,6 @@ export const AuthContextProvider = ({ children }) => {
 					}
 				})
 					.then((res) => {
-						console.log(res.data.user)
 						if (res.data.error) {
 							console.error(res.data.message)
 						} else {

@@ -11,7 +11,7 @@ const Alert = ({ message, setMessage }) => {
 	}, [message]);
 	return (
 		<>
-			<div className={message.length > 0 ? 'shadow-xl rounded-xl min-w-[30vw] fixed top-10 border-2 duration-300 left-1/2 -translate-x-1/2 bg-white py-3 px-10 flex justify-center' : 'shadow-xl rounded-xl min-w-[30vw] fixed -top-10 border-2 duration-300 left-1/2 -translate-x-1/2 bg-white py-3 px-10 flex justify-center'}>{message}</div>
+			<div className={message?.length > 0 ? 'shadow-xl rounded-xl min-w-[30vw] fixed top-10 border-2 duration-300 left-1/2 -translate-x-1/2 bg-white py-3 px-10 flex justify-center' : 'shadow-xl rounded-xl min-w-[30vw] fixed -top-10 border-2 duration-300 left-1/2 -translate-x-1/2 bg-white py-3 px-10 flex justify-center'}>{message}</div>
 		</>
 	)
 }

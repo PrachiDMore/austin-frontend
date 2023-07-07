@@ -13,12 +13,12 @@ import axios from 'axios';
 import Button from '../components/Button';
 import { UseAdmissionContext } from '../context/Admission';
 
-const BatchModal = ({ setShowModal, showModal }) => {
+const IndividualBatchModal = ({ setShowModal, showModal }) => {
 	const { admissionOptions } = UseAdmissionContext()
 	const { branchOptions } = UseBranchContext();
-	const { batches, setBatches } = UseBatchesContext()
+	const { individualBatches, setIndividualBatches } = UseBatchesContext()
 	const { courseOptions } = UseCourseContext();
-	const [formState, setFormState] = useState(batchInitialState);
+	const [formState, setFormState] = useState({...batchInitialState, typeOfBatch: 'one-on-one'});
 	const [course, setCourse] = useState();
 	const [branch, setBranch] = useState();
 	const [students, setStudents] = useState([]);
@@ -26,7 +26,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (showModal.update) {
-			axios(`${process.env.REACT_APP_BASE_URL}/batch/${showModal?.data?._id}`, {
+			axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/${showModal?.data?._id}`, {
 				method: "PATCH",
 				data: {
 					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
@@ -38,7 +38,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 					if (res.data.error) {
 						console.log(res.data.message)
 					} else {
-						setBatches(updateElementsInArray(batches, res.data.batch, showModal.data))
+						setIndividualBatches(updateElementsInArray(individualBatches, res.data.batch, showModal.data))
 						setShowModal({ show: false, update: false, data: undefined })
 						setStudents([])
 						setBranch()
@@ -46,7 +46,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 					}
 				})
 		} else {
-			axios(`${process.env.REACT_APP_BASE_URL}/batch/create`, {
+			axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/create`, {
 				method: "POST",
 				data: {
 					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
@@ -58,7 +58,7 @@ const BatchModal = ({ setShowModal, showModal }) => {
 					if (res.data.error) {
 						console.log(res.data.message)
 					} else {
-						setBatches(addElementInArray(batches, res.data.batch))
+						setIndividualBatches(addElementInArray(individualBatches, res.data.batch))
 						setShowModal({ show: false, update: false, data: undefined })
 						setStudents([])
 						setBranch()
@@ -123,6 +123,8 @@ const BatchModal = ({ setShowModal, showModal }) => {
 							<SearchableSelect label={"Students"} value={students} onChange={(e) => { setStudents(e) }} isMulti={true} options={admissionOptions} className={"col-span-2"} />
 							<Input onChange={handleChange} label={"Name"} id={"name"} value={formState.name} placeholder={"Batch name"} />
 							<Input onChange={handleChange} label={"Academic Year"} id={"academicYear"} value={formState.academicYear} placeholder={"Academic year (2022-2023)"} />
+							<Input type={"number"} onChange={handleChange} label={"Hours"} id={"hours"} value={formState.hours} placeholder={"Hours"} />
+							<Input type={"number"} onChange={handleChange} label={"Amount Per Student"} id={"amountPerStudent"} value={formState.amountPerStudent} placeholder={"Amount per student"} />
 							<SearchableSelect onChange={(e) => { setBranch(e) }} label={"Branch"} value={branch} options={branchOptions} />
 							<SearchableSelect label={"Course"} onChange={(e) => { setCourse(e) }} value={course} options={courseOptions} />
 							<div className='col-span-2 flex justify-center'>
@@ -136,4 +138,4 @@ const BatchModal = ({ setShowModal, showModal }) => {
 	)
 }
 
-export default BatchModal
+export default IndividualBatchModal

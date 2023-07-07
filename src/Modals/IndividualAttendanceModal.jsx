@@ -3,7 +3,6 @@ import { UseBatchesContext } from '../context/Batches'
 import SearchableSelect from '../components/SearchableSelect'
 import Input from '../components/Input'
 import { useEffect } from 'react'
-import moment from 'moment/moment'
 import Button from '../components/Button'
 import axios from 'axios'
 import extractToken from '../Utils/ExtractToken'
@@ -11,8 +10,8 @@ import { UseChapterAllocationContext } from '../context/ChapterAllocation'
 import { UseAttendanceContext } from '../context/Attendance'
 import addElementInArray from '../Utils/AddUniqueElementsInArray'
 
-const AttendanceModal = ({ showModal, setShowModal }) => {
-	const { batchOptions } = UseBatchesContext()
+const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
+	const { individualBatchOptions } = UseBatchesContext()
 	const [batch, setBatch] = useState();
 	const [studentOptions, setStudentOptions] = useState([])
 	const [startTime, setStartTime] = useState();
@@ -20,8 +19,8 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 	const [hours, setHours] = useState(0);
 	const [chapter, setChapter] = useState();
 	const [students, setStudents] = useState([]);
-	const { attendance, setAttendance } = UseAttendanceContext()
-	const { chapterAllocations, setChapterAllocations } = UseChapterAllocationContext()
+	const { individualAttendance, setIndividualAttendance } = UseAttendanceContext()
+	const { individualChapterAllocation, setIndividualChapterAllocation } = UseChapterAllocationContext()
 
 	useEffect(() => {
 		if (batch) {
@@ -42,7 +41,7 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 				return student.value
 			})
 			const date = Date.now()
-			axios(`${process.env.REACT_APP_BASE_URL}/attendance/create`, {
+			axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/create`, {
 				method: "POST",
 				headers: {
 					Authorization: `Bearer ${extractToken()?.token}`
@@ -51,7 +50,7 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 					students: studentsArray,
 					startTime: startTime,
 					endTime: endTime,
-					batch: batch.value,
+					individualBatch: batch.value,
 					date: date,
 					chapter: chapter?.value,
 					subject: chapter?.subject?._id,
@@ -65,12 +64,12 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 					if (res.data.error) {
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
-						setAttendance(addElementInArray(attendance, res?.data?.attendance))
-						const exceptUpdated = chapterAllocations?.filter((chapterAllocation) => {
+						setIndividualAttendance(addElementInArray(individualAttendance, res?.data?.attendance))
+						const exceptUpdated = individualChapterAllocation?.filter((chapterAllocation) => {
 							return chapterAllocation?._id !== res?.data?.chapterAllocation?._id
 						})
 						exceptUpdated.push(res?.data?.chapterAllocation)
-						setChapterAllocations(exceptUpdated);
+						setIndividualChapterAllocation(exceptUpdated);
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
@@ -99,9 +98,9 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 							</button>
 						</div>
 						<form action="#" onSubmit={handleSubmit} className='grid grid-cols-2 gap-x-6 gap-y-3'>
-							<SearchableSelect label={"Batch"} isMulti={false} value={batch} options={batchOptions} onChange={(e) => { setBatch(e) }} />
-							<SearchableSelect label={"Chapter"} isMulti={false} value={chapter} options={chapterAllocations?.filter((chapterAllocation) => {
-								return chapterAllocation?.batch?._id === batch?.value
+							<SearchableSelect label={"Batch"} isMulti={false} value={batch} options={individualBatchOptions} onChange={(e) => { setBatch(e) }} />
+							<SearchableSelect label={"Chapter"} isMulti={false} value={chapter} options={individualChapterAllocation?.filter((chapterAllocation) => {
+								return chapterAllocation?.individualBatch?._id === batch?.value
 							})?.map((chapterAllocation) => {
 								return {
 									...chapterAllocation,
@@ -132,4 +131,4 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 	)
 }
 
-export default AttendanceModal
+export default IndividualAttendanceModal

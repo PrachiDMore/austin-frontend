@@ -5,10 +5,10 @@ import { GrSearch } from 'react-icons/gr'
 import { FiEdit3 } from 'react-icons/fi'
 import { UseAttendanceContext } from '../context/Attendance'
 import moment from 'moment';
-import DisplayAttendance from "../Modals/DisplayAttendance";
+import IndividualDisplayAttendance from "../Modals/IndividualDisplayAttendance";
 
-const Attendance = () => {
-	const { attendance } = UseAttendanceContext();
+const IndividualAttendance = () => {
+	const { individualAttendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
 	const handleSearch = (e) => {
 
@@ -16,7 +16,7 @@ const Attendance = () => {
 	return (
 		<>
 			<Navbar />
-			<DisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
+			<IndividualDisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[100%]'>
@@ -41,11 +41,11 @@ const Attendance = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										attendance?.map((data) => {
+										individualAttendance?.map((data) => {
 											return <tr key={data?._id} onClick={() => {
 												setDisplayAttendance({ show: true, data: data })
 											}} className="border-b border-darkPurple">
-												<th scope="row" className="cursor-pointer px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.batch?.name}</th>
+												<th scope="row" className="cursor-pointer px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.individualBatch?.name}</th>
 												<td className="cursor-pointer px-6 py-4">{data?.students?.length}/{data?.allStudents?.length}</td>
 												<td className="cursor-pointer px-6 py-4">{data?.chapter?.name} ({data?.subject?.name})</td>
 												<td className="cursor-pointer px-6 py-4">{moment(data?.date).format("do MMM, YYYY")}</td>
@@ -66,4 +66,4 @@ const Attendance = () => {
 	)
 }
 
-export default Attendance
+export default IndividualAttendance

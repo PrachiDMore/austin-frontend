@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import Navbar from '../components/Navbar';
 import { UseChapterAllocationContext } from '../context/ChapterAllocation';
-import AssignTeacher from '../Modals/AssignTeacher';
+import AssignIndividualTeacher from '../Modals/AssignIndividualTeacher';
 import Input from '../components/Input';
 import { GrSearch } from 'react-icons/gr';
 
-const ChapterAllocation = () => {
+const IndividualChapterAllocation = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
-	const { chapterAllocations } = UseChapterAllocationContext()
+	const { individualChapterAllocation } = UseChapterAllocationContext()
 	return (
 		<>
 			<Navbar />
-			<AssignTeacher type={""} setShowModal={setShowModal} showModal={showModal} />
+			<AssignIndividualTeacher key={Date.now()} setShowModal={setShowModal} showModal={showModal} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>
@@ -41,7 +41,8 @@ const ChapterAllocation = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										chapterAllocations?.map((chapterAllocation) => {
+										individualChapterAllocation?.map((chapterAllocation) => {
+											console.log(chapterAllocation)
 											return (
 												<tr key={chapterAllocation?._id} onClick={() => {
 													setShowModal({ show: true, update: true, data: chapterAllocation })
@@ -50,7 +51,7 @@ const ChapterAllocation = () => {
 													<td className="px-6 py-4">{chapterAllocation?.teacher.fullname}</td>
 													<td className="px-6 py-4">{chapterAllocation?.subject.name}</td>
 													<td className="px-6 py-4">Rs. {chapterAllocation?.rate}</td>
-													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{chapterAllocation?.hoursCompleted}</span> / {chapterAllocation?.hours}</td>
+													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation?.hoursCompleted > chapterAllocation?.hours ? 'text-red-500' : ""}>{chapterAllocation?.hoursCompleted}</span> / {chapterAllocation?.hours}</td>
 												</tr>
 											)
 										})
@@ -65,4 +66,4 @@ const ChapterAllocation = () => {
 	)
 }
 
-export default ChapterAllocation
+export default IndividualChapterAllocation

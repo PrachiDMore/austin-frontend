@@ -7,39 +7,76 @@ const AttendanceContext = createContext();
 
 const AttendanceContextProvider = ({ children }) => {
 	const [attendance, setAttendance] = useState([])
+	const [individualAttendance, setIndividualAttendance] = useState([])
 	const { authToken } = UseAuthContext();
 
 	useEffect(() => {
-		if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
-			axios(`${process.env.REACT_APP_BASE_URL}/attendance/`, {
-				method: "GET"
-			})
-				.then((res) => {
-					if (res.data.error) {
+		if (authToken) {
+			if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
+				axios(`${process.env.REACT_APP_BASE_URL}/attendance/`, {
+					method: "GET"
+				})
+					.then((res) => {
+						if (res.data.error) {
 
-					} else {
-						setAttendance(res?.data?.attendance)
+						} else {
+							setAttendance(res?.data?.attendance)
+						}
+					})
+					.catch((err) => {
+						console.log(err.message)
+					})
+				axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/`, {
+					method: "GET"
+				})
+					.then((res) => {
+						if (res.data.error) {
+
+						} else {
+							setIndividualAttendance(res?.data?.attendance)
+						}
+					})
+					.catch((err) => {
+						console.log(err.message)
+					})
+			} else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
+				axios(`${process.env.REACT_APP_BASE_URL}/attendance/token/teacher`, {
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
 					}
 				})
-		} else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
-			axios(`${process.env.REACT_APP_BASE_URL}/attendance/token/teacher`, {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${extractToken()?.token}`
-				}
-			})
-				.then((res) => {
-					if (res.data.error) {
+					.then((res) => {
+						if (res.data.error) {
 
-					} else {
-						setAttendance(res?.data?.attendance)
+						} else {
+							setAttendance(res?.data?.attendance)
+						}
+					})
+					.catch((err) => {
+						console.log(err.message)
+					})
+				axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/token/teacher`, {
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
 					}
 				})
+					.then((res) => {
+						if (res.data.error) {
+
+						} else {
+							setIndividualAttendance(res?.data?.attendance)
+						}
+					})
+					.catch((err) => {
+						console.log(err.message)
+					})
+			}
 		}
-		// }
-	}, []);
+	}, [authToken]);
 
-	return <AttendanceContext.Provider value={{ attendance, setAttendance }}>
+	return <AttendanceContext.Provider value={{ attendance, setAttendance, individualAttendance, setIndividualAttendance }}>
 		{children}
 	</AttendanceContext.Provider>
 }
