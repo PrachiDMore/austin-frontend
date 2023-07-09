@@ -105,7 +105,6 @@ const Signin = () => {
                         } else {
                             console.log(res)
                             if (res?.data?.token) {
-                                console.log(window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` })))
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
                                 navigate("/branch-manager/profile")

@@ -48,6 +48,12 @@ import IndividualTeacherAttendance from "./pages/teacher/IndividualTeacherAttend
 import ViewEnrolledIndividualBatches from "./pages/student/ViewEnrolledIndividualBatches";
 import StudentCourseIndividualChapters from "./pages/student/StudentCourseIndividualChapters";
 import TeacherIndividualChapters from "./pages/teacher/TeacherIndividualChapters";
+import BranchManagerIndividualBatches from "./pages/branch-manager/BranchManagerIndividualBatches";
+import BranchManagerViewBatch from "./pages/branch-manager/BranchManagerViewBatch";
+import BranchManagerIndividualAttendance from "./pages/branch-manager/BranchManagerIndividualAttendance";
+import BranchChapterAllocation from "./pages/branch-manager/BranchChapterAllocation";
+import BranchManagerIndividualChapterAllocation from "./pages/branch-manager/BranchManagerIndividualChapterAllocation";
+import BranchManagerAttendance from "./pages/branch-manager/BranchManagerAttendance";
 
 function App() {
   return (
@@ -119,13 +125,13 @@ function App() {
                                       <Route path="/branch-manager/teachers" element={<ViewTeachers />} />
                                       <Route path="/branch-manager/chapters" element={<ViewChapters />} />
                                       <Route path="/branch-manager/subjects" element={<ViewSubjects />} />
-                                      <Route path="/branch-manager/chapter-allocation" element={<ChapterAllocation />} />
-                                      <Route path="/branch-manager/individual-chapter-allocation" element={<IndividualChapterAllocation />} />
+                                      <Route path="/branch-manager/chapter-allocation" element={<BranchChapterAllocation />} />
+                                      <Route path="/branch-manager/individual-chapter-allocation" element={<BranchManagerIndividualChapterAllocation />} />
                                       <Route path="/branch-manager/courses" element={<ViewCourses />} />
-                                      <Route path="/branch-manager/batches" element={<ViewBatch />} />
-                                      <Route path="/branch-manager/individual-batches" element={<IndividualBatches />} />
-                                      <Route path="/branch-manager/attendance" element={<Attendance />} />
-                                      <Route path="/branch-manager/individual-attendance" element={<IndividualAttendance />} />
+                                      <Route path="/branch-manager/batches" element={<BranchManagerViewBatch />} />
+                                      <Route path="/branch-manager/individual-batches" element={<BranchManagerIndividualBatches />} />
+                                      <Route path="/branch-manager/attendance" element={<BranchManagerAttendance />} />
+                                      <Route path="/branch-manager/individual-attendance" element={<BranchManagerIndividualAttendance />} />
                                     </Route>
                                     <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_TEACHER_ROLE}`]} />}>
                                       <Route path="/teacher" element={<Home />} />
