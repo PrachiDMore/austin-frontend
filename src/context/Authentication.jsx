@@ -92,6 +92,29 @@ export const AuthContextProvider = ({ children }) => {
 						console.log(err.message)
 					})
 			}
+			else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}`) {
+				axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/token`, {
+					method: "GET",
+					headers: {
+						"Authorization": `Bearer ${authToken}`
+					}
+				})
+					.then((res) => {
+						if (res.data.error) {
+							console.error(res.data.message)
+						} else {
+							if (!res.data?.user?.isDisabled) {
+								setUser(res.data.user)
+							} else {
+								logout()
+								console.log(res.data.message)
+							}
+						}
+					})
+					.catch((err) => {
+						console.log(err.message)
+					})
+			}
 		}
 	}, [authToken]);
 

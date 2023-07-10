@@ -15,7 +15,10 @@ const ChapterAllocationContextProvider = ({ children }) => {
     useEffect(() => {
         if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
             })
                 .then((res) => {
                     if (res.data.error) {
@@ -28,7 +31,10 @@ const ChapterAllocationContextProvider = ({ children }) => {
                     console.log(err.message)
                 })
             axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
             })
                 .then((res) => {
                     if (res.data.error) {
@@ -78,7 +84,10 @@ const ChapterAllocationContextProvider = ({ children }) => {
                 return batch._id
             })
             axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
             })
                 .then((res) => {
                     if (res.data.error) {
@@ -97,7 +106,10 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
             console.log(individualBatchId)
             axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
             })
                 .then((res) => {
                     if (res.data.error) {

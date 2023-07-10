@@ -9,6 +9,7 @@ import { UseTeacherContext } from '../context/Teachers';
 import { UseSubjectContext } from '../context/Subjects';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import SearchableSelect from '../components/SearchableSelect';
+import extractToken from "../Utils/ExtractToken";
 
 const TeacherModal = ({ setShowModal, showModal }) => {
     const { teachers, setTeachers } = UseTeacherContext()
@@ -54,6 +55,9 @@ const TeacherModal = ({ setShowModal, showModal }) => {
             if (formState.fullname && formState.email && formState.username && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
                     method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: { ...formState, subject: selectedSubjects }
                 })
                     .then((res) => {
@@ -81,6 +85,9 @@ const TeacherModal = ({ setShowModal, showModal }) => {
             if (formState.fullname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/create`, {
                     method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: { ...formState, subject: selectedSubjects }
                 })
                     .then((res) => {

@@ -15,7 +15,12 @@ const BatchesContextProvider = ({ children }) => {
     useEffect(() => {
         if (authToken) {
             if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
-                axios(`${process.env.REACT_APP_BASE_URL}/batch/`)
+                axios(`${process.env.REACT_APP_BASE_URL}/batch/`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    }
+                })
                     .then((res) => {
                         if (res.data.error) {
                             console.log(res.data.message)
@@ -26,7 +31,12 @@ const BatchesContextProvider = ({ children }) => {
                     .catch((err) => {
                         console.log(err.message)
                     })
-                axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/`)
+                axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/`, {
+                    method: "GET",
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    }
+                })
                     .then((res) => {
                         if (res.data.error) {
                             console.log(res.data.message)

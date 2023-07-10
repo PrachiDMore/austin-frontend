@@ -9,7 +9,7 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import SearchableSelect from '../components/SearchableSelect';
-
+import extractToken from "../Utils/ExtractToken";
 
 const ChatperModal = ({ setShowModal, showModal }) => {
     const { chapters, setChapters } = UseChapterContext();
@@ -45,6 +45,9 @@ const ChatperModal = ({ setShowModal, showModal }) => {
             if (formState.name && formState.grade && formState.hours) {
                 axios(`${process.env.REACT_APP_BASE_URL}/chapter/${showModal?.data?._id}`, {
                     method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: { ...formState, subjectID: subjectValue?.value }
                 })
                     .then((res) => {
@@ -70,6 +73,9 @@ const ChatperModal = ({ setShowModal, showModal }) => {
             if (formState.name && formState.grade && formState.hours) {
                 axios(`${process.env.REACT_APP_BASE_URL}/chapter/create`, {
                     method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: { ...formState, subjectID: subjectValue?.value }
                 })
                     .then((res) => {

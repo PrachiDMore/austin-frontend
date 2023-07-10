@@ -9,6 +9,7 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import { UseChapterContext } from '../context/Chapter';
 import SearchableSelect from '../components/SearchableSelect';
+import extractToken from "../Utils/ExtractToken";
 
 
 const CourseModal = ({ setShowModal, showModal }) => {
@@ -70,6 +71,9 @@ const CourseModal = ({ setShowModal, showModal }) => {
             if (formState.name && formState.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/course/${showModal?.data?._id}`, {
                     method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: { ...formState, subjects: selectedSubjects }
                 })
                     .then((res) => {
@@ -93,6 +97,9 @@ const CourseModal = ({ setShowModal, showModal }) => {
         } else {
             axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
                 method: "POST",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
                 data: { ...formState, subjects: selectedSubjects }
             })
                 .then((res) => {

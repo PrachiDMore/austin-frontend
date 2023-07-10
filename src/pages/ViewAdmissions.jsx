@@ -4,6 +4,7 @@ import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+import extractToken from '../Utils/ExtractToken'
 
 const ViewAdmissions = () => {
   const [admissions, setAdmissions] = useState([]);
@@ -11,7 +12,10 @@ const ViewAdmissions = () => {
 
   useEffect(() => {
     axios(`${process.env.REACT_APP_BASE_URL}/admission/`, {
-      method: "GET"
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${extractToken()?.token}`
+      }
     })
       .then((res) => {
         if (res.data.error) {

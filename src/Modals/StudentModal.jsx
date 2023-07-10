@@ -6,6 +6,7 @@ import AssignTeacherInitialState from '../InitialStates/AssignTeacher'
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import addElementInArray from '../Utils/AddUniqueElementsInArray'
 import { UseAdmissionContext } from '../context/Admission'
+import extractToken from "../Utils/ExtractToken";
 
 const StudentModal = ({ setShowModal, showModal }) => {
 	const { admissions, setAdmissions } = UseAdmissionContext()
@@ -26,6 +27,9 @@ const StudentModal = ({ setShowModal, showModal }) => {
 			if (formState.confirmPassword === formState.password) {
 				axios(`${process.env.REACT_APP_BASE_URL}/user/admin/update/${showModal?.data?._id}`, {
 					method: "PATCH",
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
+					},
 					data: formState,
 				})
 					.then((res) => {

@@ -12,7 +12,12 @@ const CourseContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
-            axios(`${process.env.REACT_APP_BASE_URL}/course/`)
+            axios(`${process.env.REACT_APP_BASE_URL}/course/`, {
+                method: "GET",
+                headers:{
+					Authorization: `Bearer ${extractToken()?.token}`
+				}
+            })
                 .then((res) => {
                     if (res.data.error) {
                         console.log(res.data.message)

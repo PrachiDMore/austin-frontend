@@ -8,11 +8,12 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import { UseBranchManagerContext } from '../context/BranchManager';
 import extractToken from "../Utils/ExtractToken";
+import { UseBranchManagerViewerContext } from '../context/BranchManagerViewer';
 
-const BranchManagerModal = ({ setShowModal, showModal }) => {
-	const { branchManagers, setBranchManagers } = UseBranchManagerContext()
+const BranchManagerViewerModal = ({ setShowModal, showModal }) => {
+	const { BranchManagerViewers, setBranchManagerViewers } = UseBranchManagerViewerContext()
 	const [formState, setFormState] = useState(BranchManagerInitialState);
-	
+
 	const handleChange = (e) => {
 		setFormState({
 			...formState,
@@ -29,11 +30,11 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (showModal.update) {
-			axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/${showModal?.data?._id}`, {
+			axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/${showModal?.data?._id}`, {
 				method: "PATCH",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
 				data: formState
 			})
 				.then((res) => {
@@ -42,16 +43,16 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 					} else {
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(BranchManagerInitialState);
-						setBranchManagers(updateElementsInArray(branchManagers, res?.data?.user, showModal?.data))
+						setBranchManagerViewers(updateElementsInArray(BranchManagerViewers, res?.data?.user, showModal?.data))
 					}
 				})
 		} else {
-			axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/create`, {
+			axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/create`, {
 				method: "POST",
 				data: formState,
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
 			})
 				.then((res) => {
 					if (res.data.error) {
@@ -59,7 +60,7 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 					} else {
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(BranchManagerInitialState);
-						setBranchManagers(addElementInArray(branchManagers, res?.data?.user))
+						setBranchManagerViewers(addElementInArray(BranchManagerViewers, res?.data?.user))
 					}
 				})
 		}
@@ -71,7 +72,7 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 					<div className="relative h-full bg-white p-4 rounded-lg shadow-md shadow-purpleShadow overflow-auto">
 						<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
 							<h3 className="text-lg font-semibold dark:text-lightPurple">
-								{showModal.update ? "Update Branch Manager" : "Add Branch Manager"}
+								{showModal.update ? "Update Branch Manager Viewer" : "Add Branch Manager Viewer"}
 							</h3>
 							<button type="button" className="duration-300 text-gray-400 bg-transparent hover:bg-lightPurple hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-darkPurple dark:hover:text-white" data-modal-toggle="updateProductModal"
 								onClick={() => {
@@ -102,4 +103,4 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 	)
 }
 
-export default BranchManagerModal
+export default BranchManagerViewerModal

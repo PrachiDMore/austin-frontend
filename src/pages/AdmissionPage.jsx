@@ -23,7 +23,12 @@ const AdmissionPage = () => {
     const [data, setData] = useState()
     useEffect(() => {
         if (_id) {
-            axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`)
+            axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`, {
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
+                method: "GET"
+            })
                 .then((res) => {
                     if (res.data.error) {
                         setMessage(res.data.message)
@@ -52,7 +57,10 @@ const AdmissionPage = () => {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/confirm/${_id}`, {
                     method: 'PATCH',
-                    data: formState
+                    data: formState,
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    }
                 })
                     .then((res) => {
                         if (res.data.error) {
@@ -76,7 +84,10 @@ const AdmissionPage = () => {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/${formState?._id}`, {
                     method: 'PATCH',
-                    data: formState
+                    data: formState,
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    }
                 })
                     .then((res) => {
                         if (res.data.error) {
@@ -103,7 +114,7 @@ const AdmissionPage = () => {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/create`, {
                     method: 'POST',
-                    data: formState
+                    data: formState,
                 })
                     .then((res) => {
                         if (res.data.error) {
@@ -128,6 +139,9 @@ const AdmissionPage = () => {
         setDisableLoading(true)
         axios(`${process.env.REACT_APP_BASE_URL}/admission/disabled/${_id}`, {
             method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${extractToken()?.token}`
+            },
             data: { isDisabled: e }
         })
             .then((res) => {

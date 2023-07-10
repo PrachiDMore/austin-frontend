@@ -12,6 +12,7 @@ import Button from '../components/Button'
 import AssignTeacherInitialState from '../InitialStates/AssignTeacher'
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import addElementInArray from '../Utils/AddUniqueElementsInArray'
+import extractToken from "../Utils/ExtractToken";
 
 const AssignTeacher = ({ setShowModal, showModal }) => {
 	const { teacherOptions } = UseTeacherContext()
@@ -57,6 +58,9 @@ const AssignTeacher = ({ setShowModal, showModal }) => {
 		if (showModal.update) {
 			axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/${showModal?.data?._id}`, {
 				method: "PATCH",
+				headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
 				data: {
 					...formState,
 					subject: subject.value,
@@ -76,6 +80,9 @@ const AssignTeacher = ({ setShowModal, showModal }) => {
 		}else{
 			axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/create`, {
 				method: "POST",
+				headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
 				data: {
 					...formState,
 					subject: subject.value,

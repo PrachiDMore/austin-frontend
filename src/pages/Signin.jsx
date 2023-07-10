@@ -116,7 +116,31 @@ const Signin = () => {
                         setLoading(false)
                     })
             }
+        } else if (type === "branch-manager-viewer") {
+            console.log("object")
+            axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/login`, {
+                method: "POST",
+                data: formState
+            })
+                .then((res) => {
+                    setLoading(false)
+                    if (res.data.error) {
+                        console.log(res.data.message)
+                    } else {
+                        console.log(res)
+                        if (res?.data?.token) {
+                            sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}` })))
+                            setAuthToken(extractToken()?.token)
+                            navigate("/branch-manager-viewer/profile")
+                        }
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
+                    setLoading(false)
+                })
         } else {
+            console.log("object12")
             setLoading(false)
             setMessage('Please properly fill the form!')
         }
@@ -137,6 +161,7 @@ const Signin = () => {
                                 <option value="teacher">Teacher</option>
                                 <option value="student">Student</option>
                                 <option value="branch-manager">Branch Manager</option>
+                                {/* <option value="branch-manager-viewer">Branch Manager Viewer</option> */}
                             </select>
                         </div>
                         <Input onChange={handleChange} value={formState.username} id={'username'} label={'Username'} type={'text'} placeholder={'Enter your username.'} />

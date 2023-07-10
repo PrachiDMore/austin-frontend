@@ -11,16 +11,21 @@ const BranchManagerContextProvider = ({ children }) => {
     const { authToken } = UseAuthContext()
 
     useEffect(() => {
-        axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/`, {
-            method: "GET"
-        })
-            .then((res) => {
-                if (res?.error) {
-                    console.error(res.message)
-                } else {
-                    setBranchManagers(res?.data?.users)
+        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
+            axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
                 }
             })
+                .then((res) => {
+                    if (res?.error) {
+                        console.error(res.message)
+                    } else {
+                        setBranchManagers(res?.data?.users)
+                    }
+                })
+        }
     }, [authToken]);
 
     useEffect(() => {
@@ -34,7 +39,7 @@ const BranchManagerContextProvider = ({ children }) => {
     }, [branchManagers]);
 
 
-    return <BranchManagerContext.Provider value={{branchManagerOptions, branchManagers, setBranchManagers}}>
+    return <BranchManagerContext.Provider value={{ branchManagerOptions, branchManagers, setBranchManagers }}>
         {children}
     </BranchManagerContext.Provider>
 }

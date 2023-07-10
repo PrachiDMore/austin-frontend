@@ -14,7 +14,10 @@ const AttendanceContextProvider = ({ children }) => {
 		if (authToken) {
 			if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/attendance/`, {
-					method: "GET"
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
+					}
 				})
 					.then((res) => {
 						if (res.data.error) {
@@ -27,7 +30,10 @@ const AttendanceContextProvider = ({ children }) => {
 						console.log(err.message)
 					})
 				axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/`, {
-					method: "GET"
+					method: "GET",
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
+					}
 				})
 					.then((res) => {
 						if (res.data.error) {

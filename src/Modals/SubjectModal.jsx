@@ -7,6 +7,7 @@ import { UseSubjectContext } from "../context/Subjects";
 import updateElementsInArray from "../Utils/UpdateUniqueElemetnsInArray";
 import addElementInArray from "../Utils/AddUniqueElementsInArray";
 import axios from "axios";
+import extractToken from "../Utils/ExtractToken";
 
 
 const SubjectModal = ({ setShowModal, showModal }) => {
@@ -35,6 +36,9 @@ const SubjectModal = ({ setShowModal, showModal }) => {
             if (formState.name && formState.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/subject/${showModal?.data?._id}`, {
                     method: 'PATCH',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: formState
                 })
                     .then((res) => {
@@ -58,6 +62,9 @@ const SubjectModal = ({ setShowModal, showModal }) => {
             if (formState.name && formState.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/subject/create`, {
                     method: 'POST',
+                    headers: {
+                        Authorization: `Bearer ${extractToken()?.token}`
+                    },
                     data: formState
                 })
                     .then((res) => {

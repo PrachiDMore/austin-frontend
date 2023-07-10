@@ -10,7 +10,12 @@ const ChapterContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (extractToken()?.token) {
-            axios(`${process.env.REACT_APP_BASE_URL}/chapter/`)
+            axios(`${process.env.REACT_APP_BASE_URL}/chapter/`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
+            })
                 .then((res) => {
                     if (res.data.error) {
                         console.log(res.data.message)

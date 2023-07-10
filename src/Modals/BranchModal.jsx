@@ -8,6 +8,7 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import SearchableSelect from "../components/SearchableSelect";
 import { UseBranchManagerContext } from '../context/BranchManager';
+import extractToken from "../Utils/ExtractToken";
 
 const BranchModal = ({ setShowModal, showModal }) => {
 	const { branches, setBranches } = UseBranchContext();
@@ -41,6 +42,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/${showModal.data._id}`, {
 				method: "PATCH",
+				headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
 				data: { ...formState, manager: branchManager?.value }
 			})
 				.then((res) => {
@@ -59,6 +63,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/create`, {
 				method: "POST",
+				headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
 				data: { ...formState, manager: branchManager?.value }
 			})
 				.then((res) => {

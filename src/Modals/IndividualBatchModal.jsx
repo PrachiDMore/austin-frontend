@@ -12,6 +12,7 @@ import { UseBatchesContext } from '../context/Batches';
 import axios from 'axios';
 import Button from '../components/Button';
 import { UseAdmissionContext } from '../context/Admission';
+import extractToken from "../Utils/ExtractToken";
 
 const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 	const { admissionOptions } = UseAdmissionContext()
@@ -28,6 +29,9 @@ const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 		if (showModal.update) {
 			axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/${showModal?.data?._id}`, {
 				method: "PATCH",
+				headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
 				data: {
 					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
 						return student.value
@@ -48,6 +52,9 @@ const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 		} else {
 			axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/create`, {
 				method: "POST",
+				headers: {
+                    Authorization: `Bearer ${extractToken()?.token}`
+                },
 				data: {
 					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
 						return student.value

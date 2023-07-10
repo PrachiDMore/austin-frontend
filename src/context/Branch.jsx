@@ -14,7 +14,10 @@ const BranchContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/`, {
-				method: "GET"
+				method: "GET",
+				headers: {
+					Authorization: `Bearer ${extractToken()?.token}`
+				}
 			})
 				.then((res) => {
 					if (res.data.error) {

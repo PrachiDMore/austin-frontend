@@ -179,7 +179,7 @@ const Navbar = () => {
 
     return (
         <>
-            <nav className='px-6 flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito'>
+            <nav className={extractToken()?.role ? 'px-6 flex items-center h-24 w-screen shadow-md shadow-purpleShadow Nunito' : 'px-6 flex items-center justify-between h-24 w-screen shadow-md shadow-purpleShadow Nunito'}>
                 <div className='w-[10%] flex justify-center items-center'>
                     <img className='w-48 h-auto' src="/assets/logo.jpg" alt="" />
                 </div>
@@ -317,7 +317,7 @@ const Navbar = () => {
                     ]} />
                 </ul>}
                 <div className='w-[20%] flex justify-end items-center'>
-                    {!extractToken()?.role && <Link to='/signup' className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign up</Link>}
+                    {!extractToken()?.role && <Link to='/signin' className='bg-darkPurple rounded-md text-sm font-bold text-white w-auto px-5 py-3 hover:bg-lightPurple duration-300'>Sign In</Link>}
                     {extractToken()?.role && <Logout className={"w-max px-10"} />}
                 </div>
             </nav>
