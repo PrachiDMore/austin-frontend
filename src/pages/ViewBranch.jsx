@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { UseBranchContext } from '../context/Branch'
 import Input from '../components/Input'
@@ -7,7 +7,22 @@ import BranchModal from '../Modals/BranchModal'
 
 const ViewBranch = () => {
 	const { branches } = UseBranchContext();
-	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
+	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
+	const [searchResults, setSearchResults] = useState([])
+
+    useEffect(() => {
+        setSearchResults(branches);
+    }, [branches])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(branches)
+        } else {
+            setSearchResults(branches?.filter((data) => {
+                return `${data?.name} ${data?.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
 	return (
 		<>
 			<Navbar />
@@ -15,7 +30,7 @@ const ViewBranch = () => {
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>
-						<Input onChange type={'text'} placeholder={'Search...'} />
+						<Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
 						<GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
 					</div>
 					<div className='ml-[10px] flex justify-between w-[10%]'>
@@ -40,7 +55,7 @@ const ViewBranch = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										branches?.map((branch) => {
+										searchResults?.map((branch) => {
 											return (
 												<tr key={branch?._id} onClick={() => {
 													setShowModal({ show: true, update: true, data: branch })

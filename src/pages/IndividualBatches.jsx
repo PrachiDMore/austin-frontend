@@ -1,7 +1,7 @@
 import { GrSearch } from 'react-icons/gr'
 import Input from '../components/Input'
 import Navbar from '../components/Navbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseBatchesContext } from '../context/Batches'
 import IndividualBatchModal from '../Modals/IndividualBatchModal'
 import { UseChapterAllocationContext } from '../context/ChapterAllocation'
@@ -10,7 +10,21 @@ const IndividualBatches = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const { individualBatches } = UseBatchesContext()
     const { individualChapterAllocation } = UseChapterAllocationContext()
+    const [searchResults, setSearchResults] = useState([])
 
+    useEffect(() => {
+        setSearchResults(individualBatches);
+    }, [individualBatches])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(individualBatches)
+        } else {
+            setSearchResults(individualBatches?.filter((data) => {
+                return `${data.name} ${data.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
     return (
         <>
             <Navbar />
@@ -18,7 +32,7 @@ const IndividualBatches = () => {
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
-                        <Input onChange type={'text'} placeholder={'Search...'} />
+                        <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
                     </div>
                     <div className='ml-[10px] flex justify-between w-[10%]'>
@@ -45,7 +59,7 @@ const IndividualBatches = () => {
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
                                     {
-                                        individualBatches?.map((batch) => {
+                                        searchResults?.map((batch) => {
                                             const chapterAllocations = individualChapterAllocation?.map((chapterAllocation) => {
                                                 if (chapterAllocation?.individualBatch?._id === batch._id) {
                                                     return chapterAllocation?.hoursCompleted * chapterAllocation?.rate

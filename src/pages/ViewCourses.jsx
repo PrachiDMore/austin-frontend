@@ -1,14 +1,29 @@
 import { UseCourseContext } from "../context/Courses"
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CourseModal from "../Modals/CourseModal";
 
 const ViewCourses = () => {
     const { courses, setCourses } = UseCourseContext();
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
+    const [searchResults, setSearchResults] = useState([])
 
+    useEffect(() => {
+        setSearchResults(courses);
+    }, [courses])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(courses)
+        } else {
+            setSearchResults(courses?.filter((data) => {
+                console.table(data)
+                return `${data.name} ${data.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
     return (
         <>
             <Navbar />
@@ -16,7 +31,7 @@ const ViewCourses = () => {
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
-                        <Input onChange type={'text'} placeholder={'Search...'} />
+                        <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
                     </div>
                     <div className='ml-[10px]'>
@@ -40,7 +55,7 @@ const ViewCourses = () => {
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
                                     {
-                                        courses?.map((course) => {
+                                        searchResults?.map((course) => {
                                             return (
                                                 <tr key={course?._id} className="border-b border-darkPurple">
                                                     <td className="px-6 py-4">{course?.name}</td>

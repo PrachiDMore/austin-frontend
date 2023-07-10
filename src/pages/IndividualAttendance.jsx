@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
@@ -10,9 +10,21 @@ import IndividualDisplayAttendance from "../Modals/IndividualDisplayAttendance";
 const IndividualAttendance = () => {
 	const { individualAttendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
-	const handleSearch = (e) => {
+	const [searchResults, setSearchResults] = useState([])
 
-	}
+    useEffect(() => {
+        setSearchResults(individualAttendance);
+    }, [individualAttendance])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(individualAttendance)
+        } else {
+            setSearchResults(individualAttendance?.filter((data) => {
+                return `${data?.individualBatch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
 	return (
 		<>
 			<Navbar />
@@ -41,7 +53,7 @@ const IndividualAttendance = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										individualAttendance?.map((data) => {
+										searchResults?.map((data) => {
 											return <tr key={data?._id} onClick={() => {
 												setDisplayAttendance({ show: true, data: data })
 											}} className="border-b border-darkPurple">

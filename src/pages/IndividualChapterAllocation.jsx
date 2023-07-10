@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar';
 import { UseChapterAllocationContext } from '../context/ChapterAllocation';
 import AssignIndividualTeacher from '../Modals/AssignIndividualTeacher';
@@ -8,6 +8,21 @@ import { GrSearch } from 'react-icons/gr';
 const IndividualChapterAllocation = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { individualChapterAllocation } = UseChapterAllocationContext()
+	const [searchResults, setSearchResults] = useState([])
+
+    useEffect(() => {
+        setSearchResults(individualChapterAllocation);
+    }, [individualChapterAllocation])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(individualChapterAllocation)
+        } else {
+            setSearchResults(individualChapterAllocation?.filter((data) => {
+                return `${data?.individualBatch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
 	return (
 		<>
 			<Navbar />
@@ -15,7 +30,7 @@ const IndividualChapterAllocation = () => {
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>
-						<Input onChange type={'text'} placeholder={'Search...'} />
+						<Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
 						<GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
 					</div>
 					<div className='ml-[10px] flex justify-between w-[10%]'>
@@ -41,8 +56,7 @@ const IndividualChapterAllocation = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										individualChapterAllocation?.map((chapterAllocation) => {
-											console.log(chapterAllocation)
+										searchResults?.map((chapterAllocation) => {
 											return (
 												<tr key={chapterAllocation?._id} onClick={() => {
 													setShowModal({ show: true, update: true, data: chapterAllocation })

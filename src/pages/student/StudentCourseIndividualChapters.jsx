@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from '../../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { UseChapterAllocationContext } from '../../context/ChapterAllocation'
@@ -6,13 +6,28 @@ import Navbar from '../../components/Navbar'
 
 const StudentCourseIndividualChapters = () => {
 	const { individualChapterAllocation } = UseChapterAllocationContext();
+	const [searchResults, setSearchResults] = useState([])
+
+    useEffect(() => {
+        setSearchResults(individualChapterAllocation);
+    }, [individualChapterAllocation])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(individualChapterAllocation)
+        } else {
+            setSearchResults(individualChapterAllocation?.filter((data) => {
+                return `${data?.individualBatch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
 	return (
 		<>
 			<Navbar />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-full'>
-						<Input onChange type={'text'} placeholder={'Search...'} />
+						<Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
 						<GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
 					</div>
 				</div>
@@ -31,7 +46,7 @@ const StudentCourseIndividualChapters = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										individualChapterAllocation?.map((chapterAllocation) => {
+										searchResults?.map((chapterAllocation) => {
 											return (
 												<tr key={chapterAllocation?._id} onClick={() => {
 												}} className="border-b border-darkPurple">

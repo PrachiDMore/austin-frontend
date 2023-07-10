@@ -1,14 +1,28 @@
 import { GrSearch } from 'react-icons/gr'
 import Input from '../components/Input'
 import Navbar from '../components/Navbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseBatchesContext } from '../context/Batches'
 import BatchModal from '../Modals/BatchModal'
 
 const ViewBatch = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const { batches } = UseBatchesContext()
+    const [searchResults, setSearchResults] = useState([])
 
+    useEffect(() => {
+        setSearchResults(batches);
+    }, [batches])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(batches)
+        } else {
+            setSearchResults(batches?.filter((data) => {
+                return `${data.name} ${data.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
     return (
         <>
             <Navbar />
@@ -16,7 +30,7 @@ const ViewBatch = () => {
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
-                        <Input onChange type={'text'} placeholder={'Search...'} />
+                        <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
                     </div>
                     <div className='ml-[10px] flex justify-between w-[10%]'>
@@ -41,7 +55,8 @@ const ViewBatch = () => {
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
                                     {
-                                        batches?.map((batch) => {
+                                        searchResults?.map((batch) => {
+                                            console.log(batch)
                                             return (
                                                 <tr key={batch?._id} onClick={() => {
                                                     setShowModal({ show: true, update: true, data: batch })

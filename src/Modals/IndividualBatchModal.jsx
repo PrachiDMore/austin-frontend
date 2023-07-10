@@ -18,7 +18,7 @@ const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 	const { branchOptions } = UseBranchContext();
 	const { individualBatches, setIndividualBatches } = UseBatchesContext()
 	const { courseOptions } = UseCourseContext();
-	const [formState, setFormState] = useState({...batchInitialState, typeOfBatch: 'one-on-one'});
+	const [formState, setFormState] = useState({ ...batchInitialState });
 	const [course, setCourse] = useState();
 	const [branch, setBranch] = useState();
 	const [students, setStudents] = useState([]);

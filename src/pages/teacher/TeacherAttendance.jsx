@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import DisplayAttendance from '../../Modals/DisplayAttendance'
 import Input from '../../components/Input'
@@ -12,9 +12,22 @@ const TeacherAttendance = () => {
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, update: false, data: undefined });
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { attendance } = UseAttendanceContext();
-	const handleSearch = () => {
+	const [searchResults, setSearchResults] = useState([])
 
-	}
+    useEffect(() => {
+        setSearchResults(attendance);
+    }, [attendance])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(attendance)
+        } else {
+            setSearchResults(attendance?.filter((data) => {
+                return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
+
 	return (
 		<>
 			<Navbar />
@@ -50,7 +63,7 @@ const TeacherAttendance = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										attendance?.map((data) => {
+										searchResults?.map((data) => {
 											return <tr key={data?._id} onClick={() => {
 												setDisplayAttendance({ show: true, data: data })
 											}} className="border-b border-darkPurple">

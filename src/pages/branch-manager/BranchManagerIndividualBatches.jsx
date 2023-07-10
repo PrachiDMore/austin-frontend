@@ -1,7 +1,7 @@
 import { GrSearch } from 'react-icons/gr'
 import Input from '../../components/Input'
 import Navbar from '../../components/Navbar'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { UseBatchesContext } from '../../context/Batches'
 import IndividualBatchModal from '../../Modals/IndividualBatchModal'
 import { UseChapterAllocationContext } from '../../context/ChapterAllocation'
@@ -13,6 +13,21 @@ const BranchManagerIndividualBatches = () => {
     const { individualBatches } = UseBatchesContext()
     const { individualChapterAllocation } = UseChapterAllocationContext()
     const { user } = UseAuthContext();
+    const [searchResults, setSearchResults] = useState([])
+
+    useEffect(() => {
+        setSearchResults(individualBatches);
+    }, [individualBatches])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(individualBatches)
+        } else {
+            setSearchResults(individualBatches?.filter((data) => {
+                return `${data.academicYear}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.branch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.course?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
 
     return (
         <>
@@ -21,7 +36,7 @@ const BranchManagerIndividualBatches = () => {
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
-                        <Input onChange type={'text'} placeholder={'Search...'} />
+                        <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
                     </div>
                     <div className='ml-[10px] flex justify-between w-[10%]'>
@@ -46,7 +61,7 @@ const BranchManagerIndividualBatches = () => {
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
                                     {
-                                        individualBatches?.filter((data) => {
+                                        searchResults?.filter((data) => {
                                             return data?.branch?.manager === user?._id
                                         })?.map((batch) => {
                                             return (

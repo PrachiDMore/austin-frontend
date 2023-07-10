@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Input from '../../components/Input'
 import { GrSearch } from 'react-icons/gr'
@@ -12,9 +12,22 @@ const BranchManagerAttendance = () => {
 	const { attendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined });
 	const { user } = UseAuthContext()
-	const handleSearch = (e) => {
+	const [searchResults, setSearchResults] = useState([])
 
-	}
+    useEffect(() => {
+        setSearchResults(attendance);
+    }, [attendance])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(attendance)
+        } else {
+            setSearchResults(attendance?.filter((data) => {
+                return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
+
 	return (
 		<>
 			<Navbar />
@@ -43,7 +56,7 @@ const BranchManagerAttendance = () => {
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
-										attendance?.map((data) => {
+										searchResults?.map((data) => {
 											if (data?.batch?.branch?.manager === user?._id) {
 												return <tr key={data?._id} onClick={() => {
 													setDisplayAttendance({ show: true, data: data })

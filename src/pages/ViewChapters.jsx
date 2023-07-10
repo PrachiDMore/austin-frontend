@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { UseChapterContext } from "../context/Chapter";
@@ -6,15 +6,30 @@ import ChatperModal from '../Modals/ChapterModal';
 
 const Chapters = () => {
     const { chapters } = UseChapterContext();
-    const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
-    
+    const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
+    const [searchResults, setSearchResults] = useState([])
+
+    useEffect(() => {
+        setSearchResults(chapters);
+    }, [chapters])
+
+    const handleSearch = (e) => {
+        if (e.target.value.length == 0) {
+            setSearchResults(chapters)
+        } else {
+            setSearchResults(chapters?.filter((data) => {
+                return `${data.name} ${data.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || data?.subjectID?.name?.toLowerCase().includes(e?.target?.value?.toLowerCase())
+            }))
+        }
+    }
+
     return (
         <>
             <ChatperModal setShowModal={setShowModal} showModal={showModal} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
-                        <Input onChange type={'text'} placeholder={'Search...'} />
+                        <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
                     </div>
                     <div className='ml-[10px]'>
@@ -39,7 +54,7 @@ const Chapters = () => {
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
                                     {
-                                        chapters?.map((chapter) => {
+                                        searchResults?.map((chapter) => {
                                             return (
                                                 <tr key={chapter?._id} onClick={() => {
                                                     setShowModal({ show: true, update: true, data: chapter })
