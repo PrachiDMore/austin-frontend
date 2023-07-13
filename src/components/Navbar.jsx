@@ -186,9 +186,23 @@ const Navbar = () => {
                 {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && <ul className='px-10 w-[70%] flex justify-start gap-x-10 items-center '>
                     <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/admissions"}>{"Admission"}</Link>
                     <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/teachers"}>{"Teachers"}</Link>
-                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/subjects"}>{"Subjects"}</Link>
+                    {/* <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/subjects"}>{"Subjects"}</Link>
                     <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/chapters"}>{"Chapters"}</Link>
-                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/courses"}>{"Courses"}</Link>
+                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/courses"}>{"Courses"}</Link> */}
+                    <Dropdown id={"Course"} setDropdown={setDropdown} dropdown={dropdown} routes={[
+                        {
+                            label: "Subjects",
+                            path: "/admin/subjects",
+                        },
+                        {
+                            label: "Chapters",
+                            path: "/admin/chapters",
+                        },
+                        {
+                            label: " Courses",
+                            path: "/admin/courses",
+                        }
+                    ]} />
                     <Dropdown id={"Batch"} setDropdown={setDropdown} dropdown={dropdown} routes={[
                         {
                             label: "Regular Batches",

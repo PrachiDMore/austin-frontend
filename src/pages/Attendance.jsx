@@ -6,25 +6,49 @@ import { FiEdit3 } from 'react-icons/fi'
 import { UseAttendanceContext } from '../context/Attendance'
 import moment from 'moment';
 import DisplayAttendance from "../Modals/DisplayAttendance";
+import Button from '../components/Button'
+import axios from 'axios'
+import extractToken from '../Utils/ExtractToken'
 
 const Attendance = () => {
 	const { attendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
 	const [searchResults, setSearchResults] = useState([])
 
-    useEffect(() => {
-        setSearchResults(attendance);
-    }, [attendance])
+	const approveAttendance = (_id) => {
+		if (_id) {
+			axios(`${process.env.REACT_APP_BASE_URL}/attendance/approve/${_id}`, {
+				method: "PATCH",
+				headers: {
+					Authorization: `Bearer ${extractToken()?.token}`
+				}
+			})
+				.then((res) => {
+					if (!res.data.error) {
+						window.location.reload()
+					}else{
+						console.log(res.data.message)
+					}
+				})
+				.catch((err) => {
+					console.log(err)
+				})
+		}
+	}
 
-    const handleSearch = (e) => {
-        if (e.target.value.length == 0) {
-            setSearchResults(attendance)
-        } else {
-            setSearchResults(attendance?.filter((data) => {
-                return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
-            }))
-        }
-    }
+	useEffect(() => {
+		setSearchResults(attendance);
+	}, [attendance])
+
+	const handleSearch = (e) => {
+		if (e.target.value.length == 0) {
+			setSearchResults(attendance)
+		} else {
+			setSearchResults(attendance?.filter((data) => {
+				return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+			}))
+		}
+	}
 	return (
 		<>
 			<Navbar />
@@ -49,22 +73,26 @@ const Attendance = () => {
 										<th scope="col" className="px-6 py-5">Date</th>
 										<th scope="col" className="px-6 py-5">Start Time - End Time</th>
 										<th scope="col" className="px-6 py-5">Teacher</th>
+										<th scope="col" className="px-6 py-5">Approve</th>
 									</tr>
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
 									{
 										searchResults?.map((data) => {
-											return <tr key={data?._id} onClick={() => {
-												setDisplayAttendance({ show: true, data: data })
-											}} className="border-b border-darkPurple">
-												<th scope="row" className="cursor-pointer px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.batch?.name}</th>
+											return <tr key={data?._id} className="border-b border-darkPurple">
+												<th scope="row" className="hover:underline underline-offset-2 cursor-pointer px-4 py-3 font-medium text-gray-900 whitespace-nowrap" onClick={() => {
+													setDisplayAttendance({ show: true, data: data })
+												}}>{data?.batch?.name}</th>
 												<td className="cursor-pointer px-6 py-4">{data?.students?.length}/{data?.allStudents?.length}</td>
 												<td className="cursor-pointer px-6 py-4">{data?.chapter?.name} ({data?.subject?.name})</td>
 												<td className="cursor-pointer px-6 py-4">{moment(data?.date).format("do MMM, YYYY")}</td>
 												<td className="cursor-pointer px-6 py-4">{moment(data?.startTime).format("hh:mm a") + " - " + moment(data?.endTime).format("hh:mm a")}</td>
-												<td className="cursor-pointer px-6 py-4 capitalize flex gap-3">
-													{data?.teacher?.fullname} ({data?.teacher?.username})
+												<td className="cursor-pointer px-6 py-4 capitalize">
+													{data?.teacher?.fullname}
 												</td>
+												<td className="px-6 py-4"><Button onClick={() => {
+													approveAttendance(data?._id)
+												}} disabled={data?.approved} className={"py-2"} text='Approve' /></td>
 											</tr>
 										})
 									}

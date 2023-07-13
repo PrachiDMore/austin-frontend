@@ -41,6 +41,7 @@ const TeacherIndividualChapters = () => {
 										<th scope="col" className="px-6 py-5">Subject</th>
 										<th scope="col" className="px-6 py-5">Batch</th>
 										<th scope="col" className="px-6 py-5">Hours Completed / Hours</th>
+										<th scope="col" className="px-6 py-5">Revenue</th>
 									</tr>
 								</thead>
 								<tbody className='text-gray-700 mt-5'>
@@ -49,10 +50,11 @@ const TeacherIndividualChapters = () => {
 											return (
 												<tr key={chapterAllocation?._id} onClick={() => {
 												}} className="border-b border-darkPurple">
-													<td className="px-6 py-4">{chapterAllocation?.chapter.name}</td> 
+													<td className="px-6 py-4">{chapterAllocation?.chapter.name}</td>
 													<td className="px-6 py-4">{chapterAllocation?.subject.name}</td>
-													<td className="px-6 py-4">{chapterAllocation?.individualBatch.name}</td> 
+													<td className="px-6 py-4">{chapterAllocation?.individualBatch.name}</td>
 													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{chapterAllocation?.hoursCompleted}</span> / {chapterAllocation?.hours}</td>
+													<td className="px-6 py-4">Rs. {chapterAllocation?.rate * chapterAllocation?.hoursCompleted}</td>
 												</tr>
 											)
 										})

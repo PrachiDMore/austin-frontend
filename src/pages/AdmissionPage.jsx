@@ -6,14 +6,16 @@ import Select from '../components/Select'
 import Button from '../components/Button'
 import axios from 'axios'
 import Alert from '../components/Alert'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { UseAdmissionContext } from '../context/Admission'
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import { UseAuthContext } from '../context/Authentication'
 import extractToken from '../Utils/ExtractToken'
+import RulesAndRegulations from '../Modals/RulesAndRegulations'
+import Checkbox from '../components/Checkbox'
 
 const AdmissionPage = () => {
-    const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
+    const [showModal, setShowModal] = useState(false);
     const [formState, setFormState] = useState(admissionFormInitialState);
     const [loading, setLoading] = useState(false);
     const [disableLoading, setDisableLoading] = useState(false);
@@ -21,6 +23,8 @@ const AdmissionPage = () => {
     const { _id } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState()
+    const [checked, setChecked] = useState(false)
+
     useEffect(() => {
         if (_id) {
             axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`, {
@@ -155,6 +159,7 @@ const AdmissionPage = () => {
     return (
         <>
             <Alert message={message} setMessage={setMessage} />
+            <RulesAndRegulations checked={checked} setChecked={setChecked} showModal={showModal} setShowModal={setShowModal} />
             <section className='w-screen min-h-screen Nunito'>
                 <Navbar />
                 <form onSubmit={handleSubmit} className='w-full p-10 px-20 flex flex-col items-center'>
@@ -215,7 +220,11 @@ const AdmissionPage = () => {
                             <Input value={formState?.guardian_occupation} onChange={handleChange} id={'guardian_occupation'} type={"text"} label={`Guardian's Occupation`} placeholder={`Enter your guardian's occupation.`} />
                         </div>
                     </div>
-                    {!_id && <Button type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
+                    {!_id && <div className='flex justify-center mt-4 gap-2'>
+                        <Checkbox required={true} reverse={true} id={"rules-and-regulations"} onChange={(e) => { setChecked(e.target.checked) }} />
+                        <p>I agree to the <Link to={"/rules-and-regulations"} className='font-semibold text-darkPurple underline underline-offset-2'>terms and conditions</Link></p>
+                    </div>}
+                    {!_id && <Button disabled={!_id && !checked} type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
                     {_id && !formState?.confirmed && <Button disabled={formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
                     {_id && formState?.confirmed && <Button type='submit' text={"Submit"} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
                 </form>

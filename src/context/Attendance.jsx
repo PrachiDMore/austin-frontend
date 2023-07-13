@@ -9,6 +9,7 @@ const AttendanceContextProvider = ({ children }) => {
 	const [attendance, setAttendance] = useState([])
 	const [individualAttendance, setIndividualAttendance] = useState([])
 	const { authToken } = UseAuthContext();
+	const [refresh, setRefresh] = useState(0)
 
 	useEffect(() => {
 		if (authToken) {
@@ -80,9 +81,9 @@ const AttendanceContextProvider = ({ children }) => {
 					})
 			}
 		}
-	}, [authToken]);
+	}, [authToken, refresh]);
 
-	return <AttendanceContext.Provider value={{ attendance, setAttendance, individualAttendance, setIndividualAttendance }}>
+	return <AttendanceContext.Provider value={{ attendance, setAttendance, individualAttendance, setIndividualAttendance, refresh, setRefresh }}>
 		{children}
 	</AttendanceContext.Provider>
 }

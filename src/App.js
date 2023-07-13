@@ -64,6 +64,7 @@ import BranchManagerViewerIndividualBatches from "./pages/branch-manager-viewer/
 import BranchManagerViewerAttendance from "./pages/branch-manager-viewer/BranchManagerViewerAttendance";
 import BranchManagerViewerIndividualAttendance from "./pages/branch-manager-viewer/BranchManagerViewerIndividualAttendance";
 import BranchManagerViewer from "./pages/BranchManagerViewer";
+import RulesAndRegulationsPage from "./pages/RulesAndRegulationsPage";
 
 function App() {
   return (
@@ -84,11 +85,13 @@ function App() {
                                 <AdmissionContextProvider>
                                   <AttendanceContextProvider>
                                     <Routes>
+                                      {/* <Route path="*" element={<PageNotFound />} /> */}
                                       <Route path="/signup" element={<Signup />} />
                                       <Route path="/reset-password" element={<ForgetPassword />} />
                                       <Route path="/reset-password/:token" element={<ResetPassword />} />
                                       <Route path="/signin" element={<Signin />} />
                                       <Route path="/admission" element={<AdmissionPage />} />
+                                      <Route path="/rules-and-regulations" element={<RulesAndRegulationsPage />} />
                                       <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_STUDENT_ROLE}`]} />}>
                                         <Route path="/student/profile" element={<StudentAdmissionPage />} />
                                         <Route path="/student/batches" element={<ViewEnrolledBatches />} />

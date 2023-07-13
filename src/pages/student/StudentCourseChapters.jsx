@@ -8,19 +8,19 @@ const StudentCourseChapters = () => {
 	const { chapterAllocations } = UseChapterAllocationContext();
 	const [searchResults, setSearchResults] = useState([])
 
-    useEffect(() => {
-        setSearchResults(chapterAllocations);
-    }, [chapterAllocations])
+	useEffect(() => {
+		setSearchResults(chapterAllocations);
+	}, [chapterAllocations])
 
-    const handleSearch = (e) => {
-        if (e.target.value.length == 0) {
-            setSearchResults(chapterAllocations)
-        } else {
-            setSearchResults(chapterAllocations?.filter((data) => {
-                return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
-            }))
-        }
-    }
+	const handleSearch = (e) => {
+		if (e.target.value.length == 0) {
+			setSearchResults(chapterAllocations)
+		} else {
+			setSearchResults(chapterAllocations?.filter((data) => {
+				return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+			}))
+		}
+	}
 	return (
 		<>
 			<Navbar />
@@ -50,11 +50,11 @@ const StudentCourseChapters = () => {
 											return (
 												<tr key={chapterAllocation?._id} onClick={() => {
 												}} className="border-b border-darkPurple">
-													<td className="px-6 py-4">{chapterAllocation?.chapter.name}</td> 
+													<td className="px-6 py-4">{chapterAllocation?.chapter.name}</td>
 													<td className="px-6 py-4">{chapterAllocation?.teacher.fullname} </td>
 													<td className="px-6 py-4">{chapterAllocation?.subject.name}</td>
-													<td className="px-6 py-4">{chapterAllocation?.batch.name}</td> 
-													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{(chapterAllocation?.hoursCompleted/chapterAllocation?.hours)*100 > 100 ? "100% + extra" : `${Math.floor((chapterAllocation?.hoursCompleted/chapterAllocation?.hours)*100)}%` }</span></td>
+													<td className="px-6 py-4">{chapterAllocation?.batch.name}</td>
+													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{chapterAllocation.hoursCompleted}/{chapterAllocation.hours}</span></td>
 												</tr>
 											)
 										})

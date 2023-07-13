@@ -20,7 +20,7 @@ const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
 	const [chapter, setChapter] = useState();
 	const [students, setStudents] = useState([]);
 	const { individualAttendance, setIndividualAttendance } = UseAttendanceContext()
-	const { individualChapterAllocation, setIndividualChapterAllocation } = UseChapterAllocationContext()
+	const { individualChapterAllocation, setIndividualChapterAllocation } = UseChapterAllocationContext();
 
 	useEffect(() => {
 		if (batch) {
@@ -65,11 +65,6 @@ const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
 						setIndividualAttendance(addElementInArray(individualAttendance, res?.data?.attendance))
-						const exceptUpdated = individualChapterAllocation?.filter((chapterAllocation) => {
-							return chapterAllocation?._id !== res?.data?.chapterAllocation?._id
-						})
-						exceptUpdated.push(res?.data?.chapterAllocation)
-						setIndividualChapterAllocation(exceptUpdated);
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})

@@ -20,6 +20,7 @@ const SubjectContextProvider = ({ children }) => {
                     if (res.data.error) {
                         console.log(res.data.message)
                     } else {
+                        console.log(res.data)
                         setSubjects(res.data.subjects)
                     }
                 })

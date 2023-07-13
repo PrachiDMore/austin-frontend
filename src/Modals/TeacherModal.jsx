@@ -52,7 +52,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (showModal.update) {
-            if (formState.fullname && formState.email && formState.username && formState.phoneNumber && formState.salaryType) {
+            if (formState.fullname && formState.email && formState.username && formState.phoneNumber) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/${showModal?.data?._id}`, {
                     method: 'PATCH',
                     headers: {
@@ -82,7 +82,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
             }
         } else {
             setLoading(true)
-            if (formState.fullname && formState.email && formState.username && formState.password && formState.phoneNumber && formState.salaryType) {
+            if (formState.fullname && formState.email && formState.username && formState.password && formState.phoneNumber) {
                 axios(`${process.env.REACT_APP_BASE_URL}/teacher/create`, {
                     method: 'POST',
                     headers: {

@@ -54,7 +54,7 @@ const StudentCourseIndividualChapters = () => {
 													<td className="px-6 py-4">{chapterAllocation?.teacher.fullname} </td>
 													<td className="px-6 py-4">{chapterAllocation?.subject.name}</td>
 													<td className="px-6 py-4">{chapterAllocation?.individualBatch.name}</td> 
-													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{(chapterAllocation?.hoursCompleted/chapterAllocation?.hours)*100 > 100 ? "100% + extra" : `${Math.floor((chapterAllocation?.hoursCompleted/chapterAllocation?.hours)*100)}%` }</span></td>
+													<td className="hover:underline underline-offset-2 cursor-pointer px-6 py-4"><span className={chapterAllocation.hoursCompleted > chapterAllocation.hours ? 'text-red-500' : ""}>{chapterAllocation.hoursCompleted}/{chapterAllocation.hours}</span></td>
 												</tr>
 											)
 										})

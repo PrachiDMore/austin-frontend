@@ -66,11 +66,6 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
 						setAttendance(addElementInArray(attendance, res?.data?.attendance))
-						const exceptUpdated = chapterAllocations?.filter((chapterAllocation) => {
-							return chapterAllocation?._id !== res?.data?.chapterAllocation?._id
-						})
-						exceptUpdated.push(res?.data?.chapterAllocation)
-						setChapterAllocations(exceptUpdated);
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
