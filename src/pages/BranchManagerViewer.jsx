@@ -42,11 +42,10 @@ const BranchManagerViewer = () => {
                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="w-full block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
                             setShowModal({ show: true, update: false, data: undefined })
                         }}>
-                            Add Branch Manager Viewer
+                            Add Branch Viewer
                         </button>
                     </div>
                 </div>
-
 
                 <div className="mx-auto">
                     <div className="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">

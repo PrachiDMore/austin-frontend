@@ -56,6 +56,7 @@ const ViewBranch = () => {
 								<tbody className='text-gray-700 mt-5'>
 									{
 										searchResults?.map((branch) => {
+											console.log(branch)
 											return (
 												<tr key={branch?._id} onClick={() => {
 													setShowModal({ show: true, update: true, data: branch })

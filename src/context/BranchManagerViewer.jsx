@@ -11,7 +11,7 @@ const BranchManagerViewerContextProvider = ({ children }) => {
     const { authToken } = UseAuthContext()
 
     useEffect(() => {
-        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
+        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}` && extractToken()?.role !== `${process.env.REACT_APP_TEACHER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer`, {
                 method: "GET",
                 headers: {

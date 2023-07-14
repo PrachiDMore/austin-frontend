@@ -12,7 +12,7 @@ import updateElementsInArray from '../../Utils/UpdateUniqueElemetnsInArray'
 import { UseAuthContext } from '../../context/Authentication'
 import extractToken from '../../Utils/ExtractToken'
 
-const BranchManagerAdmissionPage = () => {
+const BranchManagerAdmissionPage = ({ role }) => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const [formState, setFormState] = useState(admissionFormInitialState);
     const [loading, setLoading] = useState(false);
@@ -23,7 +23,12 @@ const BranchManagerAdmissionPage = () => {
     const [data, setData] = useState()
     useEffect(() => {
         if (_id) {
-            axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`)
+            axios(`${process.env.REACT_APP_BASE_URL}/admission/student/${_id}`, {
+                method: "GET",
+                headers:{
+                    Authorization: `Bearer ${extractToken()?.token}`
+                }
+            })
                 .then((res) => {
                     if (res.data.error) {
                         setMessage(res.data.message)

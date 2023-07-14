@@ -7,7 +7,7 @@ import TeacherModal from '../Modals/TeacherModal'
 import { UseTeacherContext } from '../context/Teachers'
 
 
-const ViewTeachers = () => {
+const ViewTeachers = ({ editable = true }) => {
     const { teachers } = UseTeacherContext()
     const [searchteachers, setSearchteachers] = useState([]);
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
@@ -37,13 +37,13 @@ const ViewTeachers = () => {
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
 
                     </div>
-                    <div className='ml-[10px]'>
+                    {editable && <div className='ml-[10px]'>
                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
                             setShowModal({ show: true, update: false, data: undefined })
                         }}>
                             Add Teacher
                         </button>
-                    </div>
+                    </div>}
                 </div>
 
                 <div className="mx-auto">
@@ -56,7 +56,7 @@ const ViewTeachers = () => {
                                         <th scope="col" className="px-6 py-5">Email</th>
                                         <th scope="col" className="px-6 py-5">Phone Number</th>
                                         <th scope="col" className="px-6 py-5">Enabled</th>
-                                        <th scope="col" className="px-6 py-5">Actions</th>
+                                        {editable && <th scope="col" className="px-6 py-5">Actions</th>}
                                     </tr>
                                 </thead>
                                 <tbody className='text-gray-700 mt-5'>
@@ -67,11 +67,11 @@ const ViewTeachers = () => {
                                                 <td className="px-6 py-4">{data?.email}</td>
                                                 <td className="px-6 py-4">{data?.phoneNumber}</td>
                                                 <td className="px-6 py-4 capitalize">{data?.isDisabled ? "Disabled" : "Enabled"}</td>
-                                                <td className="px-6 py-4 capitalize flex gap-3">
+                                                {editable && <td className="px-6 py-4 capitalize flex gap-3">
                                                     <span onClick={() => {
                                                         setShowModal({ show: true, update: true, data: data })
                                                     }} className='text-white bg-darkPurple h-8 w-8 flex items-center justify-center cursor-pointer rounded-lg'><FiEdit3 /></span>
-                                                </td>
+                                                </td>}
                                             </tr>
                                         })
                                     }

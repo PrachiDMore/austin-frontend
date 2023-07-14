@@ -30,7 +30,9 @@ const Signin = () => {
         e.preventDefault()
         if (formState.username && formState.password) {
             setLoading(true)
+            console.log("object")
             if (type === "teacher") {
+                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/teacher`, {
                     method: "POST",
                     data: formState
@@ -52,6 +54,7 @@ const Signin = () => {
                         setLoading(false)
                     })
             } else if (type === "admin") {
+                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/`, {
                     method: "POST",
                     data: formState
@@ -73,6 +76,7 @@ const Signin = () => {
                         setLoading(false)
                     })
             } else if (type === "student") {
+                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/student`, {
                     method: "POST",
                     data: formState
@@ -94,6 +98,7 @@ const Signin = () => {
                         setLoading(false)
                     })
             } else if (type === "branch-manager") {
+                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/login`, {
                     method: "POST",
                     data: formState
@@ -115,34 +120,34 @@ const Signin = () => {
                         console.log(err)
                         setLoading(false)
                     })
-            }
-        } else if (type === "branch-manager-viewer") {
-            console.log("object")
-            axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/login`, {
-                method: "POST",
-                data: formState
-            })
-                .then((res) => {
-                    setLoading(false)
-                    if (res.data.error) {
-                        console.log(res.data.message)
-                    } else {
-                        console.log(res)
-                        if (res?.data?.token) {
-                            sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}` })))
-                            setAuthToken(extractToken()?.token)
-                            navigate("/branch-manager-viewer/profile")
+            } else if (type === "branch-manager-viewer") {
+                console.log(type)
+                axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/login`, {
+                    method: "POST",
+                    data: formState
+                })
+                    .then((res) => {
+                        setLoading(false)
+                        if (res.data.error) {
+                            console.log(res.data.message)
+                        } else {
+                            console.log(res)
+                            if (res?.data?.token) {
+                                sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}` })))
+                                setAuthToken(extractToken()?.token)
+                                navigate("/branch-manager-viewer/profile")
+                            }
                         }
-                    }
-                })
-                .catch((err) => {
-                    console.log(err)
-                    setLoading(false)
-                })
-        } else {
-            console.log("object12")
-            setLoading(false)
-            setMessage('Please properly fill the form!')
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                        setLoading(false)
+                    })
+            } else {
+                console.log(type)
+                setLoading(false)
+                setMessage('Please properly fill the form!')
+            }
         }
     }
 
@@ -161,7 +166,7 @@ const Signin = () => {
                                 <option value="teacher">Teacher</option>
                                 <option value="student">Student</option>
                                 <option value="branch-manager">Branch Manager</option>
-                                {/* <option value="branch-manager-viewer">Branch Manager Viewer</option> */}
+                                <option value="branch-manager-viewer">Branch Manager Viewer</option>
                             </select>
                         </div>
                         <Input onChange={handleChange} value={formState.username} id={'username'} label={'Username'} type={'text'} placeholder={'Enter your username.'} />

@@ -4,7 +4,7 @@ import { UseSubjectContext } from '../context/Subjects'
 import { useEffect, useState } from 'react'
 import SubjectModal from '../Modals/SubjectModal'
 
-const Subjects = () => {
+const Subjects = ({ editable = true }) => {
     const { subjects } = UseSubjectContext()
     const [searchsubject, setSearchsubject] = useState([])
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
@@ -34,13 +34,13 @@ const Subjects = () => {
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
 
                     </div>
-                    <div className='ml-[10px]'>
+                    {editable && <div className='ml-[10px]'>
                         <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
                             setShowModal({ show: true, update: false, data: undefined })
                         }}>
                             Add Subject
                         </button>
-                    </div>
+                    </div>}
                 </div>
                 <div className="mx-auto">
                     <div className="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
@@ -64,7 +64,9 @@ const Subjects = () => {
                                                     <td className="px-6 py-4">{Subject.grade}</td>
                                                     <td
                                                         onClick={() => {
-                                                            setShowModal({ show: true, update: true, data: Subject })
+                                                            if (editable) {
+                                                                setShowModal({ show: true, update: true, data: Subject })
+                                                            }
                                                         }}
                                                         className="px-6 py-4">{Subject._id}</td>
                                                 </tr>

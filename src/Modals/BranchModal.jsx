@@ -8,14 +8,17 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray';
 import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import SearchableSelect from "../components/SearchableSelect";
 import { UseBranchManagerContext } from '../context/BranchManager';
+import { UseBranchManagerViewerContext } from '../context/BranchManagerViewer';
 import extractToken from "../Utils/ExtractToken";
 
 const BranchModal = ({ setShowModal, showModal }) => {
 	const { branches, setBranches } = UseBranchContext();
 	const { branchManagerOptions } = UseBranchManagerContext()
+	const { BranchManagerViewerOptions } = UseBranchManagerViewerContext()
 	const [formState, setFormState] = useState(branchInitialState);
 	const [loading, setLoading] = useState(false)
 	const [branchManager, setBranchManager] = useState()
+	const [branchManagerViewer, setBranchManagerViewer] = useState()
 
 	const handleChange = (e) => {
 		setFormState({
@@ -27,9 +30,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 	useEffect(() => {
 		if (showModal.update) {
 			setFormState(showModal.data)
-			console.log(branchManagerOptions?.filter((branchManager) => {
-				return branchManager._id === showModal.data.manager._id
-			}))
+			setBranchManagerViewer(BranchManagerViewerOptions?.filter((branchManager) => {
+				return branchManager?._id === showModal?.data?.viewer?._id;
+			})[0])
 			setBranchManager(branchManagerOptions?.filter((branchManager) => {
 				return branchManager?._id === showModal?.data?.manager?._id;
 			})[0])
@@ -43,9 +46,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/${showModal.data._id}`, {
 				method: "PATCH",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
-				data: { ...formState, manager: branchManager?.value }
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
+				data: { ...formState, manager: branchManager?.value, viewer: branchManagerViewer?.value }
 			})
 				.then((res) => {
 					if (res.data.error) {
@@ -56,6 +59,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(branchInitialState);
 						setBranchManager()
+						setBranchManagerViewer()
 						setBranches(updateElementsInArray(branches, res?.data?.branch, showModal.data))
 					}
 				})
@@ -64,9 +68,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/create`, {
 				method: "POST",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
-				data: { ...formState, manager: branchManager?.value }
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
+				data: { ...formState, manager: branchManager?.value, viewer: branchManagerViewer?.value }
 			})
 				.then((res) => {
 					if (res.data.error) {
@@ -77,6 +81,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(branchInitialState);
 						setBranchManager()
+						setBranchManagerViewer()
 						setBranches(addElementInArray(branches, res?.data?.branch))
 					}
 				})
@@ -85,7 +90,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 	return (
 		<>
 			<div id="updateProductModal" tabIndex="-1" aria-hidden="true" className={showModal.show ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>
-				<div className="p-4 w-[75vw] h-[75vh]">
+				<div className="p-4 w-[75vw] h-auto">
 					<div className="relative h-full bg-white p-4 rounded-lg shadow-md shadow-purpleShadow overflow-auto">
 						<div className="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-lightPurple ">
 							<h3 className="text-lg font-semibold dark:text-lightPurple">
@@ -104,6 +109,7 @@ const BranchModal = ({ setShowModal, showModal }) => {
 						</div>
 						<form onSubmit={handleSubmit} className='grid grid-cols-3 gap-x-6 gap-y-4'>
 							<SearchableSelect value={branchManager} onChange={(e) => { setBranchManager(e) }} label={"Branch Manager"} options={branchManagerOptions} />
+							<SearchableSelect value={branchManagerViewer} onChange={(e) => { setBranchManagerViewer(e) }} label={"Branch Manager Viewer"} options={BranchManagerViewerOptions} />
 							<Input label={"Name"} value={formState.name} onChange={handleChange} id={"name"} />
 							<Input label={"Address Line"} value={formState.addressline} onChange={handleChange} id={"addressline"} />
 							<Input label={"Street"} value={formState.street} onChange={handleChange} id={"street"} />

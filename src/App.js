@@ -100,14 +100,12 @@ function App() {
                                         <Route path="/student/chapters" element={<StudentCourseChapters />} />
                                         <Route path="/student/individual-chapters" element={<StudentCourseIndividualChapters />} />
                                       </Route>
-                                      <Route path="/admin/branch-manager" element={<BranchManager />} />
-                                      <Route path="/admin/branch-manager-viewer" element={<BranchManagerViewer />} />
                                       <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_ADMIN_ROLE}`]} />}>
                                         <Route path="/" element={<Home />} />
                                         {/* <Route path="/admin/roles" element={<Roles />} /> */}
                                         <Route
                                           path="/admin/admissions"
-                                          element={<ViewAdmissions />}
+                                          element={<ViewAdmissions role={"admin"} />}
                                         />
                                         <Route
                                           path="/admin/admissions/:_id"
@@ -124,6 +122,8 @@ function App() {
                                         <Route path="/admin/individual-batches" element={<IndividualBatches />} />
                                         <Route path="/admin/attendance" element={<Attendance />} />
                                         <Route path="/admin/individual-attendance" element={<IndividualAttendance />} />
+                                        <Route path="/admin/branch-manager" element={<BranchManager />} />
+                                        <Route path="/admin/branch-manager-viewer" element={<BranchManagerViewer />} />
                                       </Route>
                                       {/* Viewer */}
                                       <Route element={<ProtectedRoutes role={[, `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}`]} />}>
@@ -138,13 +138,13 @@ function App() {
                                           path="/branch-manager-viewer/admissions/:_id"
                                           element={<BranchManagerAdmissionPage />}
                                         />
-                                        <Route path="/branch-manager-viewer/teachers" element={<ViewTeachers />} />
-                                        <Route path="/branch-manager-viewer/chapters" element={<ViewChapters />} />
-                                        <Route path="/branch-manager-viewer/subjects" element={<ViewSubjects />} />
+                                        <Route path="/branch-manager-viewer/teachers" element={<ViewTeachers editable={false} />} />
+                                        <Route path="/branch-manager-viewer/chapters" element={<ViewChapters editable={false} />} />
+                                        <Route path="/branch-manager-viewer/subjects" element={<ViewSubjects editable={false} />} />
                                         <Route path="/branch-manager-viewer/chapter-allocation" element={<BranchManagerViewerChapterAllocation />} />
                                         <Route path="/branch-manager-viewer/individual-chapter-allocation" element={<BranchManagerViewerIndividualChapterAllocation />} />
-                                        <Route path="/branch-manager-viewer/courses" element={<ViewCourses />} />
-                                        <Route path="/branch-manager-viewer/batches" element={<BranchManagerViewBatch />} />
+                                        <Route path="/branch-manager-viewer/courses" element={<ViewCourses editable={false}/>} />
+                                        <Route path="/branch-manager-viewer/batches" element={<BranchManagerViewerBatch />} />
                                         <Route path="/branch-manager-viewer/individual-batches" element={<BranchManagerViewerIndividualBatches />} />
                                         <Route path="/branch-manager-viewer/attendance" element={<BranchManagerViewerAttendance />} />
                                         <Route path="/branch-manager-viewer/individual-attendance" element={<BranchManagerViewerIndividualAttendance />} />
@@ -156,7 +156,7 @@ function App() {
                                         {/* <Route path="/admin/roles" element={<Roles />} /> */}
                                         <Route
                                           path="/branch-manager/admissions"
-                                          element={<ViewAdmissions />}
+                                          element={<ViewAdmissions role={"manager"} />}
                                         />
                                         <Route
                                           path="/branch-manager/admissions/:_id"
@@ -168,7 +168,7 @@ function App() {
                                         <Route path="/branch-manager/chapter-allocation" element={<BranchChapterAllocation />} />
                                         <Route path="/branch-manager/individual-chapter-allocation" element={<BranchManagerIndividualChapterAllocation />} />
                                         <Route path="/branch-manager/courses" element={<ViewCourses />} />
-                                        <Route path="/branch-manager/batches" element={<BranchManagerViewerBatch />} />
+                                        <Route path="/branch-manager/batches" element={<BranchManagerViewBatch />} />
                                         <Route path="/branch-manager/individual-batches" element={<BranchManagerIndividualBatches />} />
                                         <Route path="/branch-manager/attendance" element={<BranchManagerAttendance />} />
                                         <Route path="/branch-manager/individual-attendance" element={<BranchManagerIndividualAttendance />} />

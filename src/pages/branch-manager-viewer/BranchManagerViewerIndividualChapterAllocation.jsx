@@ -37,13 +37,6 @@ const BranchManagerViewerIndividualChapterAllocation = () => {
 						<Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
 						<GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
 					</div>
-					<div className='ml-[10px] flex justify-between w-[10%]'>
-						<button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="h-max block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
-							setShowModal({ show: true, update: false, data: undefined })
-						}}>
-							Assign Teacher
-						</button>
-					</div>
 				</div>
 				<div className="mx-auto">
 					<div className="bg-white relative shadow-md shadow-purpleShadow rounded-lg overflow-hidden">
@@ -61,11 +54,9 @@ const BranchManagerViewerIndividualChapterAllocation = () => {
 								<tbody className='text-gray-700 mt-5'>
 									{
 										searchResults?.map((chapterAllocation) => {
-											if (chapterAllocation?.individualBatch?.branch?.manager === user?._id) {
+											if (chapterAllocation?.individualBatch?.branch?.viewer === user?._id) {
 												return (
-													<tr key={chapterAllocation?._id} onClick={() => {
-														setShowModal({ show: true, update: true, data: chapterAllocation })
-													}} className="border-b border-darkPurple">
+													<tr key={chapterAllocation?._id} className="border-b border-darkPurple">
 														<td className="px-6 py-4">{chapterAllocation?.chapter.name}</td>
 														<td className="px-6 py-4">{chapterAllocation?.teacher.fullname}</td>
 														<td className="px-6 py-4">{chapterAllocation?.subject.name}</td>

@@ -213,6 +213,16 @@ const Navbar = () => {
                             path: "/admin/individual-batches",
                         }
                     ]} />
+                    <Dropdown id={"Manager"} setDropdown={setDropdown} dropdown={dropdown} routes={[
+                        {
+                            label: "Branch Manager",
+                            path: "/admin/branch-manager",
+                        },
+                        {
+                            label: "Branch Manager Viewer",
+                            path: "/admin/branch-manager-viewer",
+                        }
+                    ]} />
                     <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/branch"}>{"Branch"}</Link>
                     <Dropdown id={"Allocation"} setDropdown={setDropdown} dropdown={dropdown} routes={[
                         {
@@ -270,6 +280,43 @@ const Navbar = () => {
                         {
                             label: "Individual Batch Attendance",
                             path: "/branch-manager/individual-attendance",
+                        }
+                    ]} />
+                </ul>}
+                {extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}` && <ul className='px-10 w-[70%] flex justify-start gap-x-10 items-center '>
+                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/branch-manager-viewer/admissions"}>{"Admission"}</Link>
+                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/branch-manager-viewer/teachers"}>{"Teachers"}</Link>
+                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/branch-manager-viewer/subjects"}>{"Subjects"}</Link>
+                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/branch-manager-viewer/chapters"}>{"Chapters"}</Link>
+                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/branch-manager-viewer/courses"}>{"Courses"}</Link>
+                    <Dropdown id={"Batch"} setDropdown={setDropdown} dropdown={dropdown} routes={[
+                        {
+                            label: "Regular Batches",
+                            path: "/branch-manager-viewer/batches",
+                        },
+                        {
+                            label: "Individual Batches",
+                            path: "/branch-manager-viewer/individual-batches",
+                        }
+                    ]} />
+                    <Dropdown id={"Allocation"} setDropdown={setDropdown} dropdown={dropdown} routes={[
+                        {
+                            label: "Regular Batch Allocation",
+                            path: "/branch-manager-viewer/chapter-allocation",
+                        },
+                        {
+                            label: "Individual Batch Allocation",
+                            path: "/branch-manager-viewer/individual-chapter-allocation",
+                        }
+                    ]} />
+                    <Dropdown id={"Attendance"} setDropdown={setDropdown} dropdown={dropdown} routes={[
+                        {
+                            label: "Regular Batch Attendance",
+                            path: "/branch-manager-viewer/attendance",
+                        },
+                        {
+                            label: "Individual Batch Attendance",
+                            path: "/branch-manager-viewer/individual-attendance",
                         }
                     ]} />
                 </ul>}

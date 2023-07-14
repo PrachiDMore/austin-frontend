@@ -26,7 +26,7 @@ const BranchContextProvider = ({ children }) => {
 						setBranches(res.data.branches);
 					}
 				})
-		} else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
+		} else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}`) {
 			axios(`${process.env.REACT_APP_BASE_URL}/branch/`, {
 				method: "GET",
 				headers: {
@@ -37,6 +37,7 @@ const BranchContextProvider = ({ children }) => {
 					if (res.data.error) {
 						console.log(res.data.message)
 					} else {
+						console.log(res.data)
 						setBranches(res.data.branches);
 					}
 				})

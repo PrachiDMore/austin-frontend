@@ -14,7 +14,7 @@ const BatchesContextProvider = ({ children }) => {
 
     useEffect(() => {
         if (authToken) {
-            if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
+            if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}`) {
                 axios(`${process.env.REACT_APP_BASE_URL}/batch/`, {
                     method: "GET",
                     headers: {

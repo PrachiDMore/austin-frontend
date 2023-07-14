@@ -13,6 +13,7 @@ const BranchManagerViewerBatch = () => {
     const [searchResults, setSearchResults] = useState([])
 
     useEffect(() => {
+        console.log(batches)
         setSearchResults(batches);
     }, [batches])
 
@@ -21,7 +22,6 @@ const BranchManagerViewerBatch = () => {
             setSearchResults(batches)
         } else {
             setSearchResults(batches?.filter((data) => {
-                console.table(data)
                 return `${data.academicYear}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.branch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.course?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
             }))
         }
@@ -36,13 +36,6 @@ const BranchManagerViewerBatch = () => {
                     <div className='w-[90%]'>
                         <Input onChange={handleSearch} type={'text'} placeholder={'Search...'} />
                         <GrSearch className='text-lg font-bold relative bottom-8 left-[97%]' />
-                    </div>
-                    <div className='ml-[10px] flex justify-between w-[10%]'>
-                        <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" className="h-max block text-white bg-lightPurple hover:bg-darkPurple focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-darkPurple dark:hover:bg-lightPurple dark:focus:ring-lightPurple" type="button" onClick={() => {
-                            setShowModal({ show: true, update: false, data: undefined })
-                        }}>
-                            Add Batch
-                        </button>
                     </div>
                 </div>
                 <div className="mx-auto">
@@ -60,13 +53,11 @@ const BranchManagerViewerBatch = () => {
                                 <tbody className='text-gray-700 mt-5'>
                                     {
                                         searchResults?.filter((data) => {
-                                            console.log(data)
-                                            return data?.branch?.manager === user?._id
+                                            console.log(data, 123)
+                                            return data?.branch?.viewer === user?._id
                                         }).map((batch) => {
                                             return (
-                                                <tr key={batch?._id} onClick={() => {
-                                                    setShowModal({ show: true, update: true, data: batch })
-                                                }} className="border-b border-darkPurple">
+                                                <tr key={batch?._id} className="border-b border-darkPurple">
                                                     <td className="px-6 py-4">{batch?.name}</td>
                                                     <td className="px-6 py-4">{batch?.academicYear}</td>
                                                     <td className="px-6 py-4">{batch?.typeOfBatch}</td>
