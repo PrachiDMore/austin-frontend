@@ -134,6 +134,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                             </button>
                         </div>
                         <form action="#" onSubmit={handleSubmit}>
+                            {showModal.update && <img src={formState?.photoURL} className='h-28 w-28 rounded-full object-cover m-auto mb-5' alt="" />}
                             <div className="grid gap-4 mb-4 sm:grid-cols-2">
                                 <Input onChange={handleChange} required={true} value={formState.fullname} id="fullname" type={"text"} label={'Full Name'} placeholder={'Enter your full name.'} />
                                 <SearchableSelect label={"Subjects"} value={subjectValue} onChange={handleSubjects} options={subjectOptions} isMulti={true} />

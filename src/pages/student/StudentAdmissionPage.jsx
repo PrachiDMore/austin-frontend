@@ -9,6 +9,8 @@ import Input from '../../components/Input';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
 import admissionFormInitialState from '../../InitialStates/AdmissionForm';
+import Spinner from '../../components/Spinner';
+import { AiOutlineLink } from 'react-icons/ai'
 
 const StudentAdmissionPage = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
@@ -16,6 +18,7 @@ const StudentAdmissionPage = () => {
 	const [loading, setLoading] = useState(false);
 	const [message, setMessage] = useState("");
 	const navigate = useNavigate();
+	const [uploading, setUploading] = useState(false)
 	const [data, setData] = useState()
 	const { authToken, user } = UseAuthContext();
 
@@ -55,6 +58,35 @@ const StudentAdmissionPage = () => {
 			}
 		}
 	}
+
+	const uploadImg = (e) => {
+		setUploading(true)
+		const formData = new FormData();
+		formData.append("file", e.target.files[0]);
+		formData.append("upload_preset", process.env.REACT_APP_PRESET_NAME);
+		formData.append("folder", "admission");
+
+		fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`, {
+			method: "POST",
+			body: formData,
+		})
+			.then((response) => response.json())
+			.then(async (data) => {
+				axios(`${process.env.REACT_APP_BASE_URL}/admission/${user?._id}`, {
+					method: "PATCH",
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
+					},
+					data: {
+						photoURL: data.secure_url
+					}
+				})
+					.then((res) => {
+						setUploading(false)
+						window.location.reload()
+					})
+			})
+	}
 	return (
 		<>
 			<Alert message={message} setMessage={setMessage} />
@@ -62,6 +94,9 @@ const StudentAdmissionPage = () => {
 				<Navbar />
 				<form onSubmit={handleSubmit} className='w-full p-10 px-20 flex flex-col items-center'>
 					<div className='text-center text-3xl font-bold p-4 '>Profile</div>
+					{formState?.photoURL && <div className='my-3 rounded-lg'>
+						<img className='h-32 w-32 object-cover rounded-lg' src={formState?.photoURL} alt="" />
+					</div>}
 					<div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
 						<h1 className='font-semibold text-darkPurple text-2xl pb-2 mb-2'>Personal Information:</h1>
 						<div className='grid grid-cols-3 gap-6 w-full '>
@@ -69,6 +104,11 @@ const StudentAdmissionPage = () => {
 							<Input value={formState?.firstname} required={true} onChange={handleChange} id={'firstname'} type={"text"} label={'First Name'} placeholder={'Enter your first name.'} />
 							<Input value={formState?.middlename} required={true} onChange={handleChange} id={'middlename'} type={"text"} label={'Middle Name'} placeholder={'Enter your middle name.'} />
 							<Input value={formState?.lastname} required={true} onChange={handleChange} id={'lastname'} type={"text"} label={'Last Name'} placeholder={'Enter your last name.'} />
+							<div className='flex gap-2 items-center'>
+								<Input className={uploading ? "flex-1" : "w-full"} onChange={uploadImg} accept={"img/*"} required={true} readOnly={true} type="file" id="photo" label={'Profile Picture'} placeholder="Profile Image" />
+								{uploading && <Spinner color={"dark"} />}
+								{formState?.photoURL && !uploading && <a href={formState?.photoURL}><AiOutlineLink className='text-xl text-blue-700' /></a>}
+							</div>
 							<Select value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }, { label: 'Transgender', value: 'transgender' }]} />
 							<Input value={formState?.DOB} required={true} onChange={handleChange} id={'DOB'} type={"date"} label={'Date of Birth'} placeholder={'Enter your last name.'} />
 							<Input value={formState?.address} required={true} onChange={handleChange} id={'address'} type={"text"} label={'Address'} placeholder={'Enter your address.'} />

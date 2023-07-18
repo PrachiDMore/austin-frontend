@@ -8,7 +8,7 @@ const TeacherContextProvider = ({ children }) => {
     const [teachers, setTeachers] = useState([]);
     const [teacherOptions, setTeacherOptions] = useState([])
     useEffect(() => {
-        if (extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
+        if (extractToken()?.token && extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/teacher`, {
                 method: "GET",
                 headers:{

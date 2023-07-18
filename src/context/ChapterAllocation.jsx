@@ -79,7 +79,7 @@ const ChapterAllocationContextProvider = ({ children }) => {
                 .catch((err) => {
                     console.log(err.message)
                 })
-        } else {
+        } else if(extractToken()?.token){
             const batchId = batches?.map((batch) => {
                 return batch._id
             })

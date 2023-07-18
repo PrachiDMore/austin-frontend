@@ -170,6 +170,9 @@ const AdmissionPage = () => {
                             handleIsDisabled(!formState?.isDisabled)
                         }} text={formState?.isDisabled ? 'Enable' : 'Disable'} loading={disableLoading} type='button' className={"w-52"} />}
                     </div>
+                    {formState?.photoURL && <div className='my-3 rounded-lg'>
+                        <img className='h-32 w-32 object-cover rounded-lg' src={formState?.photoURL} alt="" />
+                    </div>}
                     <div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
                         <h1 className='font-semibold text-darkPurple text-2xl pb-2 mb-2'>Personal Information:</h1>
                         <div className='grid grid-cols-3 gap-6 w-full '>
