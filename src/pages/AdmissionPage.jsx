@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Input from '../components/Input'
 import Navbar from '../components/Navbar'
 import admissionFormInitialState from '../InitialStates/AdmissionForm'
@@ -12,19 +12,25 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import { UseAuthContext } from '../context/Authentication'
 import extractToken from '../Utils/ExtractToken'
 import RulesAndRegulations from '../Modals/RulesAndRegulations'
+import { v4 as uuidv4 } from 'uuid';
 import Checkbox from '../components/Checkbox'
+import Spinner from "../components/Spinner";
+import { AiOutlineLink } from "react-icons/ai";
 
 const AdmissionPage = () => {
     const [showModal, setShowModal] = useState(false);
     const [formState, setFormState] = useState(admissionFormInitialState);
     const [loading, setLoading] = useState(false);
+    const [uploading, setUploading] = useState(false);
     const [disableLoading, setDisableLoading] = useState(false);
     const [message, setMessage] = useState("");
     const { _id } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState()
     const [checked, setChecked] = useState(false)
-    const location = useLocation()
+    const location = useLocation();
+    const [img, setImg] = useState()
+    const admissionRef = useRef()
 
     useEffect(() => {
         if (_id) {
@@ -120,22 +126,35 @@ const AdmissionPage = () => {
             }
         } else {
             if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade) {
-                axios(`${process.env.REACT_APP_BASE_URL}/admission/create`, {
-                    method: 'POST',
-                    data: formState,
+                setUploading(true)
+                const formData = new FormData();
+                formData.append("file", img);
+                formData.append("upload_preset", process.env.REACT_APP_PRESET_NAME);
+                formData.append("folder", "admission");
+                fetch(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_CLOUD_NAME}/image/upload`, {
+                    method: "POST",
+                    body: formData,
                 })
-                    .then((res) => {
-                        if (res.data.error) {
-                            setMessage(res.data.message)
-                            setLoading(false)
-                        } else {
-                            setMessage(res.data.message)
-                            setLoading(false)
-                            setFormState(admissionFormInitialState);
-                        }
-                    })
-                    .catch((err) => {
-                        setLoading(false)
+                    .then((response) => response.json())
+                    .then(async (data) => {
+                        setUploading(false)
+                        axios(`${process.env.REACT_APP_BASE_URL}/admission/create`, {
+                            method: 'POST',
+                            data: { ...formState, photoURL: data?.secure_url, username:  uuidv4()},
+                        })
+                            .then((res) => {
+                                if (res.data.error) {
+                                    setMessage(res.data.message)
+                                    setLoading(false)
+                                } else {
+                                    setMessage(res.data.message)
+                                    setLoading(false)
+                                    setFormState(admissionFormInitialState);
+                                }
+                            })
+                            .catch((err) => {
+                                setLoading(false)
+                            })
                     })
             } else {
                 setLoading(false)
@@ -160,16 +179,20 @@ const AdmissionPage = () => {
                 setDisableLoading(false)
             })
     }
+
+    const handlePrint = async () => {
+        window.print()
+    }
     return (
         <>
-            <Alert message={message} setMessage={setMessage} />
+            {!location?.pathname?.includes("/view/admission/") && <Alert message={message} setMessage={setMessage} />}
             <RulesAndRegulations checked={checked} setChecked={setChecked} showModal={showModal} setShowModal={setShowModal} />
-            <section className='w-screen min-h-screen Nunito'>
-                <Navbar />
-                <form onSubmit={handleSubmit} className='w-full p-10 px-20 flex flex-col items-center'>
+            <section ref={admissionRef} className='w-screen min-h-screen Nunito'>
+                {!location?.pathname?.includes("/view/admission/") && <Navbar />}
+                <form onSubmit={handleSubmit} className={location?.pathname?.includes("/view/admission/") ? 'w-full p-8 flex flex-col items-center' : 'w-full p-10 px-20 flex flex-col items-center'}>
+                    <div className={location?.pathname?.includes("/view/admission/") ? 'text-center text-3xl font-bold p-4 ' : 'text-3xl font-bold p-4 '}>Admission Form</div>
                     <div className={extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && formState?.confirmed && _id ? "w-full flex justify-between items-center" : "w-full flex justify-between items-center"}>
                         {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && formState?.confirmed && _id && <Button type='button' text='Enable' className={"w-52 pointer-events-none opacity-0"} />}
-                        <div className='text-3xl font-bold p-4 '>Admission Form</div>
                         {extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && formState?.confirmed && _id && <Button onClick={() => {
                             handleIsDisabled(!formState?.isDisabled)
                         }} text={formState?.isDisabled ? 'Enable' : 'Disable'} loading={disableLoading} type='button' className={"w-52"} />}
@@ -185,6 +208,13 @@ const AdmissionPage = () => {
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.firstname} required={true} onChange={handleChange} id={'firstname'} type={"text"} label={'First Name'} placeholder={'Enter your first name.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.middlename} required={true} onChange={handleChange} id={'middlename'} type={"text"} label={'Middle Name'} placeholder={'Enter your middle name.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.lastname} required={true} onChange={handleChange} id={'lastname'} type={"text"} label={'Last Name'} placeholder={'Enter your last name.'} />
+                            <div className='flex gap-2 items-center'>
+                                <Input className={uploading ? "flex-1" : "w-full"} onChange={(e) => {
+                                    setImg(e.target.files[0])
+                                }} accept={"img/*"} required={true} readOnly={true} type="file" id="photo" label={'Profile Picture'} placeholder="Profile Image" />
+                                {uploading && <Spinner color={"dark"} />}
+                                {formState?.photoURL && !uploading && <a href={formState?.photoURL}><AiOutlineLink className='text-xl text-blue-700' /></a>}
+                            </div>
                             <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.DOB} required={true} onChange={handleChange} id={'DOB'} type={"date"} label={'Date of Birth'} placeholder={'Enter your last name.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.address} required={true} onChange={handleChange} id={'address'} type={"text"} label={'Address'} placeholder={'Enter your address.'} />
@@ -232,9 +262,11 @@ const AdmissionPage = () => {
                         <p>I agree to the <Link to={"/rules-and-regulations"} className='font-semibold text-darkPurple underline underline-offset-2'>terms and conditions</Link></p>
                     </div>}
                     {!_id && <Button disabled={!_id && !checked} type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
-                    {_id && !formState?.confirmed && <Button disabled={formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
+                    {_id && !formState?.confirmed && !location?.pathname?.includes("/view/admission") && <Button disabled={formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
                     {_id && formState?.confirmed && !location?.pathname?.includes("/view/admission") && <Button type='submit' text={"Submit"} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
-                    {_id && formState?.confirmed && location?.pathname?.includes("/view/admission") && <Button type='button' text={"Print"} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
+                    {_id && location?.pathname?.includes("/view/admission") && <Button type='button' text={"Print"} onClick={() => {
+                        handlePrint()
+                    }} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
                 </form>
             </section>
         </>
