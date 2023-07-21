@@ -2,18 +2,20 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useContext, createContext, useState } from 'react';
 import extractToken from '../Utils/ExtractToken';
+import admissionFormInitialState from '../InitialStates/AdmissionForm';
 
 const AdmissionContext = createContext();
 
 const AdmissionContextProvider = ({ children }) => {
 	const [admissions, setAdmissions] = useState([]);
 	const [admissionOptions, setAdmissionOptions] = useState([]);
+	const [formState, setFormState] = useState(admissionFormInitialState)
 
 	useEffect(() => {
 		if (extractToken()?.token && extractToken()?.role !== `${process.env.REACT_APP_STUDENT_ROLE}`) {
 			axios(`${process.env.REACT_APP_BASE_URL}/admission/`, {
 				method: "GET",
-				headers:{
+				headers: {
 					Authorization: `Bearer ${extractToken()?.token}`
 				}
 			})
@@ -37,7 +39,7 @@ const AdmissionContextProvider = ({ children }) => {
 		}))
 	}, [admissions]);
 
-	return <AdmissionContext.Provider value={{ admissions, setAdmissions, admissionOptions }}>
+	return <AdmissionContext.Provider value={{ admissions, setAdmissions, admissionOptions, formState, setFormState }}>
 		{children}
 	</AdmissionContext.Provider>
 }

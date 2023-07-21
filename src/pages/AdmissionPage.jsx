@@ -19,7 +19,6 @@ import { AiOutlineLink } from "react-icons/ai";
 
 const AdmissionPage = () => {
     const [showModal, setShowModal] = useState(false);
-    const [formState, setFormState] = useState(admissionFormInitialState);
     const [loading, setLoading] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [disableLoading, setDisableLoading] = useState(false);
@@ -31,6 +30,7 @@ const AdmissionPage = () => {
     const location = useLocation();
     const [img, setImg] = useState()
     const admissionRef = useRef()
+    const { formState, setFormState } = UseAdmissionContext()
 
     useEffect(() => {
         if (_id) {
@@ -125,7 +125,7 @@ const AdmissionPage = () => {
                 console.log('Form incompletely filled')
             }
         } else {
-            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade) {
+            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade && img) {
                 setUploading(true)
                 const formData = new FormData();
                 formData.append("file", img);
@@ -140,7 +140,7 @@ const AdmissionPage = () => {
                         setUploading(false)
                         axios(`${process.env.REACT_APP_BASE_URL}/admission/create`, {
                             method: 'POST',
-                            data: { ...formState, photoURL: data?.secure_url, username:  uuidv4()},
+                            data: { ...formState, photoURL: data?.secure_url, username: uuidv4() },
                         })
                             .then((res) => {
                                 if (res.data.error) {
