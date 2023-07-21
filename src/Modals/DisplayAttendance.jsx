@@ -51,7 +51,7 @@ const DisplayAttendance = ({ showModal, setShowModal }) => {
 						<Input readOnly={true} label={"Teacher Name"} placeholder={"Teacher name"} value={showModal?.data?.teacher?.fullname} />
 						<Input readOnly={true} label={"Chapter Name"} placeholder={"Chapter name"} value={showModal?.data?.chapter?.name} />
 						<Input readOnly={true} label={"Subject Name"} placeholder={"Subject name"} value={showModal?.data?.subject?.name} />
-						<Input readOnly={true} label={"Date"} placeholder={"Date"} value={moment(showModal?.data?.date).format("do MMM, YYYY")} />
+						<Input readOnly={true} label={"Date"} placeholder={"Date"} value={moment(showModal?.data?.date).format("Do MMM, YYYY")} />
 						<Input readOnly={true} label={"Start Time - End Time"} placeholder={"Start Time - End Time"} value={moment(showModal?.data?.startTime).format("hh:mm a") + " - " + moment(showModal?.data?.endTime).format("hh:mm a")} />
 						<Button text='View Students' className={"col-span-2 w-52 m-auto"} onClick={() => { setDisplayState(1) }} />
 					</div>

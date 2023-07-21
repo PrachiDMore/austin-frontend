@@ -37,7 +37,7 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if (startTime && endTime && batch) {
+		if (!startTime && !endTime && !batch) {
 			let studentsArray = students?.map((student) => {
 				return student.value
 			})

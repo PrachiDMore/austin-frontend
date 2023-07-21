@@ -91,6 +91,7 @@ function App() {
                                       <Route path="/reset-password/:token" element={<ResetPassword />} />
                                       <Route path="/signin" element={<Signin />} />
                                       <Route path="/admission" element={<AdmissionPage />} />
+                                      <Route path="/view/admission/:_id" element={<AdmissionPage />} />
                                       <Route path="/rules-and-regulations" element={<RulesAndRegulationsPage />} />
                                       <Route element={<ProtectedRoutes role={[`${process.env.REACT_APP_STUDENT_ROLE}`]} />}>
                                         <Route path="/student/profile" element={<StudentAdmissionPage />} />

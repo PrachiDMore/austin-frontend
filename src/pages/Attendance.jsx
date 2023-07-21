@@ -85,7 +85,7 @@ const Attendance = () => {
 												}}>{data?.batch?.name}</th>
 												<td className="cursor-pointer px-6 py-4">{data?.students?.length}/{data?.allStudents?.length}</td>
 												<td className="cursor-pointer px-6 py-4">{data?.chapter?.name} ({data?.subject?.name})</td>
-												<td className="cursor-pointer px-6 py-4">{moment(data?.date).format("do MMM, YYYY")}</td>
+												<td className="cursor-pointer px-6 py-4">{moment(data?.date).format("Do MMM, YYYY")}</td>
 												<td className="cursor-pointer px-6 py-4">{moment(data?.startTime).format("hh:mm a") + " - " + moment(data?.endTime).format("hh:mm a")}</td>
 												<td className="cursor-pointer px-6 py-4 capitalize">
 													{data?.teacher?.fullname}

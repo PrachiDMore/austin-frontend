@@ -70,7 +70,7 @@ const TeacherAttendance = () => {
 												<th scope="row" className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">{data?.batch?.name}</th>
 												<td className="px-6 py-4">{data?.students?.length}</td>
 												<td className="px-6 py-4">{data?.chapter?.name} ({data?.subject?.name})</td>
-												<td className="px-6 py-4">{moment(data?.date).format("do MMM, YYYY")}</td>
+												<td className="px-6 py-4">{moment(data?.date).format("Do MMM, YYYY")}</td>
 												<td className="px-6 py-4">{moment(data?.startTime).format("hh:mm a") + " - " + moment(data?.endTime).format("hh:mm a")}</td>
 											</tr>
 										})
