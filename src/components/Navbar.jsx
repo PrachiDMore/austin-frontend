@@ -234,7 +234,7 @@ const Navbar = () => {
                             path: "/admin/individual-chapter-allocation",
                         }
                     ]} />
-                    <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/branch-manager"}>{"Manager"}</Link>
+                    {/* <Link className='navLink hover:text-darkPurple font-semibold' to={"/admin/branch-manager"}>{"Manager"}</Link> */}
                     <Dropdown id={"Attendance"} setDropdown={setDropdown} dropdown={dropdown} routes={[
                         {
                             label: "Regular Batch Attendance",
