@@ -11,12 +11,11 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import SearchableSelect from '../components/SearchableSelect';
 import extractToken from "../Utils/ExtractToken";
 
-const TeacherModal = ({ setShowModal, showModal }) => {
+const TeacherModal = ({ setShowModal, showModal, setMessage }) => {
     const { teachers, setTeachers } = UseTeacherContext()
     const { subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(TeacherformInitialState);
     const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
     const [selectedSubjects, setSelectedSubjects] = useState([])
     const [subjectValue, setSubjectValue] = useState([])
 
@@ -36,7 +35,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
 
     useEffect(() => {
         if (showModal.update) {
-            setSubjectValue(showModal?.data?.subject?.map((subject) => {
+            handleSubjects(showModal?.data?.subject?.map((subject) => {
                 return {
                     label: `${subject.name} (${subject.grade})`,
                     value: subject._id
@@ -62,14 +61,14 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
+                            setMessage(res.data.message)
                             setSelectedSubjects([])
                         } else {
+                            setShowModal({ update: false, show: false, data: undefined })
                             setMessage(res.data.message)
                             setLoading(false)
                             setTeachers(updateElementsInArray(teachers, res.data.teacher, showModal.data))
-                            setShowModal({ update: false, show: false, data: undefined })
                             setSelectedSubjects([])
                             setFormState(TeacherformInitialState);
                         }
@@ -78,7 +77,7 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
         } else {
             setLoading(true)
@@ -95,7 +94,6 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                             setMessage(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSelectedSubjects([])
-
                         } else {
                             setMessage(res.data.message)
                             setLoading(false)
@@ -109,9 +107,8 @@ const TeacherModal = ({ setShowModal, showModal }) => {
                         setLoading(false)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
-
         }
     }
     return (

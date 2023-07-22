@@ -11,7 +11,7 @@ import Navbar from '../components/Navbar';
 import SearchableSelect from '../components/SearchableSelect';
 import extractToken from "../Utils/ExtractToken";
 
-const ChatperModal = ({ setShowModal, showModal }) => {
+const ChatperModal = ({ setShowModal, showModal, setMessage }) => {
     const { chapters, setChapters } = UseChapterContext();
     const { subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(ChapterForm);
@@ -52,10 +52,12 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
+                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
                             setSubjectValue()
                         } else {
                             setLoading(false)
+                            setMessage(res.data.message)
                             setChapters(updateElementsInArray(chapters, res.data.chapter, showModal.data))
                             setShowModal({ update: false, show: false, data: undefined })
                             setSubjectValue()
@@ -63,10 +65,11 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                         }
                     })
                     .catch((err) => {
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
         } else {
             setLoading(true)
@@ -80,11 +83,11 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSubjectValue()
-
                         } else {
+                            setMessage(res.data.message)
                             setLoading(false)
                             setShowModal({ update: false, show: false, id: undefined })
                             setChapters(addElementInArray(chapters, res.data.chapter))
@@ -93,10 +96,11 @@ const ChatperModal = ({ setShowModal, showModal }) => {
                         }
                     })
                     .catch((err) => {
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
 
         }

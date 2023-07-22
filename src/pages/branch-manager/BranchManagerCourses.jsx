@@ -4,13 +4,16 @@ import { GrSearch } from 'react-icons/gr'
 import { useState } from "react";
 import Navbar from "../../components/Navbar";
 import CourseModal from "../../Modals/CourseModal";
+import Alert from "../../components/Alert";
 
 const BranchManagerCourses = () => {
     const { courses, setCourses } = UseCourseContext();
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
+    const [message, setMessage] = useState("")
 
     return (
         <>
+        	<Alert message={message} setMessage={setMessage} />
             <Navbar />
             <CourseModal showModal={showModal} setShowModal={setShowModal} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>

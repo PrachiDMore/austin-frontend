@@ -21,7 +21,7 @@ const BranchContextProvider = ({ children }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						// console.log(res.data.message)
 					} else {
 						setBranches(res.data.branches);
 					}
@@ -35,9 +35,9 @@ const BranchContextProvider = ({ children }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						// console.log(res.data.message)
 					} else {
-						console.log(res.data)
+						// console.log(res.data)
 						setBranches(res.data.branches);
 					}
 				})

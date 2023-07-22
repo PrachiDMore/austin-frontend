@@ -4,29 +4,32 @@ import { UseBranchContext } from '../context/Branch'
 import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import BranchModal from '../Modals/BranchModal'
+import Alert from '../components/Alert'
 
 const ViewBranch = () => {
 	const { branches } = UseBranchContext();
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
-    useEffect(() => {
-        setSearchResults(branches);
-    }, [branches])
+	useEffect(() => {
+		setSearchResults(branches);
+	}, [branches])
 
-    const handleSearch = (e) => {
-        if (e.target.value.length == 0) {
-            setSearchResults(branches)
-        } else {
-            setSearchResults(branches?.filter((data) => {
-                return `${data?.name} ${data?.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
-            }))
-        }
-    }
+	const handleSearch = (e) => {
+		if (e.target.value.length == 0) {
+			setSearchResults(branches)
+		} else {
+			setSearchResults(branches?.filter((data) => {
+				return `${data?.name} ${data?.grade}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+			}))
+		}
+	}
 	return (
 		<>
+			<Alert setMessage={setMessage} message={message} />
 			<Navbar />
-			<BranchModal showModal={showModal} setShowModal={setShowModal} />
+			<BranchModal showModal={showModal} setShowModal={setShowModal} setMessage={setMessage} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>
@@ -56,7 +59,6 @@ const ViewBranch = () => {
 								<tbody className='text-gray-700 mt-5'>
 									{
 										searchResults?.map((branch) => {
-											console.log(branch)
 											return (
 												<tr key={branch?._id} onClick={() => {
 													setShowModal({ show: true, update: true, data: branch })

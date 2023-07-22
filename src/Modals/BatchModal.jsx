@@ -14,7 +14,7 @@ import Button from '../components/Button';
 import { UseAdmissionContext } from '../context/Admission';
 import extractToken from "../Utils/ExtractToken";
 
-const BatchModal = ({ setShowModal, showModal }) => {
+const BatchModal = ({ setShowModal, showModal, setMessage }) => {
 	const { admissionOptions } = UseAdmissionContext()
 	const { branchOptions } = UseBranchContext();
 	const { batches, setBatches } = UseBatchesContext()
@@ -30,8 +30,8 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			axios(`${process.env.REACT_APP_BASE_URL}/batch/${showModal?.data?._id}`, {
 				method: "PATCH",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
 				data: {
 					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
 						return student.value
@@ -40,8 +40,9 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setBatches(updateElementsInArray(batches, res.data.batch, showModal.data))
 						setShowModal({ show: false, update: false, data: undefined })
 						setStudents([])
@@ -53,24 +54,28 @@ const BatchModal = ({ setShowModal, showModal }) => {
 			axios(`${process.env.REACT_APP_BASE_URL}/batch/create`, {
 				method: "POST",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
 				data: {
-					...formState, course: course?.value, branch: branch?.value, students: students?.map((student) => {
+					...formState, typeOfBatch: "regular", course: course?.value, branch: branch?.value, students: students?.map((student) => {
 						return student.value
 					})
 				}
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setBatches(addElementInArray(batches, res.data.batch))
 						setShowModal({ show: false, update: false, data: undefined })
 						setStudents([])
 						setBranch()
 						setCourse()
 					}
+				})
+				.catch((err) => {
+					setMessage(err.message);
 				})
 		}
 	}

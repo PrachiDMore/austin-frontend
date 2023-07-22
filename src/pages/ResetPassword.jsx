@@ -5,12 +5,14 @@ import Input from '../components/Input'
 import Button from '../components/Button'
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi'
 import axios from 'axios'
+import Alert from '../components/Alert'
 
 const ResetPassword = () => {
 	const { token } = useParams();
 	const [password, setPassword] = useState("")
 	const [confirmPassword, setConfirmPassword] = useState("");
-	const navigate = useNavigate()
+	const navigate = useNavigate();
+	const [message, setMessage] = useState("")
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
@@ -26,18 +28,19 @@ const ResetPassword = () => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.error(res.data.message)
+						setMessage(res.data.message)
 					} else {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 						navigate("/signin")
 					}
 				})
 		} else {
-			alert("Password doesn't match")
+			setMessage("Password doesn't match")
 		}
 	}
 	return (
 		<>
+			<Alert setMessage={setMessage} message={message} />
 			<section className='bg-white w-screen h-screen flex justify-center py-20'>
 				<form onSubmit={handleSubmit} className='w-1/2 h-1/2 bg-white p-4 flex items-center flex-col'>
 					<h1 className='text-3xl font-bold mb-1'>Set new Password</h1>

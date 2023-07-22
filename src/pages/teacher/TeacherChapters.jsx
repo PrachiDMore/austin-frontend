@@ -47,7 +47,6 @@ const TeacherChapters = () => {
 								<tbody className='text-gray-700 mt-5'>
 									{
 										searchResults?.map((chapterAllocation) => {
-											console.log(chapterAllocation)
 											return (
 												<tr key={chapterAllocation?._id} onClick={() => {
 												}} className="border-b border-darkPurple">

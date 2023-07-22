@@ -9,7 +9,7 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray';
 import { UseBranchManagerContext } from '../context/BranchManager';
 import extractToken from "../Utils/ExtractToken";
 
-const BranchManagerModal = ({ setShowModal, showModal }) => {
+const BranchManagerModal = ({ setShowModal, showModal, setMessage }) => {
 	const { branchManagers, setBranchManagers } = UseBranchManagerContext()
 	const [formState, setFormState] = useState(BranchManagerInitialState);
 	
@@ -38,8 +38,9 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(BranchManagerInitialState);
 						setBranchManagers(updateElementsInArray(branchManagers, res?.data?.user, showModal?.data))
@@ -55,8 +56,9 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(BranchManagerInitialState);
 						setBranchManagers(addElementInArray(branchManagers, res?.data?.user))
@@ -64,6 +66,7 @@ const BranchManagerModal = ({ setShowModal, showModal }) => {
 				})
 		}
 	}
+	
 	return (
 		<>
 			<div id="updateProductModal" tabIndex="-1" aria-hidden="true" className={showModal.show ? "bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full duration-300 opacity-100" : "opacity-0 pointer-events-none duration-300 bg-black bg-opacity-40 flex overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-screen h-screen md:inset-0  md:h-full"}>

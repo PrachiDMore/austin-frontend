@@ -6,12 +6,14 @@ import { UseAttendanceContext } from '../../context/Attendance'
 import moment from 'moment'
 import IndividualAttendanceModal from '../../Modals/IndividualAttendanceModal'
 import IndividualDisplayAttendance from '../../Modals/IndividualDisplayAttendance'
+import Alert from '../../components/Alert'
 
 const IndividualTeacherAttendance = () => {
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, update: false, data: undefined });
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { individualAttendance } = UseAttendanceContext();
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(individualAttendance);
@@ -28,8 +30,9 @@ const IndividualTeacherAttendance = () => {
     }
 	return (
 		<>
+		<Alert setMessage={setMessage} message={message}/>
 			<Navbar />
-			<IndividualAttendanceModal key={Date.now()} showModal={showModal} setShowModal={setShowModal} />
+			<IndividualAttendanceModal key={Date.now()} showModal={showModal} setShowModal={setShowModal} setMessage={setMessage} />
 			<IndividualDisplayAttendance key={Date.now() + 1} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>

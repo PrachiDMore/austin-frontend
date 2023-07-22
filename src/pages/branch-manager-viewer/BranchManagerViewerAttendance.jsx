@@ -57,7 +57,6 @@ const BranchManagerViewerAttendance = () => {
 								<tbody className='text-gray-700 mt-5'>
 									{
 										searchResults?.map((data) => {
-											console.log(data)
 											if (data?.batch?.branch?.viewer === user?._id) {
 												return <tr key={data?._id} onClick={() => {
 													setDisplayAttendance({ show: true, data: data })

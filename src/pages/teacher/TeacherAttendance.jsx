@@ -5,6 +5,7 @@ import Input from '../../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { FiEdit3 } from 'react-icons/fi'
 import AttendanceModal from '../../Modals/AttendanceModal'
+import Alert from '../../components/Alert'
 import { UseAttendanceContext } from '../../context/Attendance'
 import moment from 'moment'
 
@@ -13,25 +14,27 @@ const TeacherAttendance = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { attendance } = UseAttendanceContext();
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
-    useEffect(() => {
-        setSearchResults(attendance);
-    }, [attendance])
+	useEffect(() => {
+		setSearchResults(attendance);
+	}, [attendance])
 
-    const handleSearch = (e) => {
-        if (e.target.value.length == 0) {
-            setSearchResults(attendance)
-        } else {
-            setSearchResults(attendance?.filter((data) => {
-                return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
-            }))
-        }
-    }
+	const handleSearch = (e) => {
+		if (e.target.value.length == 0) {
+			setSearchResults(attendance)
+		} else {
+			setSearchResults(attendance?.filter((data) => {
+				return `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+			}))
+		}
+	}
 
 	return (
 		<>
+			<Alert setMessage={setMessage} message={message}/>
 			<Navbar />
-			<AttendanceModal key={Date.now()} showModal={showModal} setShowModal={setShowModal} />
+			<AttendanceModal key={Date.now()} showModal={showModal} setShowModal={setShowModal} setMessage={setMessage} />
 			<DisplayAttendance key={Date.now() + 1} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>

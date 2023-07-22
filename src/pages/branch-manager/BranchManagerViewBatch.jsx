@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react'
 import { UseBatchesContext } from '../../context/Batches'
 import BatchModal from '../../Modals/BatchModal'
 import { UseAuthContext } from '../../context/Authentication'
+import Alert from '../../components/Alert'
 
 const BranchManagerViewBatch = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const { batches } = UseBatchesContext()
     const { user } = UseAuthContext();
     const [searchResults, setSearchResults] = useState([])
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(batches);
@@ -29,8 +31,9 @@ const BranchManagerViewBatch = () => {
 
     return (
         <>
+        	<Alert message={message} setMessage={setMessage} />
             <Navbar />
-            <BatchModal setShowModal={setShowModal} showModal={showModal} />
+            <BatchModal setShowModal={setShowModal} showModal={showModal} setMessage={setMessage}/>
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
@@ -60,7 +63,6 @@ const BranchManagerViewBatch = () => {
                                 <tbody className='text-gray-700 mt-5'>
                                     {
                                         searchResults?.filter((data) => {
-                                            console.log(data)
                                             return data?.branch?.manager === user?._id
                                         }).map((batch) => {
                                             return (

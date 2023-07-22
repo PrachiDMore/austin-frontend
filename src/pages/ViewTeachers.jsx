@@ -5,12 +5,14 @@ import { GrSearch } from 'react-icons/gr'
 import { FiEdit3 } from 'react-icons/fi'
 import TeacherModal from '../Modals/TeacherModal'
 import { UseTeacherContext } from '../context/Teachers'
+import Alert from '../components/Alert'
 
 
 const ViewTeachers = ({ editable = true }) => {
     const { teachers } = UseTeacherContext()
     const [searchteachers, setSearchteachers] = useState([]);
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchteachers(teachers)
@@ -28,8 +30,9 @@ const ViewTeachers = ({ editable = true }) => {
     }
     return (
         <>
+            <Alert setMessage={setMessage} message={message} />
             <Navbar />
-            <TeacherModal key={Date.now()} setShowModal={setShowModal} showModal={showModal} />
+            <TeacherModal key={Date.now()} setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

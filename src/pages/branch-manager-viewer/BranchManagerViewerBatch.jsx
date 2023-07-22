@@ -13,7 +13,6 @@ const BranchManagerViewerBatch = () => {
     const [searchResults, setSearchResults] = useState([])
 
     useEffect(() => {
-        console.log(batches)
         setSearchResults(batches);
     }, [batches])
 
@@ -53,7 +52,6 @@ const BranchManagerViewerBatch = () => {
                                 <tbody className='text-gray-700 mt-5'>
                                     {
                                         searchResults?.filter((data) => {
-                                            console.log(data, 123)
                                             return data?.branch?.viewer === user?._id
                                         }).map((batch) => {
                                             return (

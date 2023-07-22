@@ -14,7 +14,7 @@ import Button from '../components/Button';
 import { UseAdmissionContext } from '../context/Admission';
 import extractToken from "../Utils/ExtractToken";
 
-const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
+const IndividualBatchModal = ({ setShowModal, showModal, role, setMessage }) => {
 	const { admissionOptions } = UseAdmissionContext()
 	const { branchOptions } = UseBranchContext();
 	const { individualBatches, setIndividualBatches } = UseBatchesContext()
@@ -40,8 +40,9 @@ const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setIndividualBatches(updateElementsInArray(individualBatches, res.data.batch, showModal.data))
 						setShowModal({ show: false, update: false, data: undefined })
 						setStudents([])
@@ -63,8 +64,9 @@ const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setIndividualBatches(addElementInArray(individualBatches, res.data.batch))
 						setShowModal({ show: false, update: false, data: undefined })
 						setStudents([])
@@ -131,7 +133,7 @@ const IndividualBatchModal = ({ setShowModal, showModal, role }) => {
 							<Input onChange={handleChange} label={"Name"} id={"name"} value={formState.name} placeholder={"Batch name"} />
 							<Input onChange={handleChange} label={"Academic Year"} id={"academicYear"} value={formState.academicYear} placeholder={"Academic year (2022-2023)"} />
 							<Input type={"number"} onChange={handleChange} label={"Hours"} id={"hours"} value={formState.hours} placeholder={"Hours"} />
-							{role === `${process.env.REACT_APP_ADMIN_ROLE}` && <Input type={"number"} onChange={handleChange} label={"Amount Per Student"} id={"amountPerStudent"} value={formState.amountPerStudent} placeholder={"Amount per student"} />}
+							{extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` && <Input type={"number"} onChange={handleChange} label={"Amount Per Student"} id={"amountPerStudent"} value={formState.amountPerStudent} placeholder={"Amount per student"} />}
 							<SearchableSelect onChange={(e) => { setBranch(e) }} label={"Branch"} value={branch} options={branchOptions} />
 							<SearchableSelect label={"Course"} onChange={(e) => { setCourse(e) }} value={course} options={courseOptions} />
 							<div className='col-span-2 flex justify-center'>

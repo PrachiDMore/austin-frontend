@@ -9,6 +9,7 @@ import extractToken from '../Utils/ExtractToken'
 const ViewAdmissions = ({role}) => {
   const [admissions, setAdmissions] = useState([]);
   const [searchAdmissions, setSearchAdmissions] = useState([]);
+  const [message, setMessage] = useState("")
 
   useEffect(() => {
     axios(`${process.env.REACT_APP_BASE_URL}/admission/`, {
@@ -19,7 +20,7 @@ const ViewAdmissions = ({role}) => {
     })
       .then((res) => {
         if (res.data.error) {
-          console.log(res.data.message)
+          setMessage(res.data.message)
         } else {
           setAdmissions(res.data.admissions);
         }

@@ -28,7 +28,7 @@ const AttendanceContextProvider = ({ children }) => {
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 				axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/`, {
 					method: "GET",
@@ -44,7 +44,7 @@ const AttendanceContextProvider = ({ children }) => {
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 			} else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/attendance/token/teacher`, {
@@ -61,7 +61,7 @@ const AttendanceContextProvider = ({ children }) => {
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 				axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/token/teacher`, {
 					method: "GET",
@@ -77,7 +77,7 @@ const AttendanceContextProvider = ({ children }) => {
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 			}
 		}

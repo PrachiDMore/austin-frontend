@@ -23,13 +23,13 @@ const BatchesContextProvider = ({ children }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            // console.log(res.data.message)
                         } else {
                             setBatches(res.data.batches)
                         }
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        // console.log(err.message)
                     })
                 axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/`, {
                     method: "GET",
@@ -39,13 +39,13 @@ const BatchesContextProvider = ({ children }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            // console.log(res.data.message)
                         } else {
                             setIndividualBatches(res.data.batches)
                         }
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        // console.log(err.message)
                     })
             } else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
                 axios(`${process.env.REACT_APP_BASE_URL}/batch/token/teacher`, {
@@ -56,14 +56,14 @@ const BatchesContextProvider = ({ children }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            // console.log(res.data.message)
                         } else {
-                            console.log(res.data.batches)
+                            // console.log(res.data.batches)
                             setBatches(res?.data?.batches)
                         }
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        // console.log(err.message)
                     })
                 axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/token/teacher`, {
                     method: "GET",
@@ -73,13 +73,13 @@ const BatchesContextProvider = ({ children }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            // console.log(res.data.message)
                         } else {
                             setIndividualBatches(res?.data?.batches)
                         }
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        // console.log(err.message)
                     })
             } else if (extractToken()?.role === `${process.env.REACT_APP_STUDENT_ROLE}`) {
                 axios(`${process.env.REACT_APP_BASE_URL}/batch/token/student`, {
@@ -90,13 +90,13 @@ const BatchesContextProvider = ({ children }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            // console.log(res.data.message)
                         } else {
                             setBatches(res.data.batches)
                         }
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        // console.log(err.message)
                     })
                 axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/token/student`, {
                     method: "GET",
@@ -106,14 +106,14 @@ const BatchesContextProvider = ({ children }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            // console.log(res.data.message)
                         } else {
-                            console.log(res.data)
+                            // console.log(res.data)
                             setIndividualBatches(res.data.batches)
                         }
                     })
                     .catch((err) => {
-                        console.log(err.message)
+                        // console.log(err.message)
                     })
             }
         }

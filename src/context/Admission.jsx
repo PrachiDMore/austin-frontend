@@ -21,7 +21,7 @@ const AdmissionContextProvider = ({ children }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						// console.log(res.data.message)
 					} else {
 						setAdmissions(res.data.admissions);
 					}

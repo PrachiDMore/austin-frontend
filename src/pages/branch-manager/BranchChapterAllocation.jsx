@@ -6,31 +6,34 @@ import Input from '../../components/Input';
 import { GrSearch } from 'react-icons/gr';
 import { UseBatchesContext } from '../../context/Batches';
 import { UseAuthContext } from '../../context/Authentication';
+import Alert from '../../components/Alert';
 
 const BranchChapterAllocation = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { chapterAllocations } = UseChapterAllocationContext()
 	const { user } = UseAuthContext()
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
-    useEffect(() => {
-        setSearchResults(chapterAllocations);
-    }, [chapterAllocations])
+	useEffect(() => {
+		setSearchResults(chapterAllocations);
+	}, [chapterAllocations])
 
-    const handleSearch = (e) => {
-        if (e.target.value.length == 0) {
-            setSearchResults(chapterAllocations)
-        } else {
-            setSearchResults(chapterAllocations?.filter((data) => {
-                return `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
-            }))
-        }
-    }
+	const handleSearch = (e) => {
+		if (e.target.value.length == 0) {
+			setSearchResults(chapterAllocations)
+		} else {
+			setSearchResults(chapterAllocations?.filter((data) => {
+				return `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.batch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+			}))
+		}
+	}
 
 	return (
 		<>
+			<Alert message={message} setMessage={setMessage} />
 			<Navbar />
-			<AssignTeacher type={""} setShowModal={setShowModal} showModal={showModal} />
+			<AssignTeacher type={""} setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>

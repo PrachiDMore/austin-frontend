@@ -11,7 +11,7 @@ import { UseChapterAllocationContext } from '../context/ChapterAllocation'
 import { UseAttendanceContext } from '../context/Attendance'
 import addElementInArray from '../Utils/AddUniqueElementsInArray'
 
-const AttendanceModal = ({ showModal, setShowModal }) => {
+const AttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 	const { batchOptions } = UseBatchesContext()
 	const [batch, setBatch] = useState();
 	const [studentOptions, setStudentOptions] = useState([])
@@ -20,8 +20,15 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 	const [hours, setHours] = useState(0);
 	const [chapter, setChapter] = useState();
 	const [students, setStudents] = useState([]);
+	const [date, setDate] = useState()
 	const { attendance, setAttendance } = UseAttendanceContext()
 	const { chapterAllocations, setChapterAllocations } = UseChapterAllocationContext()
+
+	useEffect(() => {
+		let endTimeMoment = moment(endTime)
+		let startTimeMoment = moment(startTime)
+		setHours(Number(endTimeMoment.diff(startTimeMoment, "hour", true).toFixed(1)))
+	}, [startTime, endTime]);
 
 	useEffect(() => {
 		if (batch) {
@@ -37,11 +44,10 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		if (!startTime && !endTime && !batch) {
+		if (startTime && endTime && batch) {
 			let studentsArray = students?.map((student) => {
 				return student.value
 			})
-			const date = Date.now()
 			axios(`${process.env.REACT_APP_BASE_URL}/attendance/create`, {
 				method: "POST",
 				headers: {
@@ -52,7 +58,7 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 					startTime: startTime,
 					endTime: endTime,
 					batch: batch.value,
-					date: date,
+					date: moment(date).format("x"),
 					chapter: chapter?.value,
 					subject: chapter?.subject?._id,
 					allStudents: studentOptions?.map((student) => {
@@ -63,14 +69,16 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
+						setMessage(res.data.message)
 						setAttendance(addElementInArray(attendance, res?.data?.attendance))
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
 		} else {
-			alert("Fill the form properly!")
+			setMessage("Fill the form properly!")
 		}
 	}
 	return (
@@ -113,8 +121,9 @@ const AttendanceModal = ({ showModal, setShowModal }) => {
 								setEndTime(newDate.setHours(Number(e.target.value.split(":")[0]), Number(e.target.value.split(":")[1])));
 							}} label={"End Time"} id={"endTime"} type="time" placeholder={"End Time"} />
 							<Input onChange={(e) => {
-								setHours(Number(e.target.value))
-							}} label={"Hours"} id={"hours"} type="number" placeholder={"Hours"} step="0.1" />
+								setDate(e.target.value)
+							}} label={"Date"} id={"date"} type="date" placeholder={"Date"} />
+							<Input label={"Hours"} id={"hours"} type="number" readOnly={true} value={hours} placeholder={"Hours"} step="0.1" />
 							<SearchableSelect label={"Students"} isMulti={true} value={students} options={studentOptions} className={"col-span-2"} onChange={(e) => { setStudents(e) }} />
 							<div className='flex justify-center w-full col-span-2'>
 								<Button text='Submit' type='submit' className={"w-52"} />

@@ -8,7 +8,7 @@ import addElementInArray from '../Utils/AddUniqueElementsInArray'
 import { UseAdmissionContext } from '../context/Admission'
 import extractToken from "../Utils/ExtractToken";
 
-const StudentModal = ({ setShowModal, showModal }) => {
+const StudentModal = ({ setShowModal, showModal, setMessage }) => {
 	const { admissions, setAdmissions } = UseAdmissionContext()
 	const initialState = {
 		username: "",
@@ -34,7 +34,7 @@ const StudentModal = ({ setShowModal, showModal }) => {
 				})
 					.then((res) => {
 						if (res.data.error) {
-							console.log(res.data.error)
+							// console.log(res.data.error)
 							setShowModal({ show: false, update: false, data: undefined })
 						} else {
 							setAdmissions(updateElementsInArray(admissions, res.data.student, showModal.data))

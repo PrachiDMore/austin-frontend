@@ -5,12 +5,14 @@ import { useEffect, useState } from 'react'
 import { UseBatchesContext } from '../context/Batches'
 import IndividualBatchModal from '../Modals/IndividualBatchModal'
 import { UseChapterAllocationContext } from '../context/ChapterAllocation'
+import Alert from '../components/Alert'
 
 const IndividualBatches = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const { individualBatches } = UseBatchesContext()
     const { individualChapterAllocation } = UseChapterAllocationContext()
     const [searchResults, setSearchResults] = useState([])
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(individualBatches);
@@ -27,8 +29,9 @@ const IndividualBatches = () => {
     }
     return (
         <>
+            <Alert setMessage={setMessage} message={message} />
             <Navbar />
-            <IndividualBatchModal setShowModal={setShowModal} showModal={showModal} />
+            <IndividualBatchModal setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>
@@ -62,7 +65,9 @@ const IndividualBatches = () => {
                                         searchResults?.map((batch) => {
                                             const chapterAllocations = individualChapterAllocation?.map((chapterAllocation) => {
                                                 if (chapterAllocation?.individualBatch?._id === batch._id) {
-                                                    return chapterAllocation?.hoursCompleted * chapterAllocation?.rate
+                                                    return Number(chapterAllocation?.hoursCompleted) * Number(chapterAllocation?.rate)
+                                                } else {
+                                                    return 0
                                                 }
                                             })
                                             function add(accumulator, a) {

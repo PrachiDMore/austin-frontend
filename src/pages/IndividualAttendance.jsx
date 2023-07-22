@@ -9,11 +9,13 @@ import IndividualDisplayAttendance from "../Modals/IndividualDisplayAttendance";
 import extractToken from '../Utils/ExtractToken'
 import axios from 'axios'
 import Button from '../components/Button'
+import Alert from '../components/Alert'
 
 const IndividualAttendance = () => {
 	const { individualAttendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
 	const approveAttendance = (_id) => {
 		if (_id) {
@@ -27,11 +29,11 @@ const IndividualAttendance = () => {
 					if (!res.data.error) {
 						window.location.reload()
 					} else {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					}
 				})
 				.catch((err) => {
-					console.log(err)
+					setMessage(err.message)
 				})
 		}
 	}
@@ -51,8 +53,9 @@ const IndividualAttendance = () => {
 	}
 	return (
 		<>
+			<Alert setMessage={setMessage} message={message} />
 			<Navbar />
-			<IndividualDisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
+			<IndividualDisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} setMessage={setMessage} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[100%]'>

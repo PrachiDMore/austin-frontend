@@ -6,12 +6,14 @@ import { FiEdit3 } from 'react-icons/fi'
 import { UseTeacherContext } from '../context/Teachers'
 import BranchManagerModal from '../Modals/BranchManagerModal'
 import { UseBranchManagerContext } from '../context/BranchManager'
+import Alert from '../components/Alert'
 
 
 const BranchManager = () => {
     const { branchManagers } = UseBranchManagerContext()
     const [searchBranchManager, setSearchBranchManagers] = useState([]);
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchBranchManagers(branchManagers)
@@ -28,8 +30,9 @@ const BranchManager = () => {
     }
     return (
         <>
+            <Alert setMessage={setMessage} message={message} />
             <Navbar />
-            <BranchManagerModal setShowModal={setShowModal} showModal={showModal} />
+            <BranchManagerModal setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[85%]'>

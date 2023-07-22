@@ -6,12 +6,14 @@ import { UseAttendanceContext } from '../../context/Attendance'
 import moment from 'moment';
 import IndividualDisplayAttendance from "../../Modals/IndividualDisplayAttendance";
 import { UseAuthContext } from '../../context/Authentication'
+import Alert from '../../components/Alert'
 
 const BranchManagerIndividualAttendance = () => {
 	const { individualAttendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
 	const { user } = UseAuthContext()
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
 	useEffect(() => {
 		setSearchResults(individualAttendance);
@@ -28,6 +30,7 @@ const BranchManagerIndividualAttendance = () => {
 	}
 	return (
 		<>
+			<Alert message={message} setMessage={setMessage} />
 			<Navbar />
 			<IndividualDisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>

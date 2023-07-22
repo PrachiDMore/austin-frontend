@@ -4,29 +4,32 @@ import { UseChapterAllocationContext } from '../context/ChapterAllocation';
 import AssignIndividualTeacher from '../Modals/AssignIndividualTeacher';
 import Input from '../components/Input';
 import { GrSearch } from 'react-icons/gr';
+import Alert from '../components/Alert';
 
 const IndividualChapterAllocation = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { individualChapterAllocation } = UseChapterAllocationContext()
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
-    useEffect(() => {
-        setSearchResults(individualChapterAllocation);
-    }, [individualChapterAllocation])
+	useEffect(() => {
+		setSearchResults(individualChapterAllocation);
+	}, [individualChapterAllocation])
 
-    const handleSearch = (e) => {
-        if (e.target.value.length == 0) {
-            setSearchResults(individualChapterAllocation)
-        } else {
-            setSearchResults(individualChapterAllocation?.filter((data) => {
-                return `${data?.individualBatch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
-            }))
-        }
-    }
+	const handleSearch = (e) => {
+		if (e.target.value.length == 0) {
+			setSearchResults(individualChapterAllocation)
+		} else {
+			setSearchResults(individualChapterAllocation?.filter((data) => {
+				return `${data?.individualBatch?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.chapter?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.subject?.name}`.toLowerCase().includes(e?.target?.value?.toLowerCase()) || `${data?.teacher?.fullname}`.toLowerCase().includes(e?.target?.value?.toLowerCase())
+			}))
+		}
+	}
 	return (
 		<>
+			<Alert setMessage={setMessage} message={message} />
 			<Navbar />
-			<AssignIndividualTeacher key={Date.now()} setShowModal={setShowModal} showModal={showModal} />
+			<AssignIndividualTeacher key={Date.now()} setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>

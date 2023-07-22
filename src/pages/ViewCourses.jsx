@@ -4,11 +4,13 @@ import { GrSearch } from 'react-icons/gr'
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CourseModal from "../Modals/CourseModal";
+import Alert from "../components/Alert";
 
 const ViewCourses = ({ editable = true }) => {
     const { courses, setCourses } = UseCourseContext();
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
     const [searchResults, setSearchResults] = useState([])
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(courses);
@@ -25,8 +27,9 @@ const ViewCourses = ({ editable = true }) => {
     }
     return (
         <>
+            <Alert setMessage={setMessage} message={message} />
             <Navbar />
-            <CourseModal key={Date.now().toString()} showModal={showModal} setShowModal={setShowModal} />
+            <CourseModal key={Date.now().toString()} showModal={showModal} setShowModal={setShowModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

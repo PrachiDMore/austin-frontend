@@ -3,11 +3,13 @@ import Input from '../components/Input'
 import { GrSearch } from 'react-icons/gr'
 import { UseChapterContext } from "../context/Chapter";
 import ChatperModal from '../Modals/ChapterModal';
+import Alert from '../components/Alert';
 
 const Chapters = ({ editable = true }) => {
     const { chapters } = UseChapterContext();
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
     const [searchResults, setSearchResults] = useState([])
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(chapters);
@@ -25,7 +27,8 @@ const Chapters = ({ editable = true }) => {
 
     return (
         <>
-            <ChatperModal setShowModal={setShowModal} showModal={showModal} />
+            <Alert setMessage={setMessage} message={message} />
+            <ChatperModal setShowModal={setShowModal} showModal={showModal} setMessage={setMessage}/>
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

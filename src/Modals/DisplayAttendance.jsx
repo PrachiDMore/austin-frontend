@@ -5,7 +5,7 @@ import Button from '../components/Button'
 import { useEffect } from 'react'
 import CheckBox from "../components/Checkbox"
 
-const DisplayAttendance = ({ showModal, setShowModal }) => {
+const DisplayAttendance = ({ showModal, setShowModal, setMessage }) => {
 	const [displayState, setDisplayState] = useState(0);
 	const [students, setStudents] = useState([])
 	useEffect(() => {

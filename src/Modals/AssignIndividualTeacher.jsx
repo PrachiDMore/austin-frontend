@@ -14,7 +14,7 @@ import updateElementsInArray from '../Utils/UpdateUniqueElemetnsInArray'
 import addElementInArray from '../Utils/AddUniqueElementsInArray'
 import extractToken from "../Utils/ExtractToken";
 
-const AssignIndividualTeacher = ({ setShowModal, showModal }) => {
+const AssignIndividualTeacher = ({ setShowModal, showModal, setMessage }) => {
 	const { teacherOptions } = UseTeacherContext()
 	const { subjectOptions } = UseSubjectContext()
 	const { chapterOptions } = UseChapterContext()
@@ -71,8 +71,10 @@ const AssignIndividualTeacher = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
+						setMessage(res.data.message)
 						setIndividualChapterAllocation(updateElementsInArray(individualChapterAllocation, res.data.chapterAllocation, showModal.data));
 						setShowModal({ show: false, update: false, data: undefined })
 					}
@@ -93,8 +95,10 @@ const AssignIndividualTeacher = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
+						setMessage(res.data.message)
 						setIndividualChapterAllocation(addElementInArray(individualChapterAllocation, res.data.chapterAllocation));
 						setShowModal({ show: false, update: false, data: undefined })
 					}

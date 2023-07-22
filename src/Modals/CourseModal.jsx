@@ -12,7 +12,7 @@ import SearchableSelect from '../components/SearchableSelect';
 import extractToken from "../Utils/ExtractToken";
 
 
-const CourseModal = ({ setShowModal, showModal }) => {
+const CourseModal = ({ setShowModal, showModal, setMessage }) => {
     const { courses, setCourses } = UseCourseContext();
     const { subjectOptions } = UseSubjectContext()
     const [formState, setFormState] = useState(CoursesForm);
@@ -25,7 +25,7 @@ const CourseModal = ({ setShowModal, showModal }) => {
 
     useEffect(() => {
         if (showModal.update) {
-            setSubjectValue(showModal?.data?.subjects?.map((subject) => {
+            handleSubjects(showModal?.data?.subjects?.map((subject) => {
                 return {
                     ...subject,
                     label: `${subject.name} (${subject.grade})`,
@@ -78,9 +78,11 @@ const CourseModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
+                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
                         } else {
                             setLoading(false)
+                            setMessage(res.data.message)
                             setCourses(updateElementsInArray(courses, res.data.course, showModal.data))
                             setShowModal({ update: false, show: false, data: undefined })
                             setFormState(CoursesForm);
@@ -89,10 +91,11 @@ const CourseModal = ({ setShowModal, showModal }) => {
                         }
                     })
                     .catch((err) => {
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
         } else {
             axios(`${process.env.REACT_APP_BASE_URL}/course/create`, {
@@ -103,14 +106,21 @@ const CourseModal = ({ setShowModal, showModal }) => {
                 data: { ...formState, subjects: selectedSubjects }
             })
                 .then((res) => {
-                    setShowModal({ show: false, update: false, data: undefined })
-                    setSelectedSubject();
-                    setSelectedSubjects([]);
-                    setDisplayChapters([])
-                    setCourses(addElementInArray(courses, res.data.course))
-                    setFormState(CoursesForm)
+                    if (res.data.error) {
+                        setShowModal({ show: false, update: false, data: undefined })
+                        setMessage(res.data.message)
+                    } else {
+                        setMessage(res.data.message)
+                        setShowModal({ show: false, update: false, data: undefined })
+                        setSelectedSubject();
+                        setSelectedSubjects([]);
+                        setDisplayChapters([])
+                        setCourses(addElementInArray(courses, res.data.course))
+                        setFormState(CoursesForm)
+                    }
                 })
                 .catch((err) => {
+                    setMessage(err.message)
                     setShowModal({ show: false, update: false, data: undefined })
                     setSelectedSubject();
                     setSelectedSubjects([]);

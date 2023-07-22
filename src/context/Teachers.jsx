@@ -17,13 +17,13 @@ const TeacherContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setTeachers(res.data.teachers)
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
         }
     }, []);

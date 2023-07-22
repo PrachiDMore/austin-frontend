@@ -22,13 +22,13 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations);
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
             axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/`, {
                 method: "GET",
@@ -38,13 +38,13 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setIndividualChapterAllocation(res.data.chapterAllocations)
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
         } else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/teacher`, {
@@ -55,13 +55,13 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations);
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
             axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/teacher`, {
                 method: "GET",
@@ -71,13 +71,13 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setIndividualChapterAllocation(res.data.chapterAllocations)
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
         } else if(extractToken()?.token){
             const batchId = batches?.map((batch) => {
@@ -91,7 +91,7 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setChapterAllocations(res?.data?.chapterAllocations?.filter((chapterAllocation) => {
                             return batchId?.includes(chapterAllocation?.batch?._id)
@@ -99,12 +99,11 @@ const ChapterAllocationContextProvider = ({ children }) => {
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
             const individualBatchId = individualBatches?.map((batch) => {
                 return batch._id
             })
-            console.log(individualBatchId)
             axios(`${process.env.REACT_APP_BASE_URL}/individual-chapterAllocation/`, {
                 method: "GET",
                 headers: {
@@ -113,7 +112,7 @@ const ChapterAllocationContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setIndividualChapterAllocation(res?.data?.chapterAllocations?.filter((chapterAllocation) => {
                             return individualBatchId?.includes(chapterAllocation?.individualBatch?._id)
@@ -121,7 +120,7 @@ const ChapterAllocationContextProvider = ({ children }) => {
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
         }
     }, [batches, individualBatches]);

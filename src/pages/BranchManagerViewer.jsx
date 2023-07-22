@@ -8,12 +8,14 @@ import BranchManagerModal from '../Modals/BranchManagerModal'
 import { UseBranchManagerContext } from '../context/BranchManager'
 import { UseBranchManagerViewerContext } from '../context/BranchManagerViewer'
 import BranchManagerViewerModal from '../Modals/BranchManagerViewerModal'
+import Alert from '../components/Alert'
 
 
 const BranchManagerViewer = () => {
     const { BranchManagerViewers } = UseBranchManagerViewerContext()
     const [searchBranchManager, setSearchBranchManagers] = useState([]);
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchBranchManagers(BranchManagerViewers)
@@ -30,8 +32,9 @@ const BranchManagerViewer = () => {
     }
     return (
         <>
+            <Alert setMessage={setMessage} message={message} />
             <Navbar />
-            <BranchManagerViewerModal setShowModal={setShowModal} showModal={showModal} />
+            <BranchManagerViewerModal setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[85%]'>

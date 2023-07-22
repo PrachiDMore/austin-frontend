@@ -6,12 +6,14 @@ import Input from '../../components/Input';
 import { GrSearch } from 'react-icons/gr';
 import { UseBatchesContext } from '../../context/Batches';
 import { UseAuthContext } from '../../context/Authentication';
+import Alert from '../../components/Alert';
 
 const BranchManagerIndividualChapterAllocation = () => {
 	const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
 	const { individualChapterAllocation } = UseChapterAllocationContext()
 	const { user } = UseAuthContext()
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(individualChapterAllocation);
@@ -29,8 +31,9 @@ const BranchManagerIndividualChapterAllocation = () => {
 
 	return (
 		<>
+			<Alert message={message} setMessage={setMessage} />
 			<Navbar />
-			<AssignIndividualTeacher key={Date.now()} setShowModal={setShowModal} showModal={showModal} />
+			<AssignIndividualTeacher key={Date.now()} setShowModal={setShowModal} showModal={showModal} setMessage={setMessage}/>
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[90%]'>

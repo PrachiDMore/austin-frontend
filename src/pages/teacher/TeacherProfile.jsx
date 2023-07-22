@@ -14,10 +14,10 @@ const TeacherProfile = () => {
 	const { user } = UseAuthContext();
 	const [uploading, setUploading] = useState(false)
 	const [formState, setFormState] = useState(Teacherform);
+	const [message, setMessage] = useState("")
 
 	useEffect(() => {
 		if (user?.role === "teacher") {
-			console.log(user)
 			setFormState(user)
 		}
 	}, [user]);
@@ -32,6 +32,16 @@ const TeacherProfile = () => {
 				Authorization: `Bearer ${extractToken()?.token}`
 			},
 		})
+			.then((res) => {
+				if (res?.data?.error) {
+					setMessage(res.data.message)
+				}else{
+					window.location.reload()
+				}
+			})
+			.catch((err) => {
+				setMessage(err.message)
+			})
 	}
 
 	const uploadImg = (e) => {

@@ -3,12 +3,13 @@ import { GrSearch } from 'react-icons/gr'
 import { UseSubjectContext } from '../context/Subjects'
 import { useEffect, useState } from 'react'
 import SubjectModal from '../Modals/SubjectModal'
+import Alert from '../components/Alert'
 
 const Subjects = ({ editable = true }) => {
     const { subjects } = UseSubjectContext()
     const [searchsubject, setSearchsubject] = useState([])
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined })
-
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchsubject(subjects);
@@ -26,7 +27,8 @@ const Subjects = ({ editable = true }) => {
 
     return (
         <>
-            <SubjectModal setShowModal={setShowModal} showModal={showModal} />
+            <Alert setMessage={setMessage} message={message} />
+            <SubjectModal setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

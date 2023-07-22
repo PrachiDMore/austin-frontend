@@ -35,18 +35,18 @@ export const AuthContextProvider = ({ children }) => {
 				})
 					.then((res) => {
 						if (res.data.error) {
-							console.error(res.data.message)
+							// console.error(res.data.message)
 						} else {
 							if (!res.data?.admission?.isDisabled) {
 								setUser(res.data.admission)
 							} else {
 								logout()
-								console.log(res.data.message)
+								// console.log(res.data.message)
 							}
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 			} else if (extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/teacher/token`, {
@@ -67,7 +67,7 @@ export const AuthContextProvider = ({ children }) => {
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 			} else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}`) {
 				axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/token`, {
@@ -84,12 +84,12 @@ export const AuthContextProvider = ({ children }) => {
 								setUser(res.data.user)
 							} else {
 								logout()
-								console.log(res.data.message)
+								// console.log(res.data.message)
 							}
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 			}
 			else if (extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}`) {
@@ -107,12 +107,12 @@ export const AuthContextProvider = ({ children }) => {
 								setUser(res.data.user)
 							} else {
 								logout()
-								console.log(res.data.message)
+								// console.log(res.data.message)
 							}
 						}
 					})
 					.catch((err) => {
-						console.log(err.message)
+						// console.log(err.message)
 					})
 			}
 		}

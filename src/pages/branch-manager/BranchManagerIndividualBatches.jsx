@@ -7,6 +7,7 @@ import IndividualBatchModal from '../../Modals/IndividualBatchModal'
 import { UseChapterAllocationContext } from '../../context/ChapterAllocation'
 import { UseAuthContext } from '../../context/Authentication'
 import extractToken from '../../Utils/ExtractToken'
+import Alert from '../../components/Alert'
 
 const BranchManagerIndividualBatches = () => {
     const [showModal, setShowModal] = useState({ show: false, update: false, data: undefined });
@@ -14,6 +15,7 @@ const BranchManagerIndividualBatches = () => {
     const { individualChapterAllocation } = UseChapterAllocationContext()
     const { user } = UseAuthContext();
     const [searchResults, setSearchResults] = useState([])
+    const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(individualBatches);
@@ -31,8 +33,9 @@ const BranchManagerIndividualBatches = () => {
 
     return (
         <>
+        	<Alert message={message} setMessage={setMessage} />
             <Navbar />
-            <IndividualBatchModal role={extractToken()?.role} setShowModal={setShowModal} showModal={showModal} />
+            <IndividualBatchModal role={extractToken()?.role} setShowModal={setShowModal} showModal={showModal} setMessage={setMessage} />
             <section className='w-screen min-h-screen p-10 px-20 Nunito'>
                 <div className='flex'>
                     <div className='w-[90%]'>

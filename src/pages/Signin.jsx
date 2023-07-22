@@ -30,9 +30,7 @@ const Signin = () => {
         e.preventDefault()
         if (formState.username && formState.password) {
             setLoading(true)
-            console.log("object")
             if (type === "teacher") {
-                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/teacher`, {
                     method: "POST",
                     data: formState
@@ -40,7 +38,7 @@ const Signin = () => {
                     .then((res) => {
                         setLoading(false)
                         if (res?.data?.error) {
-                            console.error(res?.data?.message)
+                            setMessage("Wrong credentials")
                         } else {
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_TEACHER_ROLE}` })))
@@ -50,19 +48,18 @@ const Signin = () => {
                         }
                     })
                     .catch((err) => {
-                        console.log(err)
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else if (type === "admin") {
-                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/`, {
                     method: "POST",
                     data: formState
                 })
                     .then((res) => {
                         setLoading(false)
-                        if (res.error) {
-                            console.log(res.error)
+                        if (res.data.error) {
+                            setMessage("Wrong credentials")
                         } else {
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_ADMIN_ROLE}` })))
@@ -72,11 +69,10 @@ const Signin = () => {
                         }
                     })
                     .catch((err) => {
-                        console.log(err)
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else if (type === "student") {
-                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/user/signin/student`, {
                     method: "POST",
                     data: formState
@@ -84,7 +80,7 @@ const Signin = () => {
                     .then((res) => {
                         setLoading(false)
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            setMessage("Wrong credentials")
                         } else {
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_STUDENT_ROLE}` })))
@@ -94,11 +90,10 @@ const Signin = () => {
                         }
                     })
                     .catch((err) => {
-                        console.log(err)
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else if (type === "branch-manager") {
-                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/branch-manager/login`, {
                     method: "POST",
                     data: formState
@@ -106,9 +101,8 @@ const Signin = () => {
                     .then((res) => {
                         setLoading(false)
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            setMessage("Wrong credentials")
                         } else {
-                            console.log(res)
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
@@ -117,11 +111,10 @@ const Signin = () => {
                         }
                     })
                     .catch((err) => {
-                        console.log(err)
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else if (type === "branch-manager-viewer") {
-                console.log(type)
                 axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/login`, {
                     method: "POST",
                     data: formState
@@ -129,9 +122,8 @@ const Signin = () => {
                     .then((res) => {
                         setLoading(false)
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            setMessage("Wrong credentials")
                         } else {
-                            console.log(res)
                             if (res?.data?.token) {
                                 sessionStorage.setItem(btoa("token"), window.btoa(JSON.stringify({ token: res.data.token, role: `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}` })))
                                 setAuthToken(extractToken()?.token)
@@ -140,11 +132,10 @@ const Signin = () => {
                         }
                     })
                     .catch((err) => {
-                        console.log(err)
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else {
-                console.log(type)
                 setLoading(false)
                 setMessage('Please properly fill the form!')
             }

@@ -11,7 +11,7 @@ import { UseBranchManagerContext } from '../context/BranchManager';
 import { UseBranchManagerViewerContext } from '../context/BranchManagerViewer';
 import extractToken from "../Utils/ExtractToken";
 
-const BranchModal = ({ setShowModal, showModal }) => {
+const BranchModal = ({ setShowModal, showModal, setMessage }) => {
 	const { branches, setBranches } = UseBranchContext();
 	const { branchManagerOptions } = UseBranchManagerContext()
 	const { BranchManagerViewerOptions } = UseBranchManagerViewerContext()
@@ -53,8 +53,9 @@ const BranchModal = ({ setShowModal, showModal }) => {
 				.then((res) => {
 					if (res.data.error) {
 						setLoading(false)
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setLoading(false)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(branchInitialState);
@@ -74,10 +75,11 @@ const BranchModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 						setLoading(false)
 					} else {
 						setLoading(false)
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(branchInitialState);
 						setBranchManager()

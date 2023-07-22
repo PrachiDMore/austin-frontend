@@ -10,7 +10,7 @@ import { UseBranchManagerContext } from '../context/BranchManager';
 import extractToken from "../Utils/ExtractToken";
 import { UseBranchManagerViewerContext } from '../context/BranchManagerViewer';
 
-const BranchManagerViewerModal = ({ setShowModal, showModal }) => {
+const BranchManagerViewerModal = ({ setShowModal, showModal, setMessage }) => {
 	const { BranchManagerViewers, setBranchManagerViewers } = UseBranchManagerViewerContext()
 	const [formState, setFormState] = useState(BranchManagerInitialState);
 
@@ -39,8 +39,9 @@ const BranchManagerViewerModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(BranchManagerInitialState);
 						setBranchManagerViewers(updateElementsInArray(BranchManagerViewers, res?.data?.user, showModal?.data))
@@ -56,8 +57,9 @@ const BranchManagerViewerModal = ({ setShowModal, showModal }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
-						console.log(res.data.message)
+						setMessage(res.data.message)
 					} else {
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 						setFormState(BranchManagerInitialState);
 						setBranchManagerViewers(addElementInArray(BranchManagerViewers, res?.data?.user))

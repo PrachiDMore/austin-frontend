@@ -11,7 +11,7 @@ import { UseAttendanceContext } from '../context/Attendance'
 import addElementInArray from '../Utils/AddUniqueElementsInArray'
 import moment from 'moment'
 
-const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
+const IndividualAttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 	const { individualBatchOptions } = UseBatchesContext()
 	const [batch, setBatch] = useState();
 	const [studentOptions, setStudentOptions] = useState([])
@@ -48,7 +48,6 @@ const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
 			let studentsArray = students?.map((student) => {
 				return student.value
 			})
-			const date = Date.now()
 			axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/create`, {
 				method: "POST",
 				headers: {
@@ -69,15 +68,18 @@ const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
 				}
 			})
 				.then((res) => {
+					window.location.reload()
 					if (res.data.error) {
+						// setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
+						// setMessage(res.data.message)
 						setIndividualAttendance(addElementInArray(individualAttendance, res?.data?.attendance))
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
 		} else {
-			alert("Fill the form properly!")
+			setMessage("Fill the form properly!")
 		}
 	}
 	return (
@@ -112,9 +114,6 @@ const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
 								}
 							})} onChange={(e) => { setChapter(e) }} />
 							<Input onChange={(e) => {
-								setDate(e.target.value)
-							}} label={"Date"} id={"date"} type="date" placeholder={"Date"} />
-							<Input onChange={(e) => {
 								const newDate = new Date();
 								setStartTime(newDate.setHours(Number(e.target.value.split(":")[0]), Number(e.target.value.split(":")[1])));
 							}} label={"Start Time"} id={"startTime"} type="time" placeholder={"Start Time"} />
@@ -122,6 +121,9 @@ const IndividualAttendanceModal = ({ showModal, setShowModal }) => {
 								const newDate = new Date();
 								setEndTime(newDate.setHours(Number(e.target.value.split(":")[0]), Number(e.target.value.split(":")[1])));
 							}} label={"End Time"} id={"endTime"} type="time" placeholder={"End Time"} />
+							<Input onChange={(e) => {
+								setDate(e.target.value)
+							}} label={"Date"} id={"date"} type="date" placeholder={"Date"} />
 							<Input label={"Hours"} id={"hours"} type="number" readOnly={true} value={hours} placeholder={"Hours"} step="0.1" />
 							<SearchableSelect label={"Students"} isMulti={true} value={students} options={studentOptions} className={"col-span-2"} onChange={(e) => { setStudents(e) }} />
 							<div className='flex justify-center w-full col-span-2'>

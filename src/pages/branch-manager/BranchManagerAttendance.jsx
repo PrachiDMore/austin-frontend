@@ -7,12 +7,14 @@ import { UseAttendanceContext } from '../../context/Attendance'
 import moment from 'moment';
 import DisplayAttendance from "../../Modals/DisplayAttendance";
 import { UseAuthContext } from '../../context/Authentication'
+import Alert from '../../components/Alert'
 
 const BranchManagerAttendance = () => {
 	const { attendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined });
 	const { user } = UseAuthContext()
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
     useEffect(() => {
         setSearchResults(attendance);
@@ -30,8 +32,9 @@ const BranchManagerAttendance = () => {
 
 	return (
 		<>
+			<Alert message={message} setMessage={setMessage} />
 			<Navbar />
-			<DisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
+			<DisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} setMessage={setMessage}/>
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
 					<div className='w-[100%]'>

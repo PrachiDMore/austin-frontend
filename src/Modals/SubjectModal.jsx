@@ -10,7 +10,7 @@ import axios from "axios";
 import extractToken from "../Utils/ExtractToken";
 
 
-const SubjectModal = ({ setShowModal, showModal }) => {
+const SubjectModal = ({ setShowModal, showModal, setMessage }) => {
     const { subjects, setSubjects, } = UseSubjectContext();
     const [formState, setFormState] = useState(SubjectForm);
     const [loading, setLoading] = useState(false);
@@ -43,19 +43,22 @@ const SubjectModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
+                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
                         } else {
                             setLoading(false)
+                            setMessage(res.data.message)
                             setSubjects(updateElementsInArray(subjects, res.data.subject, showModal.data))
                             setShowModal({ update: false, show: false, data: undefined })
                             setFormState(SubjectForm);
                         }
                     })
                     .catch((err) => {
+                        setMessage(err.message)
                         setLoading(false)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
         } else {
             setLoading(true)
@@ -69,11 +72,12 @@ const SubjectModal = ({ setShowModal, showModal }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
-                            console.log(res.data.message)
+                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
 
                         } else {
                             setLoading(false)
+                            setMessage(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSubjects(addElementInArray(subjects, res.data.subject))
                             setFormState(SubjectForm);
@@ -81,11 +85,11 @@ const SubjectModal = ({ setShowModal, showModal }) => {
                     })
                     .catch((err) => {
                         setLoading(false)
+                        setMessage(err.message)
                     })
             } else {
-                console.log('Form incompletely filled')
+                setMessage('Form incompletely filled')
             }
-
         }
     }
 

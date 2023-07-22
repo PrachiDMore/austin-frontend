@@ -49,7 +49,6 @@ const StudentAdmissionPage = () => {
 						} else {
 							setMessage(res.data.message)
 							setLoading(false)
-							console.log("updated")
 						}
 					})
 					.catch((err) => {

@@ -11,7 +11,7 @@ const CourseContextProvider = ({ children }) => {
     const [courseOptions, setCourseOptions] = useState([]);
 
     useEffect(() => {
-        if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
+        if (extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_ROLE}` || extractToken()?.role === `${process.env.REACT_APP_BRANCH_MANAGER_VIEWER_ROLE}`  || extractToken()?.role === `${process.env.REACT_APP_TEACHER_ROLE}`) {
             axios(`${process.env.REACT_APP_BASE_URL}/course/`, {
                 method: "GET",
                 headers:{
@@ -20,13 +20,13 @@ const CourseContextProvider = ({ children }) => {
             })
                 .then((res) => {
                     if (res.data.error) {
-                        console.log(res.data.message)
+                        // console.log(res.data.message)
                     } else {
                         setCourses(res.data.courses)
                     }
                 })
                 .catch((err) => {
-                    console.log(err.message)
+                    // console.log(err.message)
                 })
         } else {
             setCourses(batches?.map((batch) => {

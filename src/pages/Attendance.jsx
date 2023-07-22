@@ -9,11 +9,13 @@ import DisplayAttendance from "../Modals/DisplayAttendance";
 import Button from '../components/Button'
 import axios from 'axios'
 import extractToken from '../Utils/ExtractToken'
+import Alert from '../components/Alert'
 
 const Attendance = () => {
 	const { attendance } = UseAttendanceContext();
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
 	const [searchResults, setSearchResults] = useState([])
+	const [message, setMessage] = useState("")
 
 	const approveAttendance = (_id) => {
 		if (_id) {
@@ -26,12 +28,12 @@ const Attendance = () => {
 				.then((res) => {
 					if (!res.data.error) {
 						window.location.reload()
-					}else{
-						console.log(res.data.message)
+					} else {
+						setMessage(res.data.message)
 					}
 				})
 				.catch((err) => {
-					console.log(err)
+					setMessage(err.message)
 				})
 		}
 	}
@@ -52,6 +54,7 @@ const Attendance = () => {
 	return (
 		<>
 			<Navbar />
+			<Alert setMessage={setMessage} message={message} />
 			<DisplayAttendance key={Date.now()} showModal={displayAttendance} setShowModal={setDisplayAttendance} />
 			<section className='w-screen min-h-screen p-10 px-20 Nunito'>
 				<div className='flex'>
