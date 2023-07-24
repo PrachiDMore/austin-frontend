@@ -31,7 +31,10 @@ const admissionFormInitialState = {
 	password: "",
 	username: "",
 	confirmed: false,
-	isDisabled: false
+	isDisabled: false,
+	mode: "regular",
+	scores: "0",
+	institutename: "",
 }
 
 export default admissionFormInitialState

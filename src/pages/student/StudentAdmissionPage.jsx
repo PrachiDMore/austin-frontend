@@ -40,7 +40,10 @@ const StudentAdmissionPage = () => {
 			if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
 				axios(`${process.env.REACT_APP_BASE_URL}/admission/${formState?._id}`, {
 					method: 'PATCH',
-					data: formState
+					data: formState,
+					headers: {
+						Authorization: `Bearer ${extractToken()?.token}`
+					}
 				})
 					.then((res) => {
 						if (res.data.error) {
@@ -94,7 +97,7 @@ const StudentAdmissionPage = () => {
 				<form onSubmit={handleSubmit} className='w-full p-10 px-20 flex flex-col items-center'>
 					<div className='text-center text-3xl font-bold p-4 '>Profile</div>
 					{formState?.photoURL && <div className='my-3 rounded-lg'>
-						<img className='h-32 w-32 object-cover rounded-lg' src={formState?.photoURL} alt="" />
+						<img className='h-32 w-32 object-cover rounded-lg' src={formState?.photoURL || "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="} alt="" />
 					</div>}
 					<div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
 						<h1 className='font-semibold text-darkPurple text-2xl pb-2 mb-2'>Personal Information:</h1>
@@ -121,6 +124,9 @@ const StudentAdmissionPage = () => {
 							<Input value={formState?.mobileNoSecondary} onChange={handleChange} id={'mobileNoSecondary'} type={"text"} label={'Mobile Number 2'} placeholder={'Enter your alternate mobile number.'} />
 							<Input value={formState?.admissionYear} required={true} onChange={handleChange} id={'admissionYear'} type={"text"} label={'Admission Year'} placeholder={'Enter your admission Year.'} />
 							<Input value={formState?.grade} required={true} onChange={handleChange} id={'grade'} type={"text"} label={'Grade'} placeholder={'Enter your grade.'} />
+							<Input value={formState?.institutename} required={true} onChange={handleChange} id={'institutename'} type={"text"} label={'School/College Name'} placeholder={'Enter your School or College name.'} />
+							<Select value={formState?.mode} required={true} onChange={handleChange} id={'mode'} label={'Mode of Coaching'} options={[{ label: 'Individual', value: 'Individual' }, { label: 'Regular', value: 'regular' }]} />
+							<Input value={formState?.scores} required={true} onChange={handleChange} id={'scores'} type={"text"} label={'Scores of previous exam'} placeholder={'Enter your Scores of previous exam  (in %).'} />
 						</div>
 					</div>
 					<div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>

@@ -95,7 +95,7 @@ const AdmissionPage = () => {
                 setMessage('Form incompletely filled')
             }
         } else if (formState?.confirmed && extractToken()?.role === `${process.env.REACT_APP_ADMIN_ROLE}`) {
-            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.grade && formState?.father_name && formState?.mother_name && formState?.grade) {
+            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade && formState?.institutename && formState?.mode) {
                 axios(`${process.env.REACT_APP_BASE_URL}/admission/${formState?._id}`, {
                     method: 'PATCH',
                     data: formState,
@@ -125,7 +125,7 @@ const AdmissionPage = () => {
                 setMessage('Form incompletely filled')
             }
         } else {
-            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade && img) {
+            if (formState?.firstname && formState?.lastname && formState?.middlename && formState?.DOB && formState?.gender && formState?.address && formState?.city && formState?.state && formState?.pincode && formState?.nationality && formState?.email && formState?.mobileNoPrimary && formState?.admissionYear && formState?.father_name && formState?.mother_name && formState?.grade && img && formState?.institutename && formState?.mode) {
                 setUploading(true)
                 const formData = new FormData();
                 formData.append("file", img);
@@ -216,6 +216,7 @@ const AdmissionPage = () => {
                                 {formState?.photoURL && !uploading && <a href={formState?.photoURL}><AiOutlineLink className='text-xl text-blue-700' /></a>}
                             </div>
                             <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
+                            <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.DOB} required={true} onChange={handleChange} id={'DOB'} type={"date"} label={'Date of Birth'} placeholder={'Enter your last name.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.address} required={true} onChange={handleChange} id={'address'} type={"text"} label={'Address'} placeholder={'Enter your address.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.landmark} onChange={handleChange} id={'landmark'} type={"text"} label={'Landmark'} placeholder={'Enter your landmark (optional).'} />
@@ -228,6 +229,9 @@ const AdmissionPage = () => {
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.mobileNoSecondary} onChange={handleChange} id={'mobileNoSecondary'} type={"text"} label={'Mobile Number 2'} placeholder={'Enter your alternate mobile number.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.admissionYear} required={true} onChange={handleChange} id={'admissionYear'} type={"text"} label={'Admission Year'} placeholder={'Enter your admission Year.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.grade} required={true} onChange={handleChange} id={'grade'} type={"text"} label={'Grade'} placeholder={'Enter your grade.'} />
+                            <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.institutename} required={true} onChange={handleChange} id={'institutename'} type={"text"} label={'School/College Name'} placeholder={'Enter your School or College name.'} />
+                            <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.mode} required={true} onChange={handleChange} id={'mode'} label={'Mode of Coaching'} options={[{ label: 'Individual', value: 'Individual' }, { label: 'Regular', value: 'regular' }]} />
+                            <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.scores} required={true} onChange={handleChange} id={'scores'} type={"text"} label={'Scores of previous exam'} placeholder={'Enter your Scores of previous exam  (in %).'} />
                         </div>
                     </div>
                     <div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
