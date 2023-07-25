@@ -35,6 +35,7 @@ const admissionFormInitialState = {
 	mode: "regular",
 	scores: "0",
 	institutename: "",
+	requirecoachingfor: ""
 }
 
 export default admissionFormInitialState

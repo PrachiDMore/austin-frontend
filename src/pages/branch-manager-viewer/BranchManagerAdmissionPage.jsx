@@ -82,6 +82,10 @@ const BranchManagerAdmissionPage = ({ role }) => {
                             <Input readOnly={true} value={formState?.mobileNoSecondary} onChange={handleChange} id={'mobileNoSecondary'} type={"text"} label={'Mobile Number 2'} placeholder={'Enter your alternate mobile number.'} />
                             <Input readOnly={true} value={formState?.admissionYear} required={true} onChange={handleChange} id={'admissionYear'} type={"text"} label={'Admission Year'} placeholder={'Enter your admission Year.'} />
                             <Input readOnly={true} value={formState?.grade} required={true} onChange={handleChange} id={'grade'} type={"text"} label={'Grade'} placeholder={'Enter your grade.'} />
+                            <Input readOnly={true} value={formState?.institutename} required={true} onChange={handleChange} id={'institutename'} type={"text"} label={'School/College Name'} placeholder={'Enter your School or College name.'} />
+                            <Select readOnly={true} value={formState?.mode} required={true} onChange={handleChange} id={'mode'} label={'Mode of Coaching'} options={[{ label: 'Individual', value: 'Individual' }, { label: 'Regular', value: 'regular' }]} />
+                            <Input readOnly={true} value={formState?.scores} required={true} onChange={handleChange} id={'scores'} type={"text"} label={'Scores of previous exam'} placeholder={'Enter your Scores of previous exam  (in %).'} />
+                            <Input readOnly={true} value={formState?.requirecoachingfor} required={true} onChange={handleChange} id={'requirecoachingfor'} type={"text"} label={'Require Coaching For'}  />
                         </div>
                     </div>
                     <div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>

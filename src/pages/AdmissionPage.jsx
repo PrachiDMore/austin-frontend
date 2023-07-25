@@ -232,6 +232,7 @@ const AdmissionPage = () => {
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.institutename} required={true} onChange={handleChange} id={'institutename'} type={"text"} label={'School/College Name'} placeholder={'Enter your School or College name.'} />
                             <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.mode} required={true} onChange={handleChange} id={'mode'} label={'Mode of Coaching'} options={[{ label: 'Individual', value: 'Individual' }, { label: 'Regular', value: 'regular' }]} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.scores} required={true} onChange={handleChange} id={'scores'} type={"text"} label={'Scores of previous exam'} placeholder={'Enter your Scores of previous exam  (in %).'} />
+                            <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.requirecoachingfor} required={true} onChange={handleChange} id={'requirecoachingfor'} type={"text"} label={'Require Coaching For'} />
                         </div>
                     </div>
                     <div className='border w-full my-3 rounded-lg shadow-md shadow-purpleShadow p-7'>
