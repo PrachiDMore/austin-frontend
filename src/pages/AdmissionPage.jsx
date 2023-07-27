@@ -216,7 +216,6 @@ const AdmissionPage = () => {
                                 {formState?.photoURL && !uploading && <a href={formState?.photoURL}><AiOutlineLink className='text-xl text-blue-700' /></a>}
                             </div>
                             <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
-                            <Select readOnly={location?.pathname?.includes("/view/admission")} value={formState?.gender} required={true} onChange={handleChange} id={'gender'} label={'Gender'} options={[{ label: 'Male', value: 'male' }, { label: 'Female', value: 'female' }]} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.DOB} required={true} onChange={handleChange} id={'DOB'} type={"date"} label={'Date of Birth'} placeholder={'Enter your last name.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.address} required={true} onChange={handleChange} id={'address'} type={"text"} label={'Address'} placeholder={'Enter your address.'} />
                             <Input readOnly={location?.pathname?.includes("/view/admission")} value={formState?.landmark} onChange={handleChange} id={'landmark'} type={"text"} label={'Landmark'} placeholder={'Enter your landmark (optional).'} />
