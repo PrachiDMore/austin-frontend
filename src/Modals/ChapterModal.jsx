@@ -83,6 +83,7 @@ const ChatperModal = ({ setShowModal, showModal, setMessage }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
+                            setLoading(false)
                             setMessage(res.data.message)
                             setShowModal({ update: false, show: false, id: undefined })
                             setSubjectValue()

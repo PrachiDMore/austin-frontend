@@ -22,10 +22,12 @@ const IndividualBatchModal = ({ setShowModal, showModal, role, setMessage }) => 
 	const [formState, setFormState] = useState({ ...batchInitialState });
 	const [course, setCourse] = useState();
 	const [branch, setBranch] = useState();
+	const [loading, setLoading] = useState(false);
 	const [students, setStudents] = useState([]);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setLoading(true)
 		if (showModal.update) {
 			axios(`${process.env.REACT_APP_BASE_URL}/individual-batch/${showModal?.data?._id}`, {
 				method: "PATCH",
@@ -39,6 +41,7 @@ const IndividualBatchModal = ({ setShowModal, showModal, role, setMessage }) => 
 				}
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -63,6 +66,7 @@ const IndividualBatchModal = ({ setShowModal, showModal, role, setMessage }) => 
 				}
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -137,7 +141,7 @@ const IndividualBatchModal = ({ setShowModal, showModal, role, setMessage }) => 
 							<SearchableSelect onChange={(e) => { setBranch(e) }} label={"Branch"} value={branch} options={branchOptions} />
 							<SearchableSelect label={"Course"} onChange={(e) => { setCourse(e) }} value={course} options={courseOptions} />
 							<div className='col-span-2 flex justify-center'>
-								<Button text='Submit' type='submit' className={"w-max px-12"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-max px-12"} />
 							</div>
 						</form>
 					</div>

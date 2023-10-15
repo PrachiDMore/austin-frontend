@@ -56,6 +56,7 @@ const BranchManagerIndividualChapterAllocation = () => {
 									<tr>
 										<th scope="col" className="px-6 py-5">Chapter Name</th>
 										<th scope="col" className="px-6 py-5">Teacher Name</th>
+										<th scope="col" className="px-6 py-5">Batch</th>
 										<th scope="col" className="px-6 py-5">Subject</th>
 										<th scope="col" className="px-6 py-5">Rate</th>
 										<th scope="col" className="px-6 py-5">Hours Completed / Hours</th>

@@ -12,11 +12,12 @@ body,
 
 body{
   font-family: 'Nunito';
+  overflow-x: hidden;
 }
 
-::-webkit-scrollbar {
-  width: 0;
-}
+/* ::-webkit-scrollbar {
+  width: 20px;
+} */
 
 .navLink {
   position: relative;

@@ -13,10 +13,12 @@ const ResetPassword = () => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const navigate = useNavigate();
 	const [message, setMessage] = useState("")
+	const [loading, setLoading] = useState(false)
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		if (password === confirmPassword) {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/user/reset-password`, {
 				method: "PATCH",
 				data: {
@@ -27,6 +29,7 @@ const ResetPassword = () => {
 				}
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -35,6 +38,7 @@ const ResetPassword = () => {
 					}
 				})
 		} else {
+			setLoading(false)
 			setMessage("Password doesn't match")
 		}
 	}
@@ -48,7 +52,7 @@ const ResetPassword = () => {
 					<div className='w-10/12 flex flex-col mt-3 gap-3'>
 						<Input type={"password"} password={true} onChange={(e) => { setPassword(e.target.value) }} value={password} placeholder={"Enter new password"} label={"Password"} />
 						<Input type={"password"} password={true} onChange={(e) => { setConfirmPassword(e.target.value) }} value={confirmPassword} placeholder={"Confirm new password"} label={"Confirm Password"} />
-						<Button className={"w-full mt-3"} text='Reset Password' type='submit' />
+						<Button loading={loading} className={"w-full mt-3"} text='Reset Password' type='submit' />
 						<Link className='flex items-center justify-center gap-2 mt-5 font-semibold text-darkPurple' to={"/signin"}><HiOutlineArrowNarrowLeft className='text-xl' /> <p>Back to login</p></Link>
 					</div>
 				</form>

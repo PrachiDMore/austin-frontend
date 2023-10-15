@@ -23,6 +23,7 @@ const IndividualAttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 	const [students, setStudents] = useState([]);
 	const { individualAttendance, setIndividualAttendance } = UseAttendanceContext()
 	const { individualChapterAllocation, setIndividualChapterAllocation } = UseChapterAllocationContext();
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		if (batch) {
@@ -44,6 +45,7 @@ const IndividualAttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+		setLoading(true)
 		if (startTime && endTime && batch && date) {
 			let studentsArray = students?.map((student) => {
 				return student.value
@@ -69,16 +71,18 @@ const IndividualAttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 			})
 				.then((res) => {
 					window.location.reload()
+					setLoading(false)
 					if (res.data.error) {
-						// setMessage(res.data.message)
+						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
 					} else {
-						// setMessage(res.data.message)
+						setMessage(res.data.message)
 						setIndividualAttendance(addElementInArray(individualAttendance, res?.data?.attendance))
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
-		} else {
+			} else {
+			setLoading(false)
 			setMessage("Fill the form properly!")
 		}
 	}
@@ -127,7 +131,7 @@ const IndividualAttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 							<Input label={"Hours"} id={"hours"} type="number" readOnly={true} value={hours} placeholder={"Hours"} step="0.1" />
 							<SearchableSelect label={"Students"} isMulti={true} value={students} options={studentOptions} className={"col-span-2"} onChange={(e) => { setStudents(e) }} />
 							<div className='flex justify-center w-full col-span-2'>
-								<Button text='Submit' type='submit' className={"w-52"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-52"} />
 							</div>
 						</form>
 					</div>

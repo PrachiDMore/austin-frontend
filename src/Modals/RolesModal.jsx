@@ -8,6 +8,7 @@ import RolesInitialState from '../InitialStates/Roles';
 
 const RolesModal = ({ showModal, setShowModal }) => {
 	const [formState, setFormState] = useState(RolesInitialState);
+	const [loading, setLoading] = useState(false);
 
 	const handleChange = (e) => {
 		if (e.target.type === "checkbox") {
@@ -51,7 +52,7 @@ const RolesModal = ({ showModal, setShowModal }) => {
 							<Checkbox label={"Can manage branch"} id={"canManageUsers"} onChange={handleChange}/>
 							<Select options={[{ value: 'one-on-one', label: "One-On-One" }, { value: 'regular', label: "Regular" }]} onChange={handleChange} label={"Type Of Batch"} id={"typeOfBatch"} value={formState?.typeOfBatch} />
 							<div className='col-span-2 flex justify-center'>
-								<Button text='Submit' type='submit' className={"w-max px-12"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-max px-12"} />
 							</div>
 						</form>
 					</div>

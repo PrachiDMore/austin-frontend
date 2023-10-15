@@ -33,7 +33,7 @@ const AdmissionContextProvider = ({ children }) => {
 		setAdmissionOptions(admissions?.map((admission) => {
 			return {
 				...admission,
-				label: `${admission?.firstname} ${admission?.lastname} (${admission?.grade})`,
+				label: `${admission?.firstname} ${admission?.lastname} (${admission?.grade}) (${admission?.mode})`,
 				value: admission?._id
 			}
 		}))

@@ -23,10 +23,12 @@ const BatchModal = ({ setShowModal, showModal, setMessage }) => {
 	const [course, setCourse] = useState();
 	const [branch, setBranch] = useState();
 	const [students, setStudents] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		if (showModal.update) {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/batch/${showModal?.data?._id}`, {
 				method: "PATCH",
 				headers: {
@@ -39,6 +41,7 @@ const BatchModal = ({ setShowModal, showModal, setMessage }) => {
 				}
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -51,6 +54,7 @@ const BatchModal = ({ setShowModal, showModal, setMessage }) => {
 					}
 				})
 		} else {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/batch/create`, {
 				method: "POST",
 				headers: {
@@ -63,6 +67,7 @@ const BatchModal = ({ setShowModal, showModal, setMessage }) => {
 				}
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -132,13 +137,15 @@ const BatchModal = ({ setShowModal, showModal, setMessage }) => {
 							</button>
 						</div>
 						<form action="#" onSubmit={handleSubmit} className='grid grid-cols-2 gap-x-6 gap-y-3'>
-							<SearchableSelect label={"Students"} value={students} onChange={(e) => { setStudents(e) }} isMulti={true} options={admissionOptions} className={"col-span-2"} />
+							<SearchableSelect label={"Students"} value={students} onChange={(e) => { setStudents(e) }} isMulti={true} options={admissionOptions?.filter((admission) => {
+								return admission.mode !== "Individual"
+							})} className={"col-span-2"} />
 							<Input onChange={handleChange} label={"Name"} id={"name"} value={formState.name} placeholder={"Batch name"} />
 							<Input onChange={handleChange} label={"Academic Year"} id={"academicYear"} value={formState.academicYear} placeholder={"Academic year (2022-2023)"} />
 							<SearchableSelect onChange={(e) => { setBranch(e) }} label={"Branch"} value={branch} options={branchOptions} />
 							<SearchableSelect label={"Course"} onChange={(e) => { setCourse(e) }} value={course} options={courseOptions} />
 							<div className='col-span-2 flex justify-center'>
-								<Button text='Submit' type='submit' className={"w-max px-12"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-max px-12"} />
 							</div>
 						</form>
 					</div>

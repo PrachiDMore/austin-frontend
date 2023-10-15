@@ -13,6 +13,7 @@ import { UseBranchManagerViewerContext } from '../context/BranchManagerViewer';
 const BranchManagerViewerModal = ({ setShowModal, showModal, setMessage }) => {
 	const { BranchManagerViewers, setBranchManagerViewers } = UseBranchManagerViewerContext()
 	const [formState, setFormState] = useState(BranchManagerInitialState);
+	const [loading, setLoading] = useState(false)
 
 	const handleChange = (e) => {
 		setFormState({
@@ -29,6 +30,7 @@ const BranchManagerViewerModal = ({ setShowModal, showModal, setMessage }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setLoading(true)
 		if (showModal.update) {
 			axios(`${process.env.REACT_APP_BASE_URL}/branch-manager-viewer/${showModal?.data?._id}`, {
 				method: "PATCH",
@@ -38,6 +40,7 @@ const BranchManagerViewerModal = ({ setShowModal, showModal, setMessage }) => {
 				data: formState
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -56,6 +59,7 @@ const BranchManagerViewerModal = ({ setShowModal, showModal, setMessage }) => {
 				},
 			})
 				.then((res) => {
+					setLoading(false)
 					if (res.data.error) {
 						setMessage(res.data.message)
 					} else {
@@ -95,7 +99,7 @@ const BranchManagerViewerModal = ({ setShowModal, showModal, setMessage }) => {
 							<Input label={"Phone Number"} value={formState.phonenumber} onChange={handleChange} id={"phonenumber"} />
 							<Select label={"Disabled"} value={formState.isDisabled} onChange={handleChange} id={"isDisabled"} options={[{ label: "Disable", value: true }, { label: "Enable", value: false }]} />
 							<div className='col-span-2 flex justify-center'>
-								<Button type='submit' text='Submit' className={"w-max px-12"} />
+								<Button loading={loading} type='submit' text='Submit' className={"w-max px-12"} />
 							</div>
 						</form>
 					</div>

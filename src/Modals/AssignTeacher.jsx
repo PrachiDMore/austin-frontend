@@ -20,7 +20,7 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 	const { chapterOptions } = UseChapterContext()
 	const { courseOptions } = UseCourseContext();
 	const { batchOptions } = UseBatchesContext();
-	const {chapterAllocations, setChapterAllocations} = UseChapterAllocationContext()
+	const { chapterAllocations, setChapterAllocations } = UseChapterAllocationContext()
 	const [displayChapters, setDisplayChapters] = useState([]);
 	const [displaySubjects, setDisplaySubjects] = useState([])
 	const [chapter, setChapter] = useState()
@@ -29,6 +29,7 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 	const [course, setCourse] = useState()
 	const [batch, setBatch] = useState()
 	const [formState, setFormState] = useState(AssignTeacherInitialState);
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		if (showModal.update) {
@@ -48,7 +49,7 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 			setTeacher(teacherOptions?.filter((teacher) => {
 				return teacher?._id === showModal?.data?.teacher?._id
 			})[0])
-		}else{
+		} else {
 			setFormState(AssignTeacherInitialState)
 		}
 	}, [showModal]);
@@ -56,11 +57,12 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		if (showModal.update) {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/${showModal?.data?._id}`, {
 				method: "PATCH",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
 				data: {
 					...formState,
 					subject: subject.value,
@@ -72,19 +74,22 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 				.then((res) => {
 					if (res.data.error) {
 						setMessage(res.data.message)
+						setLoading(false)
 						setShowModal({ show: false, update: false, data: undefined })
-					}else{
+					} else {
 						setMessage(res.data.message)
+						setLoading(false)
 						setChapterAllocations(updateElementsInArray(chapterAllocations, res.data.chapterAllocation, showModal.data));
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
-		}else{
+		} else {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/chapterAllocation/create`, {
 				method: "POST",
 				headers: {
-                    Authorization: `Bearer ${extractToken()?.token}`
-                },
+					Authorization: `Bearer ${extractToken()?.token}`
+				},
 				data: {
 					...formState,
 					subject: subject.value,
@@ -95,10 +100,12 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 			})
 				.then((res) => {
 					if (res.data.error) {
+						setLoading(false)
 						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
-					}else{
+					} else {
 						setMessage(res.data.message)
+						setLoading(false)
 						setChapterAllocations(addElementInArray(chapterAllocations, res.data.chapterAllocation));
 						setShowModal({ show: false, update: false, data: undefined })
 					}
@@ -180,7 +187,7 @@ const AssignTeacher = ({ setShowModal, showModal, setMessage }) => {
 							<Input onChange={handleChange} value={formState.rate} label={"Rate per hour"} id={"rate"} type={"number"} />
 							<Input onChange={handleChange} value={formState.hoursCompleted} label={"Hours completed"} id={"hoursCompleted"} type={"number"} />
 							<div className={"col-span-2 flex justify-center"}>
-								<Button text='Submit' type='submit' className={"w-52"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-52"} />
 							</div>
 						</form>
 					</div>

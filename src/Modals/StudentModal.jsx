@@ -10,6 +10,7 @@ import extractToken from "../Utils/ExtractToken";
 
 const StudentModal = ({ setShowModal, showModal, setMessage }) => {
 	const { admissions, setAdmissions } = UseAdmissionContext()
+	const [loading, setLoading] = useState(false)
 	const initialState = {
 		username: "",
 		password: "",
@@ -23,6 +24,7 @@ const StudentModal = ({ setShowModal, showModal, setMessage }) => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+		setLoading(true)
 		if (showModal.update) {
 			if (formState.confirmPassword === formState.password) {
 				axios(`${process.env.REACT_APP_BASE_URL}/user/admin/update/${showModal?.data?._id}`, {
@@ -33,6 +35,7 @@ const StudentModal = ({ setShowModal, showModal, setMessage }) => {
 					data: formState,
 				})
 					.then((res) => {
+						setLoading(false)
 						if (res.data.error) {
 							// console.log(res.data.error)
 							setShowModal({ show: false, update: false, data: undefined })
@@ -75,7 +78,7 @@ const StudentModal = ({ setShowModal, showModal, setMessage }) => {
 							<Input onChange={handleChange} value={formState?.password} label={"Password"} id={"password"} type={"password"} />
 							<Input onChange={handleChange} value={formState?.confirmPassword} label={"Confirm Password"} id={"confirmPassword"} type={"password"} />
 							<div className={"col-span-1 flex justify-center"}>
-								<Button text='Submit' type='submit' className={"w-52"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-52"} />
 							</div>
 						</form>
 					</div>

@@ -266,8 +266,8 @@ const AdmissionPage = () => {
                         <p>I agree to the <Link to={"/rules-and-regulations"} className='font-semibold text-darkPurple underline underline-offset-2'>terms and conditions</Link></p>
                     </div>}
                     {!_id && <Button disabled={!_id && !checked} type='submit' text='Submit' className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
-                    {_id && !formState?.confirmed && !location?.pathname?.includes("/view/admission") && <Button disabled={formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
-                    {_id && formState?.confirmed && !location?.pathname?.includes("/view/admission") && <Button type='submit' text={"Submit"} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}
+                    {_id && !formState?.confirmed && !location?.pathname?.includes("/view/admission") && <Button disabled={formState?.confirmed} type='submit' text={formState?.confirmed ? "Already Confirmed" : 'Save & Confirm Admission'} className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
+                    {_id && formState?.confirmed && !location?.pathname?.includes("/view/admission") && <Button type='submit' text={"Submit"} className={'w-max px-10 mt-4 min-w-[150px]'} loading={loading} />}
                     {_id && location?.pathname?.includes("/view/admission") && <Button type='button' text={"Print"} onClick={() => {
                         handlePrint()
                     }} className={'w-max px-10 mt-4 min-w-[150px]'} loading={false} />}

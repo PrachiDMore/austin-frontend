@@ -16,9 +16,11 @@ const IndividualAttendance = () => {
 	const [displayAttendance, setDisplayAttendance] = useState({ show: false, data: undefined })
 	const [searchResults, setSearchResults] = useState([])
 	const [message, setMessage] = useState("")
+	const [loading, setLoading] = useState(false)
 
 	const approveAttendance = (_id) => {
 		if (_id) {
+			setLoading(true)
 			axios(`${process.env.REACT_APP_BASE_URL}/individual-attendance/approve/${_id}`, {
 				method: "PATCH",
 				headers: {
@@ -26,6 +28,7 @@ const IndividualAttendance = () => {
 				}
 			})
 				.then((res) => {
+					setLoading(false)
 					if (!res.data.error) {
 						window.location.reload()
 					} else {
@@ -33,6 +36,7 @@ const IndividualAttendance = () => {
 					}
 				})
 				.catch((err) => {
+					setLoading(false)
 					setMessage(err.message)
 				})
 		}
@@ -95,7 +99,7 @@ const IndividualAttendance = () => {
 												</td>
 												<td className="px-6 py-4"><Button onClick={() => {
 													approveAttendance(data?._id)
-												}} disabled={data?.approved} className={"py-2"} text='Approve' /></td>
+												}} loading={loading} disabled={data?.approved} className={"py-2"} text='Approve' /></td>
 											</tr>
 										})
 									}

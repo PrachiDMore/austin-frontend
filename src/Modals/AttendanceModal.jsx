@@ -22,7 +22,8 @@ const AttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 	const [students, setStudents] = useState([]);
 	const [date, setDate] = useState()
 	const { attendance, setAttendance } = UseAttendanceContext()
-	const { chapterAllocations, setChapterAllocations } = UseChapterAllocationContext()
+	const { chapterAllocations, setChapterAllocations } = UseChapterAllocationContext();
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		let endTimeMoment = moment(endTime)
@@ -45,6 +46,7 @@ const AttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 	const handleSubmit = (e) => {
 		e.preventDefault()
 		if (startTime && endTime && batch) {
+			setLoading(true)
 			let studentsArray = students?.map((student) => {
 				return student.value
 			})
@@ -67,7 +69,8 @@ const AttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 					hours: hours
 				}
 			})
-				.then((res) => {
+			.then((res) => {
+					setLoading(false);
 					if (res.data.error) {
 						setMessage(res.data.message)
 						setShowModal({ show: false, update: false, data: undefined })
@@ -77,8 +80,9 @@ const AttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 						setShowModal({ show: false, update: false, data: undefined })
 					}
 				})
-		} else {
-			setMessage("Fill the form properly!")
+			} else {
+				setLoading(false);
+				setMessage("Fill the form properly!")
 		}
 	}
 	return (
@@ -126,7 +130,7 @@ const AttendanceModal = ({ showModal, setShowModal, setMessage }) => {
 							<Input label={"Hours"} id={"hours"} type="number" readOnly={true} value={hours} placeholder={"Hours"} step="0.1" />
 							<SearchableSelect label={"Students"} isMulti={true} value={students} options={studentOptions} className={"col-span-2"} onChange={(e) => { setStudents(e) }} />
 							<div className='flex justify-center w-full col-span-2'>
-								<Button text='Submit' type='submit' className={"w-52"} />
+								<Button loading={loading} text='Submit' type='submit' className={"w-52"} />
 							</div>
 						</form>
 					</div>

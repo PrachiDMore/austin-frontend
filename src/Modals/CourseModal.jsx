@@ -67,6 +67,7 @@ const CourseModal = ({ setShowModal, showModal, setMessage }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        setLoading(true)
         if (showModal.update) {
             if (formState.name && formState.grade) {
                 axios(`${process.env.REACT_APP_BASE_URL}/course/${showModal?.data?._id}`, {
@@ -78,6 +79,7 @@ const CourseModal = ({ setShowModal, showModal, setMessage }) => {
                 })
                     .then((res) => {
                         if (res.data.error) {
+                            setLoading(false)
                             setMessage(res.data.message)
                             setShowModal({ update: false, show: false, data: undefined })
                         } else {
@@ -95,6 +97,7 @@ const CourseModal = ({ setShowModal, showModal, setMessage }) => {
                         setLoading(false)
                     })
             } else {
+                setLoading(false)
                 setMessage('Form incompletely filled')
             }
         } else {
@@ -106,6 +109,7 @@ const CourseModal = ({ setShowModal, showModal, setMessage }) => {
                 data: { ...formState, subjects: selectedSubjects }
             })
                 .then((res) => {
+                    setLoading(false)
                     if (res.data.error) {
                         setShowModal({ show: false, update: false, data: undefined })
                         setMessage(res.data.message)
@@ -120,6 +124,7 @@ const CourseModal = ({ setShowModal, showModal, setMessage }) => {
                     }
                 })
                 .catch((err) => {
+                    setLoading(false)
                     setMessage(err.message)
                     setShowModal({ show: false, update: false, data: undefined })
                     setSelectedSubject();
